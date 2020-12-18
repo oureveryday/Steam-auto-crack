@@ -20,5 +20,7 @@ Download all files and run "Steamgamecrack.bat".
 ## Bugs
 For bugs please report in issues.
 
+Please put cracker folder into non-english folder,and without space.
+
 
 
