@@ -1,6 +1,6 @@
 @echo off
 color F1
-chcp 65001
+chcp 65001 >nul 2>nul
 cd /d %~dp0
 cls
 

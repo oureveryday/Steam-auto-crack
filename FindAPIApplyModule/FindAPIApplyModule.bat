@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul 2>nul
 setlocal enabledelayedexpansion
 cd /d %~dp0
 if /i [%1]==[] goto usage

@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul 2>nul
 cd /d %~dp0
 del /f /s /q "%~dp0..\Temp\steam_settings" >nul 2>nul
 mkdir %~dp0..\Temp\steam_settings >nul 2>nul
