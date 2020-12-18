@@ -1,4 +1,5 @@
 @echo off
+color F1
 cd /d %~dp0
 cls
 
