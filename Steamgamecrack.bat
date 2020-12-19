@@ -9,21 +9,23 @@ set select=""
 echo Select crack options:
 echo 1.Auto crack(Unpack+Emu apply)
 echo 2.Auto unpack(Unpack+Backup)
-echo 3.Auto apply EMU(Apply+Backup)
-echo 4.EMU config(Appid+Achievements+DLC)
-echo 5.EMU setting(Language+UserID)
-echo 6.Delete TEMP File(Run before crack)
-echo 7.Open EMU setting floder
-echo 8.Exit
+echo 3.Auto find file and unpack(Unpack+Backup)
+echo 4.Auto apply EMU(Apply+Backup)
+echo 5.EMU config(Appid+Achievements+DLC)
+echo 6.EMU setting(Language+UserID)
+echo 7.Delete TEMP File(Run before crack)
+echo 8.Open EMU setting floder
+echo 9.Exit
 set /p select=Select:
 if /i "%select%"=="1" goto crack
 if /i "%select%"=="2" cls & goto unpack
-if /i "%select%"=="3" goto EMUapply
-if /i "%select%"=="4" goto EMUconfig
-if /i "%select%"=="5" goto EMUsetting
-if /i "%select%"=="6" goto deletetemp
-if /i "%select%"=="7" goto open
-if /i "%select%"=="8" exit
+if /i "%select%"=="3" cls & goto unpackfind
+if /i "%select%"=="4" goto EMUapply
+if /i "%select%"=="5" goto EMUconfig
+if /i "%select%"=="6" goto EMUsetting
+if /i "%select%"=="7" goto deletetemp
+if /i "%select%"=="8" goto open
+if /i "%select%"=="9" exit
 cls
 goto select
 
@@ -67,7 +69,7 @@ choice
 IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
 echo Unpacking......
 call %~dp0FindExeUnpackModule\FindExeUnpackModule.bat %gamedir%
-echo File unpacked and a backup was made.
+echo File unpack finished.
 echo Applying Steam EMU......
 call %~dp0FindAPIApplyModule\FindAPIApplyModule.bat %gamedir%
 echo Steam EMU applied.
@@ -75,7 +77,22 @@ pause
 cls
 goto select
 
+:unpackfind
+cls
+echo Selected Auto find file and unpack.
 
+set /p gamedir=Drag and drop or input game directory:
+if /i [%gamedir%]==[] cls & echo No game directory selected. & echo. & goto select
+if /i exist %gamedir% (nul)>nul 2>nul else cls & echo Input game directory not found. & echo. & goto select 
+echo Selected directory %gamedir%
+choice
+IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
+echo Unpacking......
+call %~dp0FindExeUnpackModule\FindExeUnpackModule.bat %gamedir%
+echo File unpacked and a backup was made.
+pause
+cls
+goto select
 
 
 :unpack
@@ -88,12 +105,14 @@ choice
 IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
 echo Unpacking......
 call %~dp0AutoUnpackModule\AutoUnpackModule.bat %exedir%
-echo File unpacked and a backup was made.
+echo File unpack finished.
 pause
 cls
 goto select
 
 :deletetemp
+choice
+IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
 del /f /s /q %~dp0Temp>nul 2>nul
 rd /s /q %~dp0Temp
 cls
