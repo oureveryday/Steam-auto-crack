@@ -144,13 +144,13 @@ cls
 if /i exist %~dp0Temp\steam_settings>nul 2>nul (nul) else ( cls & echo Please config steam api first. & echo. & goto select)
 echo Selected EMUsetting.
 echo For default leave blank.
-set /p account=Input account_name:
+set /p account=Input account_name (Default=goldberg):
 copy /Y %~dp0AutoEMUSetModule\Example\language.txt %~dp0Temp\language.txt >nul 2>nul
 start "" "%~dp0Temp\language.txt"
-set /p language=Input language:
+set /p language=Input language (Default=english):
 del /f /s /q %~dp0Temp\language.txt >nul 2>nul
-set /p listenport=Input listen_port:
-set /p steamid=Input user_steam_id:
+set /p listenport=Input listen_port (Default=47584):
+set /p steamid=Input user_steam_id (Default=76561198648917173):
 if /i [%account%]==[] set account=""
 if /i [%language%]==[] set language=""
 if /i [%listenport%]==[] set listenport=""
