@@ -19,7 +19,9 @@ All files are written by batch file.
 Download all files and run "Steamgamecrack.bat".
 Recommend order to crack: 7 => 5 => 6 => 1
 
+When asked [Y/N] press Y for prefered selection.
 "Enter" key for confirm input.
+For default input "Enter" without any other input.
 "Y" key for yes.(For [Y/N] selection)
 "N" key for no.(For [Y/N] selection)
 
