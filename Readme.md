@@ -18,6 +18,7 @@ All files are written by batch file.
 ## Usage
 Download all files and run "Steamgamecrack.bat".
 Recommend order to crack: 7 => 5 => 6 => 1
+When generating achievements it will download all achiemenent photos to Temp\steam_settings\images so it will take some time.
 
 When asked [Y/N] press Y for prefered selection.
 "Enter" key for confirm input.
