@@ -6,7 +6,7 @@ if /i [%1]==[] goto usage
 if /i [%2]==[] goto usage
 
 cd /d %1
-mkdir %~dp0..\Temp\
+mkdir %~dp0..\Temp\ >nul 2>nul
 dir /b /s %2>%~dp0..\Temp\Foundfile.txt
 
 goto end
