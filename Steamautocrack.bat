@@ -12,22 +12,41 @@ echo 2.Auto unpack(Unpack+Backup)
 echo 3.Auto find file and unpack(Unpack+Backup)
 echo 4.Auto apply EMU(Apply+Backup)
 echo 5.EMU config(Appid+Achievements+DLC)
-echo 6.EMU setting(Language+UserID)
-echo 7.Delete TEMP File(Run before crack)
-echo 8.Open EMU setting floder
-echo 9.Exit
+echo 6.EMU config Default(Appid)
+echo 7.EMU setting(Language+UserID)
+echo 8.Delete TEMP File(Run before crack)
+echo 9.Open EMU setting floder
+echo 10.Exit
 set /p select=Select:
 if /i "%select%"=="1" goto crack
 if /i "%select%"=="2" cls & goto unpack
 if /i "%select%"=="3" cls & goto unpackfind
 if /i "%select%"=="4" goto EMUapply
 if /i "%select%"=="5" goto EMUconfig
-if /i "%select%"=="6" goto EMUsetting
-if /i "%select%"=="7" goto deletetemp
-if /i "%select%"=="8" goto open
-if /i "%select%"=="9" exit
+if /i "%select%"=="6" goto EMUdef
+if /i "%select%"=="7" goto EMUsetting
+if /i "%select%"=="8" goto deletetemp
+if /i "%select%"=="9" goto open
+if /i "%select%"=="10" exit
 cls
 goto select
+
+
+:EMUdef
+cls
+echo Selected EMU config Default.
+set /p appid=Input appid:
+if /i [%appid%]==[] cls & echo No appid input. & echo. & goto select
+echo appid:%appid%
+choice
+IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
+mkdir Temp\steam_settings >nul 2>nul
+echo %appid%>>Temp\steam_settings\steam_appid.txt
+echo Steam EMU config Default completed.
+pause
+cls
+goto select
+
 
 :Open
 start "" "%~dp0Temp\steam_settings\settings"
@@ -49,6 +68,7 @@ IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
 echo Applying Steam EMU......
 call %~dp0AutoEMUApply\AutoEMUApply.bat %gamedir%
 echo Steam EMU applied.
+goto deletetemp
 pause
 cls
 goto select
@@ -73,6 +93,7 @@ echo File unpack finished.
 echo Applying Steam EMU......
 call %~dp0FindAPIApplyModule\FindAPIApplyModule.bat %gamedir%
 echo Steam EMU applied.
+goto deletetemp
 pause
 cls
 goto select
@@ -111,6 +132,7 @@ cls
 goto select
 
 :deletetemp
+echo Delete TEMP file?
 choice
 IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
 del /f /s /q %~dp0Temp>nul 2>nul
@@ -126,9 +148,8 @@ cls
 echo Selected EMUconfig.
 set /p appid=Input appid:
 if /i [%appid%]==[] cls & echo No appid input. & echo. & goto select
-echo Enable no steam api key mode?
-choice
-IF /i ERRORLEVEL 2 ( set /p apikey=Input Steam api key: & if /i [%apikey%]==[] ( cls & echo No Steam api key input. & echo. & goto select))
+set /p apikey=Input Steam api key (For no api key leave blank):
+if /i [%apikey%]==[] ( echo No Steam api key mode enabled.)
 echo appid:%appid% , Steam api key:%apikey%
 choice
 IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
