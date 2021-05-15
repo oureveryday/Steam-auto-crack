@@ -17,7 +17,7 @@ All files are written by batch file.
 
 ## Usage
  * Download all files and run "Steamgamecrack.bat".
- * Recommend order to crack: 7 => 5 => 6 => 1
+ * Recommend order to crack: Delete TEMP File => EMU config => EMU setting  => Auto crack
  * When generating achievements it will download all achiemenent photos to Temp\steam_settings\images so it will take some time.
  * When asked [Y/N] press Y for prefered selection.
 
