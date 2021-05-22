@@ -1,11 +1,12 @@
 @echo off
 color F1
 chcp 65001 >nul 2>nul
+setlocal enabledelayedexpansion
 cd /d %~dp0
 cls
 
 :select
-set select=""
+set select=
 echo Select crack options:
 echo 1.Auto crack(Unpack+Emu apply)
 echo 2.Auto unpack(Unpack+Backup)
@@ -34,6 +35,7 @@ goto select
 
 :EMUdef
 cls
+set appid=
 echo Selected EMU config Default.
 set /p appid=Input appid:
 if /i [%appid%]==[] cls & echo No appid input. & echo. & goto select
@@ -55,10 +57,10 @@ goto select
 
 :EMUapply
 cls
+set gamedir=
 echo Selected EMU auto Apply.
 if /i exist %~dp0Temp\steam_settings>nul 2>nul (nul) else ( cls & echo Please config steam api first. & echo. & goto select)
 if /i exist %~dp0Temp\steam_settings\settings >nul 2>nul (nul) else ( cls & echo Please set steam api first. & echo. & goto select)
-
 set /p gamedir=Drag and drop or steam api directory:
 if /i [%gamedir%]==[] cls & echo No steam api selected. & echo. & goto select
 if /i exist %gamedir% (nul)>nul 2>nul else cls & echo Input steam api directory not found. & echo. & goto select 
@@ -77,10 +79,10 @@ goto select
 
 :crack
 cls
+set gamedir=
 echo Selected Auto crack.
 if /i exist %~dp0Temp\steam_settings>nul 2>nul (nul) else ( cls & echo Please config steam api first. & echo. & goto select)
 if /i exist %~dp0Temp\steam_settings\settings >nul 2>nul (nul) else ( cls & echo Please set steam api first. & echo. & goto select)
-
 set /p gamedir=Drag and drop or input game directory:
 if /i [%gamedir%]==[] cls & echo No game directory selected. & echo. & goto select
 if /i exist %gamedir% (nul)>nul 2>nul else cls & echo Input game directory not found. & echo. & goto select 
@@ -100,8 +102,8 @@ goto select
 
 :unpackfind
 cls
+set gamedir=
 echo Selected Auto find file and unpack.
-
 set /p gamedir=Drag and drop or input game directory:
 if /i [%gamedir%]==[] cls & echo No game directory selected. & echo. & goto select
 if /i exist %gamedir% (nul)>nul 2>nul else cls & echo Input game directory not found. & echo. & goto select 
@@ -117,6 +119,7 @@ goto select
 
 
 :unpack
+set exedir=
 echo Selected Unpack.
 set /p exedir=Drag and drop or input exe file:
 echo Selected file %exedir%
@@ -145,16 +148,23 @@ goto select
 
 :EMUconfig
 cls
+set appid=
+set apikey=
+set photo=
 echo Selected EMUconfig.
 set /p appid=Input appid:
 if /i [%appid%]==[] cls & echo No appid input. & echo. & goto select
 set /p apikey=Input Steam api key (For no api key leave blank):
-if /i [%apikey%]==[] ( echo No Steam api key mode enabled.)
+if /i [%apikey%]==[] echo No Steam api key mode enabled. & set apikey=(Empty)
+echo Generate achievement photos?
+choice
+IF /i ERRORLEVEL 1 set photo=[]
+IF /i ERRORLEVEL 2 set photo=-p
 echo appid:%appid% , Steam api key:%apikey%
 choice
 IF /i ERRORLEVEL 2 cls & echo Cenceled. & echo. & goto select
 echo Getting game info......
-call %~dp0AutoEMUConfigModule\AutoEMUConfigModule.bat %appid% %apikey%
+call %~dp0AutoEMUConfigModule\AutoEMUConfigModule.bat %appid% %apikey% %photo%
 echo Steam EMU config completed.
 pause
 cls
@@ -162,6 +172,10 @@ goto select
 
 :EMUsetting
 cls
+set steamid=
+set language=
+set listenport=
+set steamid=
 if /i exist %~dp0Temp\steam_settings>nul 2>nul (nul) else ( cls & echo Please config steam api first. & echo. & goto select)
 echo Selected EMUsetting.
 echo For default leave blank.

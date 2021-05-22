@@ -2,6 +2,10 @@
 chcp 65001 >nul 2>nul
 cd /d %~dp0
 del /f /s /q %~dp0..\Temp\steam_settings\settings >nul 2>nul
+set a=
+set b=
+set c=
+set d=
 if [%1]==[/?] goto usage
 if [%1]==[] (set a=goldberg) else (if [%1]==[""] (set a=goldberg) else (set a=%1))
 if [%2]==[] (set b=english) else (if [%2]==[""] (set b=english) else (set b=%2))
