@@ -31,6 +31,288 @@ if errorlevel 3 goto :DelTMP
 if errorlevel 2 goto :About
 if errorlevel 1 Exit
 
+::----------------------Auto Crack---------------
+:AutoCrack
+set "Info=Auto Crack"
+call :MenuInfo
+if defined AutoCrackStep (
+echo Detected Last Crack Not Completed.
+choice /N /C RG /M "[G]o to Last Executed Step Or [R]estart?"
+IF !ERRORLEVEL! EQU 2 ( goto %AutoCrackStep% )
+)
+
+set "AutoCrackStep="
+::-------------------------SelectFolder---------------------------
+echo.
+echo -----------------------------1.Select Game Folder-----------------------
+:AutoCrack1
+set "AutoCrackStep=:AutoCrack1"
+set "GamePath="
+echo Please select Game Folder:
+call :FileSelect Folder
+set "GamePath=%FilePath%"
+
+
+::---------------------Generate Goldberg Steam Emulator Game Info-------------------
+:AutoCrack2
+echo.
+SETLOCAL
+echo -----------------------------2.Generate Generate Goldberg Steam Emulator Game Info-----------------------
+set "AutoCrackStep=:AutoCrack2"
+::Init
+if EXIST "%~dp0Temp\steam_settings" (
+choice /N /M "Delete Previous steam_settings Folder[Y/N]:"
+IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
+IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\steam_settings"  %_null% & rd /S /Q "%~dp0Temp\steam_settings" %_null% & echo Deleted. )
+)
+set "GameAPPID="
+set "SteamAPIKEY="
+set "Image="
+set "Num="
+::Input
+echo.
+echo (If you don't know the Game APPID, Find it Here: https://steamdb.info/)
+set /p GameAPPID=Input Game APPID, then press Enter:
+for /f "delims=0123456789" %%i in ("%GameAPPID%") do set Num=%%i
+if defined Num (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
+if /I %GameAPPID% GTR 99999999 (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
+choice /N /M "Generate Game Infos online (Default: Yes)[Y/N]:"
+IF ERRORLEVEL 2 (
+mkdir Temp\steam_settings %_null%
+echo %GameAPPID%>Temp\steam_settings\steam_appid.txt
+echo Default Goldberg Steam Emulator Game Info Generated.
+)
+
+IF ERRORLEVEL 1 (
+choice /N /M "Generate Achievement Images (Generate can take longer time. Default: No)[Y/N]:"
+IF ERRORLEVEL 2 ( set "Image=-i" )
+echo Input Steam Web API Key, then press Enter.
+echo If use xan105 API^, leave blank then press Enter^. ^(No Steam Web API Key needed, But Can't Generate Items^)
+set /p SteamAPIKEY=Steam API Key:
+echo --------------------
+if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
+if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
+echo --------------------
+echo Goldberg Steam Emulator Game Info Generated.
+)
+ENDLOCAL
+echo -------------------------------------------------------------------------------------
+
+::-----------------------------Goldberg Steam Emulator Settings----------------
+:AutoCrack3
+set "AutoCrackStep=:AutoCrack3"
+SETLOCAL
+echo -----------------------------3.Goldberg Steam Emulator Settings-----------------------
+if NOT exist %~dp0Temp\steam_settings ( echo Please Generate Goldberg Steam Emulator Game Info first. & pause & goto :Menu )
+if EXIST "%~dp0Temp\steam_settings\settings" (
+choice /N /M "Delete Previous steam_settings\settings Folder[Y/N]:"
+IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
+IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\steam_settings\settings"  %_null% & rd /S /Q "%~dp0Temp\steam_settings\settings" %_null% & echo Deleted. )
+)
+set "AccountName="
+set "Language="
+set "ListenPort="
+set "UserSteamID="
+echo Loading Default values......
+set "DefaultAccountName=Goldberg"
+set "DefaultListenPort=47584"
+set "DefaultUserSteamID=76561197960287930"
+call :setlanguage
+set "AccountName=%DefaultAccountName%"
+set "Language=%DefaultLanguage%"
+set "ListenPort=%DefaultListenPort%"
+set "UserSteamID=%DefaultUserSteamID%"
+echo Default values loaded.
+echo Default Steam Account Name: %DefaultAccountName%
+echo Default Language (Generated from your System Locale %_locale%): %DefaultLanguage%
+echo Default Listen Port: %DefaultListenPort%
+echo Default User Steam ID %DefaultUserSteamID%
+
+::Setting
+::Steam Account Name
+:AutoCrackEMUSetting1
+echo --------------------------
+choice /N /C CDA /M "Steam Account Name: %AccountName%  [A]ccept, Set to [D]efault or [C]hange:"
+if errorlevel 3 echo Set Steam Account Name: %AccountName% & goto :AutoCrackEMUSetting2
+if errorlevel 2 set "AccountName=%DefaultAccountName%" & echo Steam Account Name Restored to Default Value. & goto :AutoCrackEMUSetting1
+if errorlevel 1 (
+set /p AccountName=Input Steam Account Name, then press Enter:
+goto :AutoCrackEMUSetting1
+)
+::Language
+:AutoCrackEMUSetting2
+echo --------------------------
+choice /N /C CDA /M "Language: %Language%  [A]ccept, Set to [D]efault or [C]hange:"
+if errorlevel 3 echo Set Language: %Language% & goto :AutoCrackEMUSetting3
+if errorlevel 2 set "Language=%DefaultLanguage%" & echo Language Restored to Default Value. & goto :AutoCrackEMUSetting2
+if errorlevel 1 (
+echo List of valid steam languages:
+echo    A. arabic   B. bulgarian C. schinese  D. tchinese E. czech      F. danish    G. dutch
+echo   [H. english] I. finnish   J. french    K. german   L. greek      M. hungarian N. italian
+echo    O. japanese P. koreana   Q. norwegian R. polish   S. portuguese T. brazilian U. romanian
+echo    V: russian  W. spanish   X. swedish   Y. thai     Z. turkish    1. ukrainian
+choice /N /C:1ZYXWVUTSRQPONMLKJIHGFEDCBA /M "Select Steam language[A~Z,1]: "
+IF !ERRORLEVEL! EQU 27 set "Language=arabic"
+IF !ERRORLEVEL! EQU 26 set "Language=bulgarian"
+IF !ERRORLEVEL! EQU 25 set "Language=schinese"
+IF !ERRORLEVEL! EQU 24 set "Language=tchinese"
+IF !ERRORLEVEL! EQU 23 set "Language=czech"
+IF !ERRORLEVEL! EQU 22 set "Language=danish"
+IF !ERRORLEVEL! EQU 21 set "Language=dutch"
+IF !ERRORLEVEL! EQU 20 set "Language=english"
+IF !ERRORLEVEL! EQU 19 set "Language=finnish"
+IF !ERRORLEVEL! EQU 18 set "Language=french"
+IF !ERRORLEVEL! EQU 17 set "Language=german"
+IF !ERRORLEVEL! EQU 16 set "Language=greek"
+IF !ERRORLEVEL! EQU 15 set "Language=hungarian"
+IF !ERRORLEVEL! EQU 14 set "Language=italian"
+IF !ERRORLEVEL! EQU 13 set "Language=japanese"
+IF !ERRORLEVEL! EQU 12 set "Language=koreana"
+IF !ERRORLEVEL! EQU 11 set "Language=norwegian"
+IF !ERRORLEVEL! EQU 10 set "Language=polish"
+IF !ERRORLEVEL! EQU 9 set "Language=portuguese"
+IF !ERRORLEVEL! EQU 8 set "Language=brazilian"
+IF !ERRORLEVEL! EQU 7 set "Language=romanian"
+IF !ERRORLEVEL! EQU 6 set "Language=russian"
+IF !ERRORLEVEL! EQU 5 set "Language=spanish"
+IF !ERRORLEVEL! EQU 4 set "Language=swedish"
+IF !ERRORLEVEL! EQU 3 set "Language=thai"
+IF !ERRORLEVEL! EQU 2 set "Language=turkish"
+IF !ERRORLEVEL! EQU 1 set "Language=ukrainian"
+goto :AutoCrackEMUSetting2
+)
+::Listen Port
+:AutoCrackEMUSetting3
+echo --------------------------
+choice /N /C CDA /M "Listen Port: %ListenPort%  [A]ccept, Set to [D]efault or [C]hange:"
+if errorlevel 3 echo Set Listen Port: %ListenPort% & goto :AutoCrackEMUSetting4
+if errorlevel 2 set "ListenPort=%DefaultListenPort%" & echo Listen Port Restored to Default Values. & goto :AutoCrackEMUSetting3
+if errorlevel 1 (
+set /p ListenPort1=Input Listen Port, then press Enter:
+if /i [!ListenPort1!]==[] ( echo Please Input vaild Listen Port. & goto :AutoCrackEMUSetting3 )
+set "Num="
+for /f "delims=0123456789" %%i in ("!ListenPort1!") do set Num=%%i
+if defined Num ( echo Please Input vaild Listen Port. & goto :AutoCrackEMUSetting3 )
+if /I !ListenPort1! GTR 65535 ( echo Please Input vaild Listen Port. & goto :AutoCrackEMUSetting3 ) 
+set "ListenPort=!ListenPort1!"
+goto :AutoCrackEMUSetting3
+)
+::User Steam ID
+:AutoCrackEMUSetting4
+echo --------------------------
+choice /N /C CDA /M "User Steam ID: %UserSteamID%  [A]ccept, Set to [D]efault or [C]hange:"
+if errorlevel 3 echo Set User Steam ID: %UserSteamID% & goto :AutoCrackEMUSetting5
+if errorlevel 2 set "UserSteamID=%DefaultUserSteamID%" & echo User Steam ID Restored to Default Value. & goto :AutoCrackEMUSetting4
+if errorlevel 1 (
+set /p UserSteamID1=Input User Steam ID, then press Enter:
+if /i [!UserSteamID1!]==[] ( echo Please Input vaild Steam ID. & goto :AutoCrackEMUSetting4 )
+set "Num="
+for /f "delims=0123456789" %%i in ("!UserSteamID1!") do set Num=%%i
+if defined Num ( echo Please Input vaild User Steam ID. & goto :AutoCrackEMUSetting4 )
+if /I !UserSteamID1! LSS 2147483647 ( echo Please Input vaild User Steam ID. & goto :AutoCrackEMUSetting4 ) 
+set "UserSteamID=!UserSteamID1!"
+goto :AutoCrackEMUSetting4
+)
+
+::Apply
+:AutoCrackEMUSetting5
+echo ---------------------------------------------------
+echo Steam Account Name: %AccountName%      Language: %Language% 
+echo Listen Port: %ListenPort%              User Steam ID: %UserSteamID%
+echo ---------------------------------------------------
+choice /N /M "Please confirm values[Y/N]:"
+IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
+IF ERRORLEVEL 1 (
+echo Writing Goldberg Steam Emulator Settings......
+mkdir "%~dp0Temp\steam_settings\settings" %_null%
+echo %AccountName% > "%~dp0Temp\steam_settings\settings\account_name.txt"
+echo %Language% > "%~dp0Temp\steam_settings\settings\language.txt"
+echo %ListenPort% > "%~dp0Temp\steam_settings\settings\listen_port.txt"
+echo %UserSteamID% > "%~dp0Temp\steam_settings\settings\user_steam_id.txt"
+)
+ENDLOCAL
+echo Goldberg Steam Emulator Settings completed.
+echo -------------------------------------------------------------------------------------
+
+
+:AutoCrack4
+set "AutoCrackStep=:AutoCrack4"
+SETLOCAL
+set "FilePath=%GamePath%"
+echo -----------------------------4.Goldberg Steam Emulator Settings-----------------------
+
+FOR /R %FilePath% %%i IN (*.dll) DO ( set "_EMUPathInput=%%i" & call :AutoCrackAutoFindApplyEMU1 )
+echo All Goldberg Steam Emulator has been Applied.
+echo -------------------------------------------------------------------------------------
+ENDLOCAL
+goto :AutoCrack5
+
+
+:AutoCrackAutoFindApplyEMU1
+SETLOCAL
+::steam_api.dll
+set _EMUPath=!_EMUPathInput!
+call :checkfile "%_EMUPath%" steam_api.dll
+if %result%==1 (
+echo ---------------
+echo Found "%_EMUPath%" .
+echo Backuping "%_EMUPath%" .......
+move /Y "%_EMUPath%" "%_EMUPath%.bak" %_null%
+echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api.dll......
+copy "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
+set _EMUPath=%_EMUPath:\steam_api.dll=%
+echo Copying Config to "!_EMUPath!\steam_settings\"......
+xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
+echo Goldberg Steam Emulator Config Applied.
+)
+::steam_api64.dll
+set _EMUPath=!_EMUPathInput!
+call :checkfile "%_EMUPath%" steam_api64.dll
+if %result%==1 (
+echo ---------------
+echo Found "%_EMUPath%" .
+echo Backuping "%_EMUPath%" .......
+move /Y "%_EMUPath%" "%_EMUPath%.bak" %_null%
+echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api64.dll......
+copy "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
+set _EMUPath=%_EMUPath:\steam_api64.dll=%
+echo Copying Config to "!_EMUPath!\steam_settings\"......
+xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
+echo Goldberg Steam Emulator Config Applied.
+)
+ENDLOCAL
+goto :eof
+
+
+:AutoCrack5
+set "AutoCrackStep=:AutoCrack5"
+SETLOCAL
+set "FilePath=%GamePath%"
+echo echo -----------------------------5.Goldberg Steam Emulator Settings-----------------------
+FOR /R %FilePath% %%i IN (*.exe) DO (
+echo --------
+set unppath=%%i
+echo Found "!unppath!" , Unpacking......
+%~dp0bin\Steamless\Steamless.CLI.exe "!unppath!" %_null%
+if !errorlevel! EQU 1 echo Unpack error. File not Packed or Packed by Other Packer/Protector.
+if !errorlevel! EQU 0 (
+echo Unpack successful, backuping...... 
+move /Y "!unppath!" "!unppath!.bak" %_null%
+move /Y "!unppath!.unpacked.exe" "!unppath!" %_null%
+echo File backuped.
+)
+)
+echo All file Unpacked.
+echo --------------------------------------------------------------------------------------
+ENDLOCAL
+
+::Complete
+echo Game Crack Completed. Enjoy :)
+set "AutoCrackStep="
+echo.
+pause
+goto :Menu
+
 ::-------------EXE Crack Options Menu---------------------
 :CrackMenu
 set "Info=EXE Crack Options Menu"
@@ -68,6 +350,27 @@ if errorlevel 4 goto :OpenEMUFolder
 if errorlevel 3 goto :OpenExampleFolder
 if errorlevel 2 goto :AutoUpdateEMU
 if errorlevel 1 goto :Menu
+
+
+::-------------Open Goldberg Steam Emulator Setting folder-------------------
+:OpenEMUFolder
+echo ---------------------------
+if NOT exist "%~dp0Temp\steam_settings" ( echo No Goldberg Steam Emulator Config Path. & pause & goto :Menu )
+start "" "%~dp0Temp\steam_settings"
+echo Opened.
+echo.
+pause
+goto :Menu
+
+::-------------Open Goldberg Steam Emulator Setting Example Folder-------------------
+:OpenExampleFolder
+echo ---------------------------
+start "" "%~dp0bin\Goldberg\Example"
+echo Opened.
+echo.
+pause
+goto :Menu
+
 
 ::-------------Generate Steam Interfaces for Goldberg Steam Emulator-----------------
 :GenerateInterface

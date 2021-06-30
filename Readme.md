@@ -1,35 +1,24 @@
-# Steam Game Automatic Cracker
+# Steam Game Automatic Cracker 
 
-Automatic crack games with steamstub and steam api.
-All files are written by batch file.
+Automatic crack games with SteamStub and Steam API. 
+All files are written by batch file. 
 
-## Functions
+## Functions 
 
- * Fully automatic crack a game.
- * Automatic unpack steamstub packed exe and backup.
- * Automatic config Goldberg steam api.
- * Automatic copy Goldberg api.
+ * Fully automatic crack Steam DRM Only Game. 
+ * Automatic unpack SteamStub packed exe and backup. 
+ * Automatic Apply Goldberg Steam Emulator. 
 
-## Dependies
- * https://github.com/oureveryday/Goldberg-generate_game_info
- * https://github.com/oureveryday/Steamless_cmd
- * https://gitlab.com/Mr_Goldberg/goldberg_emulator
+## Dependies 
+ * https://github.com/oureveryday/Goldberg-generate_game_info 
+ * https://github.com/oureveryday/Steamless_CLI 
+ * https://gitlab.com/Mr_Goldberg/goldberg_emulator 
 
-## Usage
- * Download all files and run "Steamgamecrack.bat".
- * Recommend order to crack: Delete TEMP File => EMU config => EMU setting  => Auto crack
- * When generating achievements it will download all achiemenent photos to Temp\steam_settings\images so it will take some time.
- * When asked [Y/N] press Y for prefered selection.
+## Usage 
+ * Download all files and run "SteamAutoCrack.bat". 
+ * Use Option 1 to Automatic Crack a Game. 
 
- * "Enter" key for confirm input.
-(For default input "Enter" without any other input.)
- * "Y" key for yes.(For [Y/N] selection)
- * "N" key for no.(For [Y/N] selection)
+## Bugs 
+For bugs please report in issues. 
 
-## Bugs
-For bugs please report in issues.
-
-Please put cracker folder into non-english folder,and without space.
-
-
-
+Please Make Sure Tool Folder DO NOT have NON-English character and Without SPACE to Avoid Problems.
