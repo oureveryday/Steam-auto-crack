@@ -83,7 +83,7 @@ if %result%==1 (
 echo Generating Steam Interfaces for %FilePath%......
 set "_FilePath=%FilePath:"=%"
 set _FilePath=!_FilePath:\steam_api.dll.bak=!
-pushd %_FilePath%
+pushd !_FilePath!
 "%~dp0bin\Goldberg\generate_interfaces_file.exe" %FilePath% 
 popd
 echo Generated.
@@ -96,7 +96,7 @@ if %result%==1 (
 echo Generating Steam Interfaces for %FilePath%......
 set "_FilePath=%FilePath:"=%"
 set _FilePath=!_FilePath:\steam_api64.dll.bak=!
-pushd %_FilePath%
+pushd !_FilePath!
 "%~dp0bin\Goldberg\generate_interfaces_file.exe" %FilePath%
 popd
 echo Generated.
@@ -107,7 +107,6 @@ echo File is Not steam_api(64).dll.bak .
 echo.
 pause
 goto :Menu
-
 
 
 ::---------------------Goldberg Steam Emulator Settings (Language + SteamUser)---------------------
