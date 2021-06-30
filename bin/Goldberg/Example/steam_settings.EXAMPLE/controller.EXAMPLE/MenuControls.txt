@@ -1,0 +1,16 @@
+MenuDash=RTRIGGER=trigger
+MenuLockOn=LTRIGGER=trigger
+MenuUp=DUP,DLJOYUP
+MenuDown=DDOWN,DLJOYDOWN
+MenuRight=DRIGHT,DLJOYRIGHT
+MenuLeft=DLEFT,DLJOYLEFT
+SELECT=A
+Cancel=B
+MenuX=X
+MenuY=Y
+MenuRTrigger=RBUMPER
+MenuLTrigger=LBUMPER
+Sort=BACK
+PauseMenu=START
+ScrollUp=DRJOYUP
+ScrollDown=DRJOYDOWN

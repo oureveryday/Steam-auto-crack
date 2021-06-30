@@ -1,0 +1,1 @@
+Rename this to: offline.txt to pretend steam is running in offline mode.
