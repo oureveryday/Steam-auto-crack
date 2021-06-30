@@ -13,6 +13,7 @@ All files are written by batch file.
  * Automatic Apply Goldberg Steam Emulator. 
  * Automatic Update Goldberg Steam Emulator. 
  * Automatic Generate Crack Only File and pack with zip format. 
+ * Automatic Restore Crack. 
 
 ## Dependies 
  * https://github.com/oureveryday/Goldberg-generate_game_info 

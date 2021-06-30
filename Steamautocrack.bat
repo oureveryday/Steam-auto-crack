@@ -19,17 +19,47 @@ echo     2. EXE Crack Options
 echo     3. Steam Emulator Options
 echo     4. Genetate Crack Only Files
 echo     5. Delete TEMP File
-echo     6. About
-echo     7. Exit
+echo     6. Restore Crack
+echo     7. About
+echo     8. Exit
 echo.
-choice /N /C 7654321 /M "Select Options [1~7]:"
-if errorlevel 7 goto :AutoCrack
-if errorlevel 6 goto :CrackMenu
-if errorlevel 5 goto :EMUMenu
-if errorlevel 4 goto :GenCrack
-if errorlevel 3 goto :DelTMP
+choice /N /C 87654321 /M "Select Options [1~7]:"
+if errorlevel 8 goto :AutoCrack
+if errorlevel 7 goto :CrackMenu
+if errorlevel 6 goto :EMUMenu
+if errorlevel 5 goto :GenCrack
+if errorlevel 4 goto :DelTMP
+if errorlevel 3 goto :Restore
 if errorlevel 2 goto :About
 if errorlevel 1 Exit
+
+
+::----------------------Restore Crack--------------------
+:Restore
+set "Info=Restore Crack"
+call :MenuInfo
+echo.
+echo This will Restore all Crack Files.
+echo Please select Game Folder:
+call :FileSelect Folder
+mkdir "%~dp0TEMP\Crack" %_null%
+FOR /R %FilePath% %%i IN (*.bak) DO (
+set _BAKFilePath=%%i
+set _BAKFileOrig=!_BAKFilePath:.bak=!
+del /f /s /q "!_BAKFileOrig!" %_null%
+move /Y "!_BAKFilePath!" "!_BAKFileOrig!" %_null%
+)
+pushd %FilePath%
+FOR /D /r %%i in (steam_settings) DO (
+set _FolderFilePath=%%i
+del /f /s /q "!_FolderFilePath!" %_null%
+rd /s /q "!_FolderFilePath!" %_null%
+)
+popd
+echo All File Restored.
+echo.
+pause
+goto :Menu 
 
 ::---------------------Generate Crack Only Files-----------------
 :GenCrack
