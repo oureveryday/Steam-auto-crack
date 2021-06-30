@@ -3,6 +3,9 @@
 Automatic crack games with SteamStub and Steam API. 
 All files are written by batch file. 
 
+ * Github: https://github.com/oureveryday/Steam-auto-crack 
+ * Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack 
+
 ## Functions 
 
  * Fully automatic crack Steam DRM Only Game. 

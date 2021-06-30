@@ -973,6 +973,7 @@ echo.
 echo              Steam Auto Crack %Ver%
 echo           Automatic Steam Game Cracker
 echo  Github: https://github.com/oureveryday/Steam-auto-crack
+echo  Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
 echo.
 pause
 goto :Menu
