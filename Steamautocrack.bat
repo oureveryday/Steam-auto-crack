@@ -163,6 +163,7 @@ echo Input Steam Web API Key, then press Enter.
 echo If use xan105 API^, leave blank then press Enter^. ^(No Steam Web API Key needed, But Can't Generate Items^)
 set /p SteamAPIKEY=Steam API Key:
 echo --------------------
+mkdir "%~dp0TEMP\steam_settings" %_null%
 if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
 if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
 echo --------------------
@@ -763,6 +764,7 @@ echo Input Steam Web API Key, then press Enter.
 echo If use xan105 API^, leave blank then press Enter^. ^(No Steam Web API Key needed, But Can't Generate Items^)
 set /p SteamAPIKEY=Steam API Key:
 echo --------------------
+mkdir "%~dp0TEMP\steam_settings" %_null%
 if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
 if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
 echo --------------------
