@@ -8,11 +8,15 @@ All files are written by batch file.
  * Fully automatic crack Steam DRM Only Game. 
  * Automatic unpack SteamStub packed exe and backup. 
  * Automatic Apply Goldberg Steam Emulator. 
+ * Automatic Update Goldberg Steam Emulator. 
+ * Automatic Generate Crack Only File and pack with zip format. 
 
 ## Dependies 
  * https://github.com/oureveryday/Goldberg-generate_game_info 
  * https://github.com/oureveryday/Steamless_CLI 
  * https://gitlab.com/Mr_Goldberg/goldberg_emulator 
+ * https://www.7-zip.org/ 
+ * https://curl.se/
 
 ## Usage 
  * Download all files and run "SteamAutoCrack.bat". 

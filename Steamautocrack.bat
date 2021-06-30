@@ -17,12 +17,12 @@ call :MenuInfo
 echo     1. Auto Crack
 echo     2. EXE Crack Options
 echo     3. Steam Emulator Options
-echo     4. Genetate Crack Files
+echo     4. Genetate Crack Only Files
 echo     5. Delete TEMP File
 echo     6. About
 echo     7. Exit
 echo.
-choice /N /C 7654321 /M "Select Options [1~6]:"
+choice /N /C 7654321 /M "Select Options [1~7]:"
 if errorlevel 7 goto :AutoCrack
 if errorlevel 6 goto :CrackMenu
 if errorlevel 5 goto :EMUMenu
@@ -30,6 +30,79 @@ if errorlevel 4 goto :GenCrack
 if errorlevel 3 goto :DelTMP
 if errorlevel 2 goto :About
 if errorlevel 1 Exit
+
+::---------------------Generate Crack Only Files-----------------
+:GenCrack
+set "Info=Generate Crack Only Files"
+call :MenuInfo
+echo.
+if EXIST "%~dp0Temp\Crack" (
+choice /N /M "Delete Previous Crack Only Folder[Y/N]:"
+IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
+IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\Crack"  %_null% & rd /S /Q "%~dp0Temp\Crack" %_null% & echo Deleted. )
+)
+if EXIST "%~dp0Temp\Crack.zip" (
+choice /N /M "Delete Previous Crack.zip [Y/N]:"
+IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
+IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\Crack.zip"  %_null% & echo Deleted. )
+)
+echo This will generate Crack Only Files for Game.
+echo Please select Game Folder:
+call :FileSelect Folder
+set FilePathC=%FilePath:"=%
+mkdir "%~dp0TEMP\Crack" %_null%
+
+FOR /R %FilePath% %%i IN (*.bak) DO (
+set _BAKFilePath=%%i
+call :checkfile "!_BAKFilePath!" steam_api.dll.bak
+if !result!==1 (
+echo ---------------
+set _BAKFileOrig=!_BAKFilePath:.bak=!
+set _BAKFileOrigRelPath=!_BAKFileOrig:%FilePathC%=!
+set _BAKFileOrigRelPath=!_BAKFileOrigRelPath:steam_api.dll=!
+echo Found "!_BAKFileOrig!" . Copying......
+xcopy "!_BAKFileOrig!" "%~dp0TEMP\Crack!_BAKFileOrigRelPath!steam_api.dll*" /H /Y /Q /I %_null%
+)
+call :checkfile "!_BAKFilePath!" steam_api64.dll.bak
+if !result!==1 (
+echo ---------------
+set _BAKFileOrig=!_BAKFilePath:.bak=!
+set _BAKFileOrigRelPath=!_BAKFileOrig:%FilePathC%=!
+set _BAKFileOrigRelPath=!_BAKFileOrigRelPath:steam_api64.dll=!
+echo Found "!_BAKFileOrig!" . Copying......
+xcopy "!_BAKFileOrig!" "%~dp0TEMP\Crack!_BAKFileOrigRelPath!steam_api64.dll*" /H /Y /Q /I %_null%
+)
+)
+
+FOR /R %FilePath% %%i IN (*.exe.bak) DO (
+set _BAKFilePath=%%i
+call :checkfile "!_BAKFilePath!" *.exe.bak
+echo ---------------
+set _BAKFileOrig=!_BAKFilePath:.bak=!
+set _BAKFileOrigRelPath=!_BAKFileOrig:%FilePathC%=!
+echo Found "!_BAKFileOrig!" . Copying......
+xcopy "!_BAKFileOrig!" "%~dp0TEMP\Crack!_BAKFileOrigRelPath!*" /H /Y /Q /I %_null%
+)
+
+choice /N /M "Pack Crack Files with .zip archive[Y/N]:"
+if /i %errorlevel% EQU 1 (
+echo Compressing......
+"%~dp0bin\7z\7za.exe" a -tzip "%~dp0TEMP\Crack.zip" "%~dp0TEMP\Crack" %_null%
+echo Compress complete.
+echo.
+echo Generate Crack Only Files completed.
+start "" "explorer.exe" /select,"%~dp0TEMP\Crack.zip"
+echo.
+pause
+goto :Menu  
+)
+echo Generate Crack Only Files completed.
+start "" "explorer.exe" /select,"%~dp0TEMP\Crack"
+echo.
+pause
+goto :Menu 
+
+
 
 ::----------------------Auto Crack---------------
 :AutoCrack
@@ -259,7 +332,7 @@ echo Found "%_EMUPath%" .
 echo Backuping "%_EMUPath%" .......
 move /Y "%_EMUPath%" "%_EMUPath%.bak" %_null%
 echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api.dll......
-copy "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
+copy /Y "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
 xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
@@ -274,7 +347,7 @@ echo Found "%_EMUPath%" .
 echo Backuping "%_EMUPath%" .......
 move /Y "%_EMUPath%" "%_EMUPath%.bak" %_null%
 echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api64.dll......
-copy "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
+copy /Y "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api64.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
 xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
@@ -309,6 +382,8 @@ ENDLOCAL
 ::Complete
 echo Game Crack Completed. Enjoy :)
 set "AutoCrackStep="
+del /f /s /q "%~dp0Temp" %_null%
+rd /s /q "%~dp0Temp" %_null%
 echo.
 pause
 goto :Menu
@@ -337,10 +412,10 @@ echo     4. Goldberg Steam Emulator Settings (Language + SteamUser)
 echo     5. Generate Steam Interfaces for Goldberg Steam Emulator (For steam_api(64).dll older than May 2016)
 echo     6. Open Goldberg Steam Emulator Setting folder
 echo     7. Open Goldberg Steam Emulator Setting Example Folder
-echo     8. Auto Update Goleberg Steam Emulator to latest version
+echo     8. Auto Update Goldberg Steam Emulator to latest version
 echo     9. Back to Main Menu
 echo.
-choice /N /C 987654321 /M "Select Options [1~8]:"
+choice /N /C 987654321 /M "Select Options [1~9]:"
 if errorlevel 9 goto :AutoApplyEMU
 if errorlevel 8 goto :AutoFindApplyEMU
 if errorlevel 7 goto :GenerateEMUInfo
@@ -351,12 +426,45 @@ if errorlevel 3 goto :OpenExampleFolder
 if errorlevel 2 goto :AutoUpdateEMU
 if errorlevel 1 goto :Menu
 
+::--------------------Auto Update Goldberg Steam Emulator to latest version----------------------
+:AutoUpdateEMU
+set "Info=Auto Update Goldberg Steam Emulator to latest version"
+call :MenuInfo
+echo Goldberg Steam Emulator URL: https://mr_goldberg.gitlab.io/goldberg_emulator/
+choice /N /M "This will Auto Update Goldberg Steam Emulator to latest version. Continue[Y/N]?"
+IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
+IF ERRORLEVEL 1 (
+mkdir "%~dp0TEMP" %_null%
+echo Getting Download URL......
+"%~dp0bin\curl\curl.exe" "https://mr_goldberg.gitlab.io/goldberg_emulator/" -s > "%~dp0TEMP\1.tmp" 
+findstr /I /R /C:"https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/.*/artifacts/download" "%~dp0TEMP\1.tmp" > "%~dp0TEMP\2.tmp"
+for /f "tokens=7 delims=/" %%a in (%~dp0TEMP\2.tmp) do ( set "JobID=%%a" )
+del /f /s /q "%~dp0TEMP\1.tmp" %_null%
+del /f /s /q "%~dp0TEMP\2.tmp" %_null%
+echo JobID:!JobID! , Downloading......
+set URL=https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/!JobID!/artifacts/download
+echo Download URL: !URL!
+echo ----------------------------------
+"%~dp0bin\curl\curl.exe" -L "!URL!" --output "%~dp0TEMP\Goldberg.zip"
+echo ----------------------------------
+echo Download Complete. Extracting files......
+"%~dp0bin\7z\7za.exe" -o"%~dp0TEMP\Goldberg" x "%~dp0TEMP\Goldberg.zip" %_null%
+del /f /s /q "%~dp0TEMP\Goldberg.zip" %_null%
+copy /Y "%~dp0TEMP\Goldberg\steam_api.dll" "%~dp0bin\Goldberg\steam_api.dll" %_null%
+copy /Y "%~dp0TEMP\Goldberg\steam_api64.dll" "%~dp0bin\Goldberg\steam_api64.dll" %_null%
+echo Update completed.
+del /f /s /q "%~dp0Temp\Goldberg" %_null%
+rd /s /q "%~dp0Temp\Goldberg" %_null%
+)
+echo.
+pause
+goto :Menu
 
 ::-------------Open Goldberg Steam Emulator Setting folder-------------------
 :OpenEMUFolder
 echo ---------------------------
 if NOT exist "%~dp0Temp\steam_settings" ( echo No Goldberg Steam Emulator Config Path. & pause & goto :Menu )
-start "" "%~dp0Temp\steam_settings"
+start "" "explorer.exe" "%~dp0Temp\steam_settings"
 echo Opened.
 echo.
 pause
@@ -365,7 +473,7 @@ goto :Menu
 ::-------------Open Goldberg Steam Emulator Setting Example Folder-------------------
 :OpenExampleFolder
 echo ---------------------------
-start "" "%~dp0bin\Goldberg\Example"
+start "" "explorer.exe" "%~dp0bin\Goldberg\Example"
 echo Opened.
 echo.
 pause
@@ -680,7 +788,7 @@ set "_FilePath=%FilePath:"=%"
 echo Backuping "!_FilePath!" .......
 move /Y "!_FilePath!" "!_FilePath!.bak" %_null%
 echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api.dll ......
-copy "%~dp0bin\Goldberg\steam_api.dll" "!_FilePath!" %_null%
+copy /Y "%~dp0bin\Goldberg\steam_api.dll" "!_FilePath!" %_null%
 set _FilePath=!_FilePath:\steam_api.dll=!
 echo Copying Config to "!_FilePath!\steam_settings\"......
 xcopy "%~dp0Temp\steam_settings\" "!_FilePath!\steam_settings\" /E /C /Q /H /R /Y %_null%
@@ -696,7 +804,7 @@ set "_FilePath=%FilePath:"=%"
 echo Backuping "!_FilePath!" .......
 move /Y "!_FilePath!" "!_FilePath!.bak" %_null%
 echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api64.dll......
-copy "%~dp0bin\Goldberg\steam_api64.dll" "!_FilePath!" %_null%
+copy /Y "%~dp0bin\Goldberg\steam_api64.dll" "!_FilePath!" %_null%
 set _FilePath=!_FilePath:\steam_api64.dll=!
 echo Copying Config to "!_FilePath!\steam_settings\"......
 xcopy "%~dp0Temp\steam_settings\" "!_FilePath!\steam_settings\" /E /C /Q /H /R /Y %_null%
@@ -731,7 +839,7 @@ echo Found "%_EMUPath%" .
 echo Backuping "%_EMUPath%" .......
 move /Y "%_EMUPath%" "%_EMUPath%.bak" %_null%
 echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api.dll......
-copy "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
+copy /Y "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
 xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
@@ -746,7 +854,7 @@ echo Found "%_EMUPath%" .
 echo Backuping "%_EMUPath%" .......
 move /Y "%_EMUPath%" "%_EMUPath%.bak" %_null%
 echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api64.dll......
-copy "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
+copy /Y "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api64.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
 xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
@@ -796,8 +904,9 @@ goto :Menu
 ::------------------------------Files---------------------------------------------------------------------
 ::------------Check File--------------------------
 :checkfile
-if /I [%~nx1]==[%2] set "result=1"
-if /I NOT [%~nx1]==[%2] set "result=0"
+if /I ["%~nx1"]==["%2"] set "result=1"
+if /I NOT ["%~nx1"]==["%2"] set "result=0"
+set "CheckFileName=%~nx1"
 goto :eof
 ::------------File Selector-------------------------
 :FileSelect
