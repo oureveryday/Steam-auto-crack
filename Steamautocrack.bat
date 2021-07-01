@@ -2,7 +2,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.0"
+set "Ver=V1.1.1"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -74,7 +74,7 @@ IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\Crack"  %_null% & rd /S /Q "%~dp0Temp\C
 if EXIST "%~dp0Temp\Crack.zip" (
 choice /N /M "Delete Previous Crack.zip [Y/N]:"
 IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
-IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\Crack.zip"  %_null% & echo Deleted. )
+IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\Crack.zip" %_null% & echo Deleted. )
 )
 echo This will generate Crack Only Files for Game.
 echo Please select Game Folder:
@@ -113,6 +113,19 @@ set _BAKFileOrigRelPath=!_BAKFileOrig:%FilePathC%=!
 echo Found "!_BAKFileOrig!" . Copying......
 xcopy "!_BAKFileOrig!" "%~dp0TEMP\Crack!_BAKFileOrigRelPath!*" /H /Y /Q /I %_null%
 )
+
+pushd %FilePath%
+FOR /D /r %%i in (steam_settings) DO (
+set _FolderFilePath=%%i
+set _FolderFilePath1="%%i"
+if EXIST !_FolderFilePath1! (
+echo Found !_FolderFilePath1! . Copying......
+set _FolderFilePathRel=!_FolderFilePath:steam_settings=!
+set _FolderFilePathRel=!_FolderFilePathRel:%FilePathC%=!
+xcopy !_FolderFilePath1! "%~dp0TEMP\Crack!_FolderFilePathRel!steam_settings" /H /E /Y /C /Q /R /I %_null%
+)
+)
+popd
 
 choice /N /M "Pack Crack Files with .zip archive[Y/N]:"
 if /i %errorlevel% EQU 1 (
@@ -366,7 +379,7 @@ echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api.dll......
 copy /Y "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
-xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
+xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /E /Y /C /Q /R /I %_null% 
 echo Goldberg Steam Emulator Config Applied.
 )
 ::steam_api64.dll
@@ -381,7 +394,7 @@ echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api64.dll......
 copy /Y "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api64.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
-xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
+xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /E /Y /C /Q /R /I %_null% 
 echo Goldberg Steam Emulator Config Applied.
 )
 ENDLOCAL
@@ -874,7 +887,7 @@ echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api.dll......
 copy /Y "%~dp0bin\Goldberg\steam_api.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
-xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
+xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /E /Y /C /Q /R /I %_null% 
 echo Goldberg Steam Emulator Config Applied.
 )
 ::steam_api64.dll
@@ -889,7 +902,7 @@ echo Replacing "%_EMUPath%" with Goldberg Steam Emulator steam_api64.dll......
 copy /Y "%~dp0bin\Goldberg\steam_api64.dll" "%_EMUPath%" %_null%
 set _EMUPath=%_EMUPath:\steam_api64.dll=%
 echo Copying Config to "!_EMUPath!\steam_settings\"......
-xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /S /E /Y /C /Q /R /I %_null% 
+xcopy "%~dp0Temp\steam_settings" "!_EMUPath!\steam_settings" /H /E /Y /C /Q /R /I %_null% 
 echo Goldberg Steam Emulator Config Applied.
 )
 goto :eof
