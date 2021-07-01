@@ -2,7 +2,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.1.1"
+set "Ver=V1.1.2"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -189,14 +189,17 @@ set "Num="
 echo.
 echo (If you don't know the Game APPID, Find it Here: https://steamdb.info/)
 set /p GameAPPID=Input Game APPID, then press Enter:
+if /i [%GameAPPID%]==[] ( echo Please Input vaild Game APPID. & pause & goto :Menu )
 for /f "delims=0123456789" %%i in ("%GameAPPID%") do set Num=%%i
-if defined Num (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
-if /I %GameAPPID% GTR 99999999 (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
+if defined Num ( echo Please Input vaild Game APPID. & pause & goto :Menu ) 
+if /I %GameAPPID% GTR 99999999 ( echo Please Input vaild Game APPID. & pause & goto :Menu ) 
 choice /N /M "Generate Game Infos online (Default: Yes)[Y/N]:"
 IF ERRORLEVEL 2 (
 mkdir Temp\steam_settings %_null%
-echo %GameAPPID%>Temp\steam_settings\steam_appid.txt
+echo | set /p="%GameAPPID%"> "%~dp0Temp\steam_settings\steam_appid.txt"
 echo Default Goldberg Steam Emulator Game Info Generated.
+goto :AutoCrack2END
+)
 )
 
 IF ERRORLEVEL 1 (
@@ -211,7 +214,9 @@ if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_inf
 if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
 echo --------------------
 echo Goldberg Steam Emulator Game Info Generated.
+goto :AutoCrack2END
 )
+:AutoCrack2END
 ENDLOCAL
 echo -------------------------------------------------------------------------------------
 
@@ -342,10 +347,10 @@ IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
 IF ERRORLEVEL 1 (
 echo Writing Goldberg Steam Emulator Settings......
 mkdir "%~dp0Temp\steam_settings\settings" %_null%
-echo %AccountName% > "%~dp0Temp\steam_settings\settings\account_name.txt"
-echo %Language% > "%~dp0Temp\steam_settings\settings\language.txt"
-echo %ListenPort% > "%~dp0Temp\steam_settings\settings\listen_port.txt"
-echo %UserSteamID% > "%~dp0Temp\steam_settings\settings\user_steam_id.txt"
+echo | set /p="%AccountName%"> "%~dp0Temp\steam_settings\settings\account_name.txt"
+echo | set /p="%Language%"> "%~dp0Temp\steam_settings\settings\language.txt"
+echo | set /p="%ListenPort%"> "%~dp0Temp\steam_settings\settings\listen_port.txt"
+echo | set /p="%UserSteamID%"> "%~dp0Temp\steam_settings\settings\user_steam_id.txt"
 )
 ENDLOCAL
 echo Goldberg Steam Emulator Settings completed.
@@ -405,7 +410,7 @@ goto :eof
 set "AutoCrackStep=:AutoCrack5"
 SETLOCAL
 set "FilePath=%GamePath%"
-echo echo -----------------------------5.Goldberg Steam Emulator Settings-----------------------
+echo -----------------------------5.Goldberg Steam Emulator Settings-----------------------
 FOR /R %FilePath% %%i IN (*.exe) DO (
 echo --------
 set unppath=%%i
@@ -691,10 +696,10 @@ IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
 IF ERRORLEVEL 1 (
 echo Writing Goldberg Steam Emulator Settings......
 mkdir "%~dp0Temp\steam_settings\settings" %_null%
-echo %AccountName% > "%~dp0Temp\steam_settings\settings\account_name.txt"
-echo %Language% > "%~dp0Temp\steam_settings\settings\language.txt"
-echo %ListenPort% > "%~dp0Temp\steam_settings\settings\listen_port.txt"
-echo %UserSteamID% > "%~dp0Temp\steam_settings\settings\user_steam_id.txt"
+echo | set /p="%AccountName%"> "%~dp0Temp\steam_settings\settings\account_name.txt"
+echo | set /p="%Language%"> "%~dp0Temp\steam_settings\settings\language.txt"
+echo | set /p="%ListenPort%"> "%~dp0Temp\steam_settings\settings\listen_port.txt"
+echo | set /p="%UserSteamID%"> "%~dp0Temp\steam_settings\settings\user_steam_id.txt"
 )
 echo Goldberg Steam Emulator Settings completed.
 echo.
@@ -790,14 +795,18 @@ set "Num="
 echo.
 echo (If you don't know the Game APPID, Find it Here: https://steamdb.info/)
 set /p GameAPPID=Input Game APPID, then press Enter:
+if /i [%GameAPPID%]==[] ( echo Please Input vaild Game APPID. & pause & goto :Menu )
 for /f "delims=0123456789" %%i in ("%GameAPPID%") do set Num=%%i
 if defined Num (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
 if /I %GameAPPID% GTR 99999999 (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
 choice /N /M "Generate Game Infos online (Default: Yes)[Y/N]:"
 IF ERRORLEVEL 2 (
 mkdir Temp\steam_settings %_null%
-echo %GameAPPID%>Temp\steam_settings\steam_appid.txt
+echo | set /p="%GameAPPID%"> "%~dp0Temp\steam_settings\steam_appid.txt"
 echo Default Goldberg Steam Emulator Game Info Generated.
+echo.
+pause
+goto :Menu
 )
 
 IF ERRORLEVEL 1 (
@@ -812,10 +821,11 @@ if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_inf
 if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
 echo --------------------
 echo Goldberg Steam Emulator Game Info Generated.
-)
 echo.
 pause
 goto :Menu
+)
+
 
 
 ::-----------------Auto apply Goldberg Steam Emulator (Apply + Backup)-----------
