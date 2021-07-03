@@ -22,6 +22,9 @@ All files are written by batch file.
  * https://www.7-zip.org/ 
  * https://curl.se/
 
+## Dependies 
+ * Windows (x64) : Run `build\build.bat` 
+ 
 ## Usage 
  * Download all files and run "SteamAutoCrack.bat". 
  * Use Option 1 to Automatic Crack a Game. 
