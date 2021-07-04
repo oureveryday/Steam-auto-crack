@@ -22,14 +22,14 @@ All files are written by batch file.
  * https://www.7-zip.org/ 
  * https://curl.se/
 
-## Dependies 
+## Build 
  * Windows (x64) : Run `build\build.bat` 
  
 ## Usage 
- * Download all files and run "SteamAutoCrack.bat". 
+ * Download all files and run "SteamAutoCrack.bat" or run build "SteamAutoCrack.exe". 
  * Use Option 1 to Automatic Crack a Game. 
 
 ## Bugs 
-For bugs please report in issues. 
+For bugs please report in issues or pull request. 
 
 Please Make Sure Tool Folder DO NOT have NON-English character and Without SPACE to Avoid Problems.
