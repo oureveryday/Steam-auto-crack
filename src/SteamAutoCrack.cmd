@@ -2,7 +2,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.1.2"
+set "Ver=V1.1.3"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -189,7 +189,7 @@ set "Num="
 echo.
 echo (If you don't know the Game APPID, Find it Here: https://steamdb.info/)
 set /p GameAPPID=Input Game APPID, then press Enter:
-if /i [%GameAPPID%]==[] ( echo Please Input vaild Game APPID. & pause & goto :Menu )
+if NOT defined GameAPPID ( echo Please Input vaild Game APPID. & pause & goto :Menu )
 for /f "delims=0123456789" %%i in ("%GameAPPID%") do set Num=%%i
 if defined Num ( echo Please Input vaild Game APPID. & pause & goto :Menu ) 
 if /I %GameAPPID% GTR 99999999 ( echo Please Input vaild Game APPID. & pause & goto :Menu ) 
@@ -205,13 +205,16 @@ goto :AutoCrack2END
 IF ERRORLEVEL 1 (
 choice /N /M "Generate Achievement Images (Generate can take longer time. Default: No)[Y/N]:"
 IF ERRORLEVEL 2 ( set "Image=-i" )
-echo Input Steam Web API Key, then press Enter.
-echo If use xan105 API^, leave blank then press Enter^. ^(No Steam Web API Key needed, But Can't Generate Items^)
+echo --------------------
+echo Use Steam Web API:  Input Steam Web API Key, then press Enter.
+echo Use xan105 API:     Leave Blank, then press Enter. (Default)
+echo If use xan105 API, No Steam Web API Key needed, But Can't Generate Items.
+echo --------------------
 set /p SteamAPIKEY=Steam API Key:
 echo --------------------
 mkdir "%~dp0TEMP\steam_settings" %_null%
-if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
-if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
+if NOT defined SteamAPIKEY ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
+if defined SteamAPIKEY ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
 echo --------------------
 echo Goldberg Steam Emulator Game Info Generated.
 goto :AutoCrack2END
@@ -311,7 +314,7 @@ if errorlevel 3 echo Set Listen Port: %ListenPort% & goto :AutoCrackEMUSetting4
 if errorlevel 2 set "ListenPort=%DefaultListenPort%" & echo Listen Port Restored to Default Values. & goto :AutoCrackEMUSetting3
 if errorlevel 1 (
 set /p ListenPort1=Input Listen Port, then press Enter:
-if /i [!ListenPort1!]==[] ( echo Please Input vaild Listen Port. & goto :AutoCrackEMUSetting3 )
+if NOT defined ListenPort1 ( echo Please Input vaild Listen Port. & goto :AutoCrackEMUSetting3 )
 set "Num="
 for /f "delims=0123456789" %%i in ("!ListenPort1!") do set Num=%%i
 if defined Num ( echo Please Input vaild Listen Port. & goto :AutoCrackEMUSetting3 )
@@ -327,7 +330,7 @@ if errorlevel 3 echo Set User Steam ID: %UserSteamID% & goto :AutoCrackEMUSettin
 if errorlevel 2 set "UserSteamID=%DefaultUserSteamID%" & echo User Steam ID Restored to Default Value. & goto :AutoCrackEMUSetting4
 if errorlevel 1 (
 set /p UserSteamID1=Input User Steam ID, then press Enter:
-if /i [!UserSteamID1!]==[] ( echo Please Input vaild Steam ID. & goto :AutoCrackEMUSetting4 )
+if NOT defined UserSteamID1 ( echo Please Input vaild Steam ID. & goto :AutoCrackEMUSetting4 )
 set "Num="
 for /f "delims=0123456789" %%i in ("!UserSteamID1!") do set Num=%%i
 if defined Num ( echo Please Input vaild User Steam ID. & goto :AutoCrackEMUSetting4 )
@@ -660,7 +663,7 @@ if errorlevel 3 echo Set Listen Port: %ListenPort% & goto :EMUSetting4
 if errorlevel 2 set "ListenPort=%DefaultListenPort%" & echo Listen Port Restored to Default Values. & goto :EMUSetting3
 if errorlevel 1 (
 set /p ListenPort1=Input Listen Port, then press Enter:
-if /i [!ListenPort1!]==[] ( echo Please Input vaild Listen Port. & goto :EMUSetting3 )
+if NOT defined ListenPort1 ( echo Please Input vaild Listen Port. & goto :EMUSetting3 )
 set "Num="
 for /f "delims=0123456789" %%i in ("!ListenPort1!") do set Num=%%i
 if defined Num ( echo Please Input vaild Listen Port. & goto :EMUSetting3 )
@@ -676,7 +679,7 @@ if errorlevel 3 echo Set User Steam ID: %UserSteamID% & goto :EMUSetting5
 if errorlevel 2 set "UserSteamID=%DefaultUserSteamID%" & echo User Steam ID Restored to Default Value. & goto :EMUSetting4
 if errorlevel 1 (
 set /p UserSteamID1=Input User Steam ID, then press Enter:
-if /i [!UserSteamID1!]==[] ( echo Please Input vaild Steam ID. & goto :EMUSetting4 )
+if NOT defined UserSteamID1 ( echo Please Input vaild Steam ID. & goto :EMUSetting4 )
 set "Num="
 for /f "delims=0123456789" %%i in ("!UserSteamID1!") do set Num=%%i
 if defined Num ( echo Please Input vaild User Steam ID. & goto :EMUSetting4 )
@@ -774,7 +777,7 @@ echo %_locale% | findstr /C:tr %_null%
 IF %ERRORLEVEL% EQU 0 set "DefaultLanguage=turkish"
 echo %_locale% | findstr /C:uk %_null%
 IF %ERRORLEVEL% EQU 0 set "DefaultLanguage=ukrainian"
-IF /I [%DefaultLanguage%]==[] set "DefaultLanguage=english"
+if NOT defined DefaultLanguage set "DefaultLanguage=english"
 goto :eof
 
 ::-----------------Generate Goldberg Steam Emulator Game Info (Appid + Achievements + DLC)-----------
@@ -795,7 +798,7 @@ set "Num="
 echo.
 echo (If you don't know the Game APPID, Find it Here: https://steamdb.info/)
 set /p GameAPPID=Input Game APPID, then press Enter:
-if /i [%GameAPPID%]==[] ( echo Please Input vaild Game APPID. & pause & goto :Menu )
+if NOT defined GameAPPID ( echo Please Input vaild Game APPID. & pause & goto :Menu )
 for /f "delims=0123456789" %%i in ("%GameAPPID%") do set Num=%%i
 if defined Num (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
 if /I %GameAPPID% GTR 99999999 (echo Please Input vaild Game APPID. & pause & goto :Menu ) 
@@ -812,13 +815,16 @@ goto :Menu
 IF ERRORLEVEL 1 (
 choice /N /M "Generate Achievement Images (Generate can take longer time. Default: No)[Y/N]:"
 IF ERRORLEVEL 2 ( set "Image=-i" )
-echo Input Steam Web API Key, then press Enter.
-echo If use xan105 API^, leave blank then press Enter^. ^(No Steam Web API Key needed, But Can't Generate Items^)
+echo --------------------
+echo Use Steam Web API:  Input Steam Web API Key, then press Enter.
+echo Use xan105 API:     Leave Blank, then press Enter. (Default)
+echo If use xan105 API, No Steam Web API Key needed, But Can't Generate Items.
+echo --------------------
 set /p SteamAPIKEY=Steam API Key:
 echo --------------------
 mkdir "%~dp0TEMP\steam_settings" %_null%
-if /i [!SteamAPIKEY!]==[] ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
-if /i NOT [!SteamAPIKEY!]==[] ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
+if NOT defined SteamAPIKEY ( echo Using xan105 API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -o "%~dp0Temp\steam_settings" !Image! )
+if defined SteamAPIKEY ( echo Using Steam Web API. & "%~dp0bin\generate_game_infos\generate_game_infos.exe" "!GameAPPID!" -s "!SteamAPIKEY!" -o "%~dp0Temp\steam_settings" !Image! )
 echo --------------------
 echo Goldberg Steam Emulator Game Info Generated.
 echo.
@@ -1000,20 +1006,20 @@ if /i %FileType%==Folder goto :selectfolder
 :selectfile
 set "dialog=powershell -sta "Add-Type -AssemblyName System.windows.forms^|Out-Null;$f=New-Object System.Windows.Forms.OpenFileDialog;$f.InitialDirectory=pwd;$f.showHelp=$false;$f.Filter='%FileExt% files (*%FileExt%)^|*%FileExt%^|All files (*.*)^|*.*';$f.ShowDialog()^|Out-Null;$f.FileName""
 for /f "delims=" %%I in ('%dialog%') do set "FilePath="%%I""
-if /i [%FilePath%]==[] echo No %FileType% selected. & goto :FileSelect
+if NOT defined FilePath echo No %FileType% selected. & goto :FileSelect
 goto :FileSelect1
 
 :selectfolder
 set "dialog=powershell -sta "Add-Type -AssemblyName System.windows.forms^|Out-Null;$f=New-Object System.Windows.Forms.FolderBrowserDialog;$f.ShowNewFolderButton=$true;$f.ShowDialog();$f.SelectedPath""
 for /F "delims=" %%I in ('%dialog%') do set "FilePath="%%I""
-if /i [%FilePath%]==[] echo No %FileType% selected. & goto :FileSelect
+if NOT defined FilePath echo No %FileType% selected. & goto :FileSelect
 goto :FileSelect1
 ::---------------Input File Path---------------
 :inputpath
 if /i %FileType%==File echo Drag and Drop File or Input File Full Path, then press Enter:
 if /i %FileType%==Folder echo Drag and Drop Folder or Input Folder Full Path, then press Enter:
 set /p FilePath=
-if /i [%FilePath%]==[] echo No %FileType% selected. & goto :FileSelect
+if NOT defined FilePath echo No %FileType% selected. & goto :FileSelect
 set FilePath=%FilePath:"=%
 set FilePath="%FilePath%"
 goto :FileSelect1
