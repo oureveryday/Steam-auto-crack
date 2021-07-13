@@ -2,10 +2,11 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.1.3"
+set "Ver=V1.1.4"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
+setlocal Enableextensions
 cd /d %~dp0
 cls
 goto Menu
