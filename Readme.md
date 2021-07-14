@@ -23,13 +23,13 @@ All files are written by batch file.
  * https://curl.se/
 
 ## Build 
- * Windows (x64) : Run `build\build.bat` 
+ * Windows: Run `build\build.bat` 
  
 ## Usage 
  * Download all files and run "SteamAutoCrack.bat" or run build "SteamAutoCrack.exe". 
- * Use Option 1 to Automatic Crack a Game. 
+ * Use Option 1 to Automatic Crack Game. 
 
 ## Bugs 
-For bugs please report in issues or pull request. 
+For bugs please report in issues. 
 
 Please Make Sure Tool Folder DO NOT have NON-English character and Without SPACE to Avoid Problems.
