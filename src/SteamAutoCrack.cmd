@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.1.4
+::                Steam Auto Crack V1.1.5
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab:   https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.1.4"
+set "Ver=V1.1.5"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
