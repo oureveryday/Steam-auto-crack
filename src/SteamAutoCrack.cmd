@@ -1,3 +1,10 @@
+::---------------------------------------------------------------
+::                Steam Auto Crack V1.1.4
+::          Automatic Steam Game Cracker
+:: Github: https://github.com/oureveryday/Steam-auto-crack
+:: Gitlab:   https://gitlab.com/oureveryday/Steam-auto-crack
+::---------------------------------------------------------------
+
 ::------------------Init---------------------
 @echo off
 color F1
@@ -43,7 +50,6 @@ echo.
 echo This will Restore all Crack Files.
 echo Please select Game Folder:
 call :FileSelect Folder
-mkdir "%~dp0TEMP\Crack" %_null%
 FOR /R %FilePath% %%i IN (*.bak) DO (
 set _BAKFilePath=%%i
 set _BAKFileOrig=!_BAKFilePath:.bak=!
@@ -77,7 +83,7 @@ choice /N /M "Delete Previous Crack.zip [Y/N]:"
 IF ERRORLEVEL 2 ( echo Canceled. & pause & goto :Menu )
 IF ERRORLEVEL 1 (del /F /S /Q "%~dp0Temp\Crack.zip" %_null% & echo Deleted. )
 )
-echo This will generate Crack Only Files for Game.
+echo This will generate Crack Only Files for "Steam Auto Crack" Cracked Game.
 echo Please select Game Folder:
 call :FileSelect Folder
 set FilePathC=%FilePath:"=%
