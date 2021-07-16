@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.1.5
+::                Steam Auto Crack V1.1.6
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab:   https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.1.5"
+set "Ver=V1.1.6"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -420,7 +420,7 @@ goto :eof
 set "AutoCrackStep=:AutoCrack5"
 SETLOCAL
 set "FilePath=%GamePath%"
-echo -----------------------------5.Goldberg Steam Emulator Settings-----------------------
+echo -----------------------------5.Unpack .exe file-----------------------
 FOR /R %FilePath% %%i IN (*.exe) DO (
 echo --------
 set unppath=%%i
