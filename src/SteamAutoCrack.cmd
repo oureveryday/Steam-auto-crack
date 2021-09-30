@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.1.6
+::                Steam Auto Crack V1.1.7
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab:   https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.1.6"
+set "Ver=V1.1.7"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -501,6 +501,12 @@ for /f "tokens=7 delims=/" %%a in (%~dp0TEMP\2.tmp) do ( set "JobID=%%a" )
 del /f /s /q "%~dp0TEMP\1.tmp" %_null%
 del /f /s /q "%~dp0TEMP\2.tmp" %_null%
 echo JobID:!JobID! , Downloading......
+set /p OldJobID=<"%~dp0bin\Goldberg\jobid"
+IF /I !JobID! == !OldJobID! (
+echo Goldberg Emulator Already Updated to Latest Version.
+pause
+goto :Menu
+)
 set URL=https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/!JobID!/artifacts/download
 echo Download URL: !URL!
 echo ----------------------------------
@@ -511,6 +517,7 @@ echo Download Complete. Extracting files......
 del /f /s /q "%~dp0TEMP\Goldberg.zip" %_null%
 copy /Y "%~dp0TEMP\Goldberg\steam_api.dll" "%~dp0bin\Goldberg\steam_api.dll" %_null%
 copy /Y "%~dp0TEMP\Goldberg\steam_api64.dll" "%~dp0bin\Goldberg\steam_api64.dll" %_null%
+echo !JobID!> "%~dp0bin\Goldberg\jobid"
 echo Update completed.
 del /f /s /q "%~dp0Temp\Goldberg" %_null%
 rd /s /q "%~dp0Temp\Goldberg" %_null%
