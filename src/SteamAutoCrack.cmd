@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.2.0
+::                Steam Auto Crack V1.2.1
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.2.0"
+set "Ver=V1.2.1"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -129,6 +129,7 @@ xcopy !_FolderFilePath1! "%~dp0TEMP\Crack!_FolderFilePathRel!steam_settings" /H 
 )
 popd
 
+set "Apply_Crack="
 FOR /R %FilePath% %%i IN (*.exe.bak) DO (
 choice /N /M "Detected SteamStub Packed .exe. Generate Auto Unpacker (Apply_Crack.cmd) File [Y] / Copy Unpacked .exe [N]:"
 if /i !errorlevel! EQU 2 ( set Apply_Crack=1 )
