@@ -26,7 +26,7 @@ All files are written by batch file.
  * Windows: Run `build\build.bat` 
  
 ## Usage 
- * Download all files and run "SteamAutoCrack.bat" or run build "SteamAutoCrack.exe". 
+ * Download all files and run "SteamAutoCrack.cmd" or run build "SteamAutoCrack.exe". 
  * Use Option 1 to Automatic Crack Game. 
 
 ## Bugs 
