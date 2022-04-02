@@ -32,4 +32,4 @@ All files are written by batch file.
 ## Bugs 
 For bugs please report in issues. 
 
-Please Make Sure Tool Folder DO NOT have NON-English character and Without SPACE to Avoid Problems.
+Please Make Sure Tool Folder DOES NOT have NON-English character and Without SPACE to Avoid Problems.

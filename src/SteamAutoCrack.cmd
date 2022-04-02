@@ -532,7 +532,7 @@ for /f "tokens=7 delims=/" %%a in (%~dp0TEMP\2.tmp) do ( set "JobID=%%a" )
 del /f /s /q "%~dp0TEMP\1.tmp" %_null%
 del /f /s /q "%~dp0TEMP\2.tmp" %_null%
 echo JobID:!JobID! , Downloading......
-set /p OldJobID=<"%~dp0bin\Goldberg\jobid"
+set /p OldJobID=<"%~dp0bin\Goldberg\job_id"
 IF /I !JobID! == !OldJobID! (
 echo Goldberg Emulator Already Updated to Latest Version.
 pause
@@ -548,7 +548,7 @@ echo Download Complete. Extracting files......
 del /f /s /q "%~dp0TEMP\Goldberg.zip" %_null%
 copy /Y "%~dp0TEMP\Goldberg\steam_api.dll" "%~dp0bin\Goldberg\steam_api.dll" %_null%
 copy /Y "%~dp0TEMP\Goldberg\steam_api64.dll" "%~dp0bin\Goldberg\steam_api64.dll" %_null%
-echo !JobID!> "%~dp0bin\Goldberg\jobid"
+echo !JobID!> "%~dp0bin\Goldberg\job_id"
 echo Update completed.
 del /f /s /q "%~dp0Temp\Goldberg" %_null%
 rd /s /q "%~dp0Temp\Goldberg" %_null%
