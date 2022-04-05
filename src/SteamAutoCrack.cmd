@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.2.3
+::                Steam Auto Crack V1.2.4
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.2.3"
+set "Ver=V1.2.4"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -456,7 +456,7 @@ FOR /R %FilePath% %%i IN (*.exe) DO (
 echo --------
 set unppath=%%i
 echo Found "!unppath!" , Unpacking......
-"%~dp0bin\Steamless\Steamless.CLI.exe" "!unppath!" %_null%
+"%~dp0bin\Steamless\Steamless.CLI.exe" --keepbind "!unppath!" %_null%
 if !errorlevel! EQU 1 echo Unpack error. File not Packed or Packed by Other Packer/Protector.
 if !errorlevel! EQU 0 (
 echo Unpack successful, backuping...... 
@@ -974,7 +974,7 @@ set "Info=Auto Unpack SteamStub (Unpack + Backup)"
 call :MenuInfo
 echo Please select Packed .exe file:
 call :FileSelect File .exe
-%~dp0bin\Steamless\Steamless.CLI.exe %FilePath% %_null%
+%~dp0bin\Steamless\Steamless.CLI.exe --keepbind %FilePath% %_null%
 if errorlevel 1 echo Unpack error. (File not Packed/Other Packer) & pause & goto :Menu
 echo Unpack successful, backuping......
 move /Y %FilePath% %FilePath%.bak %_null%
@@ -994,7 +994,7 @@ FOR /R %FilePath% %%i IN (*.exe) DO (
 echo --------
 set unppath=%%i
 echo Found "!unppath!" , Unpacking......
-"%~dp0bin\Steamless\Steamless.CLI.exe" "!unppath!" %_null%
+"%~dp0bin\Steamless\Steamless.CLI.exe" --keepbind "!unppath!" %_null%
 if !errorlevel! EQU 1 echo Unpack error. File not Packed or Packed by Other Packer/Protector.
 if !errorlevel! EQU 0 (
 echo Unpack successful, backuping...... 
