@@ -1,9 +1,9 @@
-7-Zip Extra 19.00
+7-Zip Extra 21.07
 -----------------
 
 7-Zip Extra is package of extra modules of 7-Zip. 
 
-7-Zip Copyright (C) 1999-2019 Igor Pavlov.
+7-Zip Copyright (C) 1999-2021 Igor Pavlov.
 
 7-Zip is free software. Read License.txt for more information about license.
 
@@ -24,7 +24,7 @@ x64\        - binaries for x64
 
 All 32-bit binaries can work in:
   Windows 2000 / 2003 / 2008 / XP / Vista / 7 / 8 / 10
-  and  in any Windows x64 version with WoW64 support.
+  and in any Windows x64 version with WoW64 support.
 All x64 binaries can work in any Windows x64 version. 
 
 All binaries use msvcrt.dll.

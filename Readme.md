@@ -17,7 +17,7 @@ All files are written by batch file.
 
 ## Dependies 
  * https://github.com/oureveryday/Goldberg-generate_game_info 
- * https://github.com/oureveryday/Steamless_CLI 
+ * https://github.com/atom0s/Steamless
  * https://gitlab.com/Mr_Goldberg/goldberg_emulator 
  * https://www.7-zip.org/ 
  * https://curl.se/
