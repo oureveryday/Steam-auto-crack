@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.2.7
+::                Steam Auto Crack V1.2.8
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.2.7"
+set "Ver=V1.2.8"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -136,7 +136,7 @@ if /i !errorlevel! EQU 2 ( set Apply_Crack=1 )
 goto :GenCrack2
 )
 echo Not found SteamStub Packed .exe.
-:goto GenCrack3
+goto GenCrack3
 
 :GenCrack2
 if defined Apply_Crack (
