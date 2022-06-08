@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.2.6
+::                Steam Auto Crack V1.2.7
 ::      Automatic Steam Game Cracker Crack Apply Module
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.2.6"
+set "Ver=V1.2.7"
 chcp 65001 %_null%
 title  Steam Auto Crack: Apply Crack %Ver%
 setlocal EnableDelayedExpansion
