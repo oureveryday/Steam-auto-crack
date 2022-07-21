@@ -1,9 +1,9 @@
-7-Zip Extra 21.07
+7-Zip Extra 22.01
 -----------------
 
 7-Zip Extra is package of extra modules of 7-Zip. 
 
-7-Zip Copyright (C) 1999-2021 Igor Pavlov.
+7-Zip Copyright (C) 1999-2022 Igor Pavlov.
 
 7-Zip is free software. Read License.txt for more information about license.
 

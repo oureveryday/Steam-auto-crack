@@ -5,6 +5,15 @@ This file contains only information about changes related to that package exclus
 The full history of changes is listed in history.txt in main 7-Zip program.
 
 
+22.00          2022-06-16
+-------------------------
+- 7-Zip now can create TAR archives in POSIX (pax) tar format with the switches
+    -ttar -mm=pax or -ttar -mm=posix
+- 7-Zip now can store additional file timestamps with high precision (1 ns in Linux) 
+  in tar/pax archives with the following switches:
+    -ttar -mm=pax -mtp=3 -mtc -mta
+
+
 21.07          2021-12-26
 -------------------------
 - New switches: -spm and -im!{file_path} to exclude directories from processing 
