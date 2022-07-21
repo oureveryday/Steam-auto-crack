@@ -1,5 +1,5 @@
 ::---------------------------------------------------------------
-::                Steam Auto Crack V1.2.8
+::                Steam Auto Crack V1.2.9
 ::          Automatic Steam Game Cracker
 :: Github: https://github.com/oureveryday/Steam-auto-crack
 :: Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.2.8"
+set "Ver=V1.2.9"
 chcp 65001 %_null%
 title  Steam Auto Crack %Ver%
 setlocal EnableDelayedExpansion
@@ -534,13 +534,17 @@ findstr /I /R /C:"https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/.*/art
 for /f "tokens=7 delims=/" %%a in (%~dp0TEMP\2.tmp) do ( set "JobID=%%a" )
 del /f /s /q "%~dp0TEMP\1.tmp" %_null%
 del /f /s /q "%~dp0TEMP\2.tmp" %_null%
-echo JobID:!JobID! , Downloading......
+echo JobID:!JobID! , Downloading...
 set /p OldJobID=<"%~dp0bin\Goldberg\job_id"
+if NOT EXIST "%~dp0bin\Goldberg\job_id" (
+echo Cannot Get Current Goldberg Emulator Job ID. Downloading...
+goto :AutoUpdateEMU2)
 IF /I !JobID! == !OldJobID! (
 echo Goldberg Emulator Already Updated to Latest Version.
 pause
 goto :Menu
 )
+:AutoUpdateEMU2
 set URL=https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/!JobID!/artifacts/download
 echo Download URL: !URL!
 echo ----------------------------------
