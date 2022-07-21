@@ -1,4 +1,5 @@
 # Steam Game Automatic Cracker 
+<div align=center><center><img width = '150' height ='150' src ="icon/SteamAutoCrack.ico"/></center></div>
 
 Automatic crack games with SteamStub and Steam API. 
 All files are written by batch file. 
