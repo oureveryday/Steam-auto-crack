@@ -88,6 +88,8 @@ You can use https://steamdb.info/ to list items and attributes they have and put
 Keep in mind that some item are not valid to have in your inventory. For example, in PayDay2 all items below item_id 50000 will make your game crash.
 items.json should contain all the item definitions for the game, default_items.json is the quantity of each item that you want a user to have initially in their inventory. By default the user will have no items.
 
+You can use the scripts\stats_schema_achievement_gen\achievements_gen.py script in the emu source code repo to generate a achievements config from a steam: appcache\stats\UserGameStatsSchema_{appid}.bin file.
+
 Leaderboards:
 By default the emulator assumes all leaderboards queried by the game (FindLeaderboard()) exist and creates them with the most common options (sort method descending, display type numeric)
 In some games this default behavior doesn't work and so you may need to tweak which leaderboards the game sees.
@@ -104,6 +106,20 @@ and expect a default value to be read when doing so. To set the type for each st
 The format is: STAT_NAME=type=default value
 The type can be: int, float or avgrate
 The default value is simply a number that represents the default value for the stat.
+
+You can use the scripts\stats_schema_achievement_gen\achievements_gen.py script in the emu source code repo to generate a stats config from a steam: appcache\stats\UserGameStatsSchema_{appid}.bin file.
+
+Build id:
+Add a steam_settings\build_id.txt with the build id if the game doesn't show the correct build id and you want the emu to give it the correct one.
+An example can be found in steam_settings.EXAMPLE
+
+SteamHTTP:
+Add a steam_settings\http folder. The folder should contain the domain name and path to the files that will be returned by steamHTTP like so:
+For example this url: https://en.wikipedia.org/wiki/Main_Page
+Would be: steam_settings\http\en.wikipedia.org\wiki\Main_Page
+The Main_Page file would contain the data returned by the steamHTTP api when it tries to access: https://en.wikipedia.org/wiki/Main_Page
+An example that was made for payday 2 can be found in steam_settings.EXAMPLE
+
 
 Support for CPY steam_api(64).dll cracks: See the build in the experimental folder.
 
@@ -128,6 +144,7 @@ For analog actions (joysticks, triggers): ACTION_NAME=ANALOG_NAME=input source m
 Actions can be bound to more than one button by separating the buttons with , like this: ACTION_NAME=A,B
 
 If you want to configure a game yourself, find the xbox360 or xbox one vdf file for the game and you should be able to figure things out.
+You can also use the scripts\controller_config_generator\parse_controller_vdf.py script in the emu source code repo.
 
 For example to get the vdf file for the game Crystar: https://steamdb.info/app/981750/config/
 If you look at: steamcontrollerconfigdetails, you will see something like: 1779660455/controller_type: controller_xbox360
@@ -168,6 +185,7 @@ LTRIGGER
 RTRIGGER
 LJOY
 RJOY
+DPAD
 
 
 
@@ -195,7 +213,9 @@ brazilian
 romanian
 russian
 spanish
+latam
 swedish
 thai
 turkish
 ukrainian
+vietnamese

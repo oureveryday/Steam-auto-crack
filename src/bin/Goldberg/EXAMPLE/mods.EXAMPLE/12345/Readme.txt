@@ -1,0 +1,1 @@
+This is an example mod. Delete this 12345 mod folder and put real mods in the mods directory.
