@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.2
+﻿;Steam Auto Crack v2.0.3
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.2
+Ver = V2.0.3
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -34,7 +34,7 @@ MainMenu:
 Gui MainMenu:New,,Steam Auto Crack %Ver%
 ;--- Info Start ---
 Gui Font,s9,Segoe UI
-Gui Add,Picture,x25 y10 w90 h90,%A_ScriptDir%\icon\SteamAutoCrack.png
+Gui Add,Picture,x25 y10 w90 h90,icon\SteamAutoCrack.png
 Gui Font
 Gui Font,s20
 Gui Add,Text,x150 y10 w380 h100 +0x200,Steam Auto Crack %Ver%
@@ -120,7 +120,7 @@ Log(LogString)
 DelTMP:
     MsgBox,36,Delete TEMP File,Delete All TEMP File?
     IfMsgBox Yes
-    {   FileRemoveDir,%A_ScriptDir%\TEMP,1
+    {   FileRemoveDir,TEMP,1
         Log("TEMP File Deleted.")
     }
     return
@@ -467,7 +467,7 @@ EMUSettingSave:
     GuiControlGet,EMUSettingUseCustomIP,,EMUSettingUseCustomIP
     FileCreateDir,Temp\steam_settings\settings
     Log("Saving Settings...")
-    FileRemoveDir,%A_ScriptDir%\TEMP\steam_settings\settings,1
+    FileRemoveDir,TEMP\steam_settings\settings,1
     FileDelete,Temp\steam_settings\force_language.txt
     FileDelete,Temp\steam_settings\force_listen_port.txt
     FileDelete,Temp\steam_settings\force_account_name.txt
@@ -480,7 +480,7 @@ EMUSettingSave:
         MsgBox,16,Error,Game Info Not Generated.
         return
     }
-    FileCreateDir,%A_ScriptDir%\TEMP\steam_settings\settings
+    FileCreateDir,TEMP\steam_settings\settings
     if EMUSettingListen is not digit
     {
         Log("Wrong Listen Port.")
@@ -714,7 +714,7 @@ if (FileExist("Temp\steam_settings"))
     MsgBox,36,Delete Previous steam_settings Folder?,Delete Previous steam_settings Folder and Start Generate Info?
     IfMsgBox Yes
     {   
-        FileRemoveDir,%A_ScriptDir%\TEMP\steam_settings,1
+        FileRemoveDir,TEMP\steam_settings,1
         Log("Previous steam_settings Folder Deleted.")
     }
     Else
@@ -1686,14 +1686,14 @@ CrackEMUSetting()
     GuiControlGet,CrackEMUSettingUseCustomIP,,CrackEMUSettingUseCustomIP
     FileCreateDir,Temp\steam_settings\settings
     Log("Saving Settings...")
-    FileRemoveDir,%A_ScriptDir%\TEMP\steam_settings\settings,1
+    FileRemoveDir,TEMP\steam_settings\settings,1
     FileDelete,Temp\steam_settings\force_language.txt
     FileDelete,Temp\steam_settings\force_listen_port.txt
     FileDelete,Temp\steam_settings\force_account_name.txt
     FileDelete,Temp\steam_settings\force_steamid.txt
     FileDelete,Temp\steam_settings\offline.txt
     FileDelete,Temp\steam_settings\disable_networking.txt
-    FileCreateDir,%A_ScriptDir%\TEMP\steam_settings\settings
+    FileCreateDir,TEMP\steam_settings\settings
     if CrackEMUSettingListen is not digit
     {
         Log("Wrong Listen Port.")
@@ -1924,7 +1924,7 @@ if (FileExist("Temp\steam_settings"))
     MsgBox,36,Delete Previous steam_settings Folder?,Yes: Delete Previous steam_settings Folder and Start Generate Info`nNo: Continue Using Exist Game INfo and Continue Crack
     IfMsgBox Yes
     {   
-        FileRemoveDir,%A_ScriptDir%\TEMP\steam_settings,1
+        FileRemoveDir,TEMP\steam_settings,1
         Log("Previous steam_settings Folder Deleted.")
     }
     Else
