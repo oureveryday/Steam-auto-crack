@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.0
+﻿;Steam Auto Crack v2.0.1
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.0
+Ver = V2.0.1
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -1445,7 +1445,7 @@ GenCrackFile:
                 {
                     Log("Generate Auto Unpacker.")
                     FileCopy,% format("{1}\bin\Apply_Crack\Apply_Crack.exe",A_ScriptDir),% format("{1}\Crack\Apply_Crack.exe",OutputPath),1
-                    FileCopyDir,bin\Steamless,% format("{1}\Crack\Steamless",OutputPath)
+                    FileCopyDir,bin\Steamless,% format("{1}\Crack\Steamless",OutputPath),1
                     ApplyCrack=1
                     break
                 }
