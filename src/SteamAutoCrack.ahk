@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.1
+﻿;Steam Auto Crack v2.0.2
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.1
+Ver = V2.0.2
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -1440,14 +1440,13 @@ GenCrackFile:
         {
             if(ApplyCrack=0)
             {
-                MsgBox,36,Generate Auto Unpacker?,Detected SteamStub Packed .exe. `nYes:Generate Auto Unpacker (Apply_Crack.exe) File`nNo:Copy Unpacked .exe
+                MsgBox,36,Generate Auto Unpacker?,Detected SteamStub Packed .exe. `nYes: Generate Auto Unpacker (Apply_Crack.exe) File`nNo: Copy Unpacked .exe
                 IfMsgBox Yes
                 {
                     Log("Generate Auto Unpacker.")
                     FileCopy,% format("{1}\bin\Apply_Crack\Apply_Crack.exe",A_ScriptDir),% format("{1}\Crack\Apply_Crack.exe",OutputPath),1
                     FileCopyDir,bin\Steamless,% format("{1}\Crack\Steamless",OutputPath),1
                     ApplyCrack=1
-                    break
                 }
                 else
                 {
@@ -1455,10 +1454,20 @@ GenCrackFile:
                     ApplyCrack=2
                 }
             }
+            if(ApplyCrack=2)
+            {
+                SplitPath,NewPath,,NewPathDir
+                FileCreateDir,% NewPathDir
+                FileCopy,% OrigPath,% NewPath,1
+            }           
         }
-        SplitPath,NewPath,,NewPathDir
-        FileCreateDir,% NewPathDir
-        FileCopy,% OrigPath,% NewPath,1
+        if (NewPathExt = "dll")
+        {
+            SplitPath,NewPath,,NewPathDir
+            FileCreateDir,% NewPathDir
+            FileCopy,% OrigPath,% NewPath,1
+        }
+        
     }
     Loop,Files,% Format("{1}\steam_settings",FilePath),DR
     {

@@ -1,4 +1,4 @@
-;Steam Auto Crack v2.0.1
+;Steam Auto Crack v2.0.2
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -21,7 +21,7 @@ global FileDir
 global Cracked
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.1
+Ver = V2.0.2
 ;CheckDependFile()
 ;--- Script Init End ---
 
