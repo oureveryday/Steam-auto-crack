@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.4
+﻿;Steam Auto Crack v2.0.5
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.4
+Ver = V2.0.5
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -658,6 +658,7 @@ GuiControl,,EMUSettingUseCustomIP,0
 GuiControl,,EMUSettingCustomIP,
 GuiControl,,EMUSettingOffline,0
 GuiControl,,EMUDisableNet,0
+GuiControl,Disable,EMUSettingCustomIP
 return
 }
 
@@ -764,11 +765,11 @@ Log("Generating...")
 FileCreateDir,Temp\steam_settings
 if (EMUConfigGenIMG = 1)
 {
-    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4} -i",A_ScriptDir,EMUConfigAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
+    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4}",A_ScriptDir,EMUConfigAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
 }
 else
 {
-    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4}",A_ScriptDir,EMUConfigAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
+    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4} -i",A_ScriptDir,EMUConfigAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
 }
 Log("Game Info Generated.")
 MsgBox,64,Success,Game Info Generated.
@@ -1201,7 +1202,6 @@ FileDelete,TEMP\Goldberg.zip
 FileRemoveDir,TEMP\Goldberg,1
 FileDelete,bin\Goldberg\job_id
 Link := format("https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/{1}/artifacts/download/",LatestJobID)
-Url = http://ahkscript.org/download/ahk-install.exe
 DownloadAs := format("{1}\TEMP\Goldberg.zip",A_ScriptDir)
 DownloadFile(Link,DownloadAs ,True,True)
 if (!FileExist("TEMP\Goldberg.zip"))
@@ -1872,6 +1872,7 @@ GuiControl,,CrackEMUSettingUseCustomIP,0
 GuiControl,,CrackEMUSettingCustomIP,
 GuiControl,,CrackEMUSettingOffline,0
 GuiControl,,CrackEMUDisableNet,0
+GuiControl,Disable,CrackEMUSettingCustomIP
 return
 }
 
@@ -1961,11 +1962,11 @@ Log("Generating...")
 FileCreateDir,Temp\steam_settings
 if (CrackGenIMG = 1)
 {
-    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4} -i",A_ScriptDir,CrackAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
+    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4}",A_ScriptDir,CrackAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
 }
 else
 {
-    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4}",A_ScriptDir,CrackAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
+    RunWithLog(Format("{5} {2} -o ""{1}\Temp\steam_settings"" {3} {4}-i",A_ScriptDir,CrackAPPID ,OutputCMD,APIKeyCMD,GenCMD),Format("{1}\bin\generate_game_infos",A_ScriptDir))
 }
 Log("Game Info Generated.")
 Return 0
