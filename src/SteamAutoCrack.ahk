@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.3
+﻿;Steam Auto Crack v2.0.4
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.3
+Ver = V2.0.4
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -709,7 +709,7 @@ GuiControlGet,EMUConfigGenOnline,,EMUConfigGenOnline
 GuiControlGet,EMUConfigAPIKey,,EMUConfigAPIKey
 GuiControlGet,EMUConfigUseAPIKey,,EMUConfigUseAPIKey
 GuiControlGet,EMUConfigGenIMG,,EMUConfigGenIMG
-if (FileExist("Temp\steam_settings"))
+if (FileExist(format("{1}\Temp\steam_settings",A_ScriptDir)))
 {
     MsgBox,36,Delete Previous steam_settings Folder?,Delete Previous steam_settings Folder and Start Generate Info?
     IfMsgBox Yes
@@ -792,7 +792,7 @@ return
 ;--- Get EMU Config Status Start ---
 EMUConfigStatus()
 {
-    if (FileExist("Temp\steam_settings\steam_appid.txt"))
+    if (FileExist(format("{1}\Temp\steam_settings\steam_appid.txt",A_ScriptDir)))
     {
         Log("Emulator Config Exist.")
         GuiControl,+c00ff00,GameInfoStatus
@@ -816,12 +816,13 @@ hConsole := DllCall("GetConsoleWindow")
 WinWait % "ahk_id " hConsole
 WinHide
 Shell:=ComObjCreate("WScript.Shell")
-Shell.CurrentDirectory := WorkingDir
+Shell.CurrentDirectory :=WorkingDir
 exec:=Shell.Exec(CMD)
 while,!Exec.StdOut.AtEndOfStream
 {
 Log(Exec.StdOut.readline())
 }
+SetWorkingDir %A_ScriptDir%
 return
 }
 RunWithLogDelay(CMD,WorkingDir,Delay)
@@ -838,6 +839,7 @@ while,!Exec.StdOut.AtEndOfStream
 Sleep,% Delay
 Log(Exec.StdOut.readline())
 }
+SetWorkingDir %A_ScriptDir%
 return
 }
 ;--- Run With Log End ---
@@ -1919,9 +1921,7 @@ GuiControlGet,CrackGenOnline,,CrackGenOnline
 GuiControlGet,CrackAPIKey,,CrackAPIKey
 GuiControlGet,CrackUseAPIKey,,CrackUseAPIKey
 GuiControlGet,CrackGenIMG,,CrackGenIMG
-if (FileExist("Temp\steam_settings"))
-{
-    MsgBox,36,Delete Previous steam_settings Folder?,Yes: Delete Previous steam_settings Folder and Start Generate Info`nNo: Continue Using Exist Game INfo and Continue Crack
+MsgBox,36,Delete Previous steam_settings Folder?,Yes: Delete Previous steam_settings Folder and Start Generate Info`nNo: Continue Using Exist Game Info and Continue Crack
     IfMsgBox Yes
     {   
         FileRemoveDir,TEMP\steam_settings,1
@@ -1932,7 +1932,7 @@ if (FileExist("Temp\steam_settings"))
         Log("Use Exist Config.")
         return 0
     }
-}
+
 
 if (CrackGenOnline = 0)
 {
