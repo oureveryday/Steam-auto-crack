@@ -21,7 +21,7 @@ Latest Version 2.0 Introduced GUI Interface.
  * Automatic Generate Crack Only File and pack with zip File. 
  * Automatic Restore Crack. 
 
-## Dependies 
+## Dependencies 
  * https://github.com/oureveryday/Goldberg-generate_game_info 
  * https://github.com/atom0s/Steamless
  * https://gitlab.com/Mr_Goldberg/goldberg_emulator 
