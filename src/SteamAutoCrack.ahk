@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.5
+﻿;Steam Auto Crack v2.0.6
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.5
+Ver = V2.0.6
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -133,10 +133,6 @@ DependFilenames:= ["bin\7z\7za.dll"
 ,"bin\7z\7za.exe"
 ,"bin\7z\7zxa.dll"
 ,"bin\Apply_Crack\Apply_Crack.exe"
-,"bin\curl\curl.exe"
-,"bin\curl\curl-ca-bundle.crt"
-,"bin\curl\libcurl.def"
-,"bin\curl\libcurl.dll"
 ,"bin\generate_game_infos\generate_game_infos.exe"
 ,"bin\generate_game_infos\libcurl.dll"
 ,"bin\generate_game_infos\libgcc_s_dw2-1.dll"

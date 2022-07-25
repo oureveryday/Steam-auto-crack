@@ -26,7 +26,6 @@ Latest Version 2.0 Introduced GUI Interface.
  * https://github.com/atom0s/Steamless
  * https://gitlab.com/Mr_Goldberg/goldberg_emulator 
  * https://www.7-zip.org/ 
- * https://curl.se/ 
  * https://www.autohotkey.com/ 
 
 ## Build 
@@ -38,7 +37,7 @@ Latest Version 2.0 Introduced GUI Interface.
 
 ## Virus False Positive 
 All Files are virus free and open-sourced. 
-Some anti-virus software may detect AutoHotKey Built script as virus, so please disable them temporary.
+Some anti-virus software may detect AutoHotKey Built script as virus, so please disable them temporary. 
 A lot of cracking tools are detected as malware, either because their behavior is suspect (bypass game protections), or because they have been flagged manually (happens with a lot of tools). 
 
 ## Bugs 
