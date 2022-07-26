@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.6
+﻿;Steam Auto Crack v2.0.7
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.6
+Ver = V2.0.7
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -2061,14 +2061,14 @@ CrackCrack()
     GuiControlGet,CrackAPPID,,CrackAPPID
 if CrackAPPID is not digit
 {
-    Log("Wrong App ID,Crack Failed.")
-    MsgBox,16,Error,Wrong App ID.
+    Log("Wrong App ID.")
+    MsgBox,16,Error,Wrong App ID,Crack Failed.
     return 1
 }
 if (CrackAPPID = "" )
 {
-    Log("Empty App ID,Crack Failed.")
-    MsgBox,16,Error,Empty App ID.
+    Log("Empty App ID.")
+    MsgBox,16,Error,Empty App ID,Crack Failed.
     return 1
 }
     GuiControlGet,FilePath,,CrackGenCrackFilePath
