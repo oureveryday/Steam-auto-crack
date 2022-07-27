@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.7
+﻿;Steam Auto Crack v2.0.8
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -25,7 +25,7 @@ global FileSelectorPath
 global OutputPath
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.7
+Ver = V2.0.8
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -1473,7 +1473,7 @@ GenCrackFile:
         Log(Format("Found '{1}'. Copying...",A_LoopFileFullPath))
         OrigPath :=SubStr(A_LoopFileFullPath,1,InStr(A_LoopFileFullPath,"steam_settings",0,0)-1)
         NewPath :=format("{1}\Crack\{2}",OutputPath,SubStr(OrigPath,InStr(OrigPath,FilePath,0,0)+StrLen(FilePath)+1))
-        FileCopyDir,% format("{1}\steam_settings",FilePath),% format("{1}\steam_settings",NewPath),1
+        FileCopyDir,% format("{1}\steam_settings",OrigPath),% format("{1}\steam_settings",NewPath),1
     }
     Log(Format("Crack Generated in '{1}\Crack'.",FilePath))
     if (GenCrackCreateReadme=1)
