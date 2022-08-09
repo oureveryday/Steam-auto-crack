@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.0.8
+﻿;Steam Auto Crack v2.1.0
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -23,9 +23,11 @@ global LatestJobID
 global CurrentJobID
 global FileSelectorPath
 global OutputPath
+global Processing
+Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.8
+Ver = v2.1.0
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -65,7 +67,7 @@ Gui Add,GroupBox,x5 y230 w590 h80,EXE Crack Options
 Gui Add,Button,x10 y350 w250 h50 gAutoApplyEMU,Auto Apply Goldberg Steam Emulator
 Gui Add,Button,x260 y350 w300 h50 gAutoFindApplyEMU,Auto Find and apply Goldberg Steam Emulator
 Gui Add,Button,x10 y410 w250 h50 gEMUConfig,Goldberg Steam Emulator Configuration
-Gui Add,Button,x260 y410 w300 h50 gUpdateEMU,Update Goldberg Steam Emulator
+Gui Add,Button,x260 y410 w300 h50 gUpdateEMU,Update/Download Goldberg Steam Emulator
 Gui Add,GroupBox,x5 y330 w590 h160,Steam Emulator Options
 ;--- Steam Emulator Options End ---
 Gui Show,w600 h800,Steam Auto Crack %Ver%
@@ -77,8 +79,18 @@ Log("Steam Auto Crack "+ Ver)
 return
 
 MainMenuGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
     Exitapp
 MainMenuGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
     ExitApp
 Main:
 Gosub,Init
@@ -86,6 +98,11 @@ Gosub,MainMenu
 
 ;--- Exit Start ---
 Exit:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
     ExitApp
 ;--- Exit End ---
 
@@ -192,6 +209,11 @@ GuiControl,AutoUnpack:,AutoUnpackFilePath,%FileSelectorPath%
 return
 
 AutoUnpackGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Unpack Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -199,6 +221,11 @@ Gui,Destroy
 return
 
 AutoUnpackGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Unpack Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -208,12 +235,14 @@ return
 
 ;--- AutoUnpackUnpack File Start ---
 AutoUnpackUnpackFile:
+    Processing = 1
     FilePath = 
     GuiControlGet,FilePath,AutoUnpack: ,AutoUnpackFilePath
     if (!FileExist(FilePath))
     {
         Log(Format("File '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,File Not Exist.
+        Processing = 0
         return
     }
     if(unpack(FilePath) = 0)
@@ -226,6 +255,7 @@ AutoUnpackUnpackFile:
         Log(Format("File '{1}' Unpack Failed.",FilePath))
         MsgBox,16,Error,File Unpack Failed.
     }
+    Processing = 0
     return
 ;--- AutoUnpackUnpack File End ---
 
@@ -257,6 +287,11 @@ GuiControl,AutoUnpackFind:,AutoUnpackFindFilePath,%FileSelectorPath%
 return
 
 AutoUnpackFindGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -264,6 +299,11 @@ Gui,Destroy
 return
 
 AutoUnpackFindGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -274,12 +314,14 @@ return
 
 ;--- AutoUnpackFindUnpack File Start ---
 AutoUnpackFindUnpackFile:
+    Processing = 1
     FilePath = 
     GuiControlGet,FilePath,AutoUnpackFind: ,AutoUnpackFindFilePath
     if (!FileExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
+        Processing = 0
         return
     }
     Loop,Files,% Format("{1}\*.exe",FilePath),R
@@ -293,6 +335,7 @@ AutoUnpackFindUnpackFile:
     }
     Log(Format("All File in '{1}' Unpacked and Backuped.",FilePath))
     MsgBox,64,Success,All File Unpacked and Backuped.
+    Processing = 0
     return
 ;--- AutoUnpackFindUnpack File End ---
 
@@ -402,17 +445,20 @@ GuiControl,,EMUConfigGenInterfaceFile,%FileSelectorPath%
 return
 
 EMUConfigGenInterfaceGen:
+    Processing = 1
     GuiControlGet,EMUConfigGenInterfaceFile,,EMUConfigGenInterfaceFile
     if (!FileExist(EMUConfigGenInterfaceFile))
     {
         Log(Format("File '{1}' Not Exist.",EMUConfigGenInterfaceFile))
         MsgBox,16,Error,File Not Exist.
+        Processing = 0
         return
     }
     SplitPath,EMUConfigGenInterfaceFile,EMUConfigGenInterfaceFileName
     if (EMUConfigGenInterfaceFileName != "steam_api.dll.bak" && EMUConfigGenInterfaceFileName != "steam_api64.dll.bak")
     {
         MsgBox,16,Error,File is Not steam_api(64).dll.bak.
+        Processing = 0
         return
     }
     SplitPath,EMUConfigGenInterfaceFile,,EMUConfigGenInterfaceFileNameDir
@@ -421,6 +467,7 @@ EMUConfigGenInterfaceGen:
     RunWait,% format("""{2}\bin\Goldberg\generate_interfaces_file.exe"" ""{1}""",EMUConfigGenInterfaceFile,A_ScriptDir),% EMUConfigGenInterfaceFileNameDir,Hide
     Log("Generated.")
     MsgBox,64,Info,Generated.
+    Processing = 0
     return
 EMUSettingOpenExample:
     Run % format("explorer.exe ""{1}\bin\Goldberg\Example""",A_ScriptDir)
@@ -449,6 +496,7 @@ return
 
 EMUSettingSave:
 {
+    Processing = 1
     GuiControlGet,EMUSettingListen,,EMUSettingListen
     GuiControlGet,EMUSettingAccount,,EMUSettingAccount
     GuiControlGet,EMUSettingSteamID,,EMUSettingSteamID
@@ -569,6 +617,7 @@ EMUSettingSave:
 
     Log("Settings Saved.")
     MsgBox,64,Info,Settings Saved.
+    Processing = 0
 }
 
 EMUSettingDefault()
@@ -701,6 +750,7 @@ else
 return
 
 EMUConfigGenInfo:
+Processing = 1
 GuiControlGet,EMUConfigAPPID,,EMUConfigAPPID
 GuiControlGet,EMUConfigGenOnline,,EMUConfigGenOnline
 GuiControlGet,EMUConfigAPIKey,,EMUConfigAPIKey
@@ -716,6 +766,7 @@ if (FileExist(format("{1}\Temp\steam_settings",A_ScriptDir)))
     }
     Else
     {
+        Processing = 0
         return
     }
 }
@@ -724,12 +775,14 @@ if EMUConfigAPPID is not digit
 {
     Log("Wrong App ID.")
     MsgBox,16,Error,Wrong App ID.
+    Processing = 0
     return
 }
 if (EMUConfigAPPID = "" )
 {
     Log("Empty App ID.")
     MsgBox,16,Error,Empty App ID.
+    Processing = 0
     return
 }
 if (EMUConfigGenOnline = 0)
@@ -740,6 +793,7 @@ if (EMUConfigGenOnline = 0)
     Log("Game Info Generated.")
     MsgBox,64,Success,Game Info Generated.
     EMUConfigStatus()
+    Processing = 0
     return
 }
 If (EMUConfigUseAPIKey = 1)
@@ -748,6 +802,7 @@ If (EMUConfigUseAPIKey = 1)
     {
         Log("Empty API Key.")
         MsgBox,16,Error,Empty API Key.
+        Processing = 0
         return
     }
     APIKeyCMD = % Format("-s ""{1}""",EMUConfigAPIKey)
@@ -770,9 +825,15 @@ else
 Log("Game Info Generated.")
 MsgBox,64,Success,Game Info Generated.
 EMUConfigStatus()
+Processing = 0
 return
 
 EMUConfigGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -780,6 +841,11 @@ Gui,Destroy
 return
 
 EMUConfigGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Process Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -895,6 +961,11 @@ GuiControl,AutoApplyEMU:,AutoApplyEMUFilePath,%FileSelectorPath%
 return
 
 AutoApplyEMUGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Apply EMU Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileName =
@@ -904,6 +975,11 @@ Gui,Destroy
 return
 
 AutoApplyEMUGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Apply EMU Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileName =
@@ -915,6 +991,7 @@ return
 
 ;--- AutoApplyEMUApply File Start ---
 AutoApplyEMUApplyFile:
+    Processing = 1
     FilePath = 
     FileName =
     FileDir =
@@ -925,21 +1002,25 @@ AutoApplyEMUApplyFile:
     if (!FileExist("Temp\steam_settings"))
     {  
         MsgBox,16,Info,Steam Emulator Settings Not Generated.
+        Processing = 0
         return
     }
     if (!FileExist(FilePath))
     {
         Log(Format("File '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,File Not Exist.
+        Processing = 0
         return
     }
     if (FileName != "steam_api.dll" && FileName != "steam_api64.dll")
     {
         MsgBox,16,Error,File is Not steam_api(64).dll.
+        Processing = 0
         return
     }
     ApplyEMU(FilePath,AutoApplyEMUUseSavePath,AutoApplyEMUSavePath)
     MsgBox,64,Success,Emulator Applied.
+    Processing = 0
     return
 ;--- AutoApplyEMUApply File End ---
 
@@ -1024,6 +1105,11 @@ GuiControl,AutoFindApplyEMU:,AutoFindApplyEMUFilePath,%FileSelectorPath%
 return
 
 AutoFindApplyEMUGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Apply EMU Complete before Closing.
+    return
+}
 Running = 0
 FilePath = 
 FileName =
@@ -1033,6 +1119,11 @@ Gui,Destroy
 return
 
 AutoFindApplyEMUGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Apply EMU Complete before Closing.
+    return
+}
 Running = 0
 FilePath = 
 FileName =
@@ -1044,6 +1135,7 @@ return
 
 ;--- AutoFindApplyEMUUnpack File Start ---
 AutoFindApplyEMUApplyFile:
+    Processing = 1
     FilePath = 
     FileName =
     FileDir =
@@ -1053,12 +1145,14 @@ AutoFindApplyEMUApplyFile:
     if (!FileExist("Temp\steam_settings"))
     {  
         MsgBox,16,Info,Steam Emulator Settings Not Generated.
+        Processing = 0
         return
     }
     if (!FileExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
+        Processing = 0
         return
     }
     Loop,Files,% Format("{1}\steam_api.dll",FilePath),R
@@ -1073,6 +1167,7 @@ AutoFindApplyEMUApplyFile:
     }
     Log(Format("All steam_api(64).dll in '{1}' Emulator Applied.",FilePath))
     MsgBox,64,Success,All File Unpacked and Backuped.
+    Processing = 0
     return
 ;--- AutoFindApplyEMUUnpack File End ---
 
@@ -1104,6 +1199,11 @@ GuiControl,Restore:,RestoreFilePath,%FileSelectorPath%
 return
 
 RestoreGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Restore Complete before Closing.
+    return
+}
 Running =0
 FilePath =
 FileName =
@@ -1113,6 +1213,11 @@ Gui,Destroy
 return
 
 RestoreGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Restore Complete before Closing.
+    return
+}
 Running =0
 FilePath =
 FileName =
@@ -1124,6 +1229,7 @@ return
 
 ;--- RestoreUnpack File Start ---
 RestoreFile:
+    Processing = 1
     FilePath =
     FileName =
     FileDir =
@@ -1132,6 +1238,7 @@ RestoreFile:
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
+        Processing = 0
         return
     }
     Loop,Files,% Format("{1}\steam_interfaces.txt",FilePath),R
@@ -1160,6 +1267,7 @@ RestoreFile:
     }
     Log(Format("All File in '{1}' Restored.",FilePath))
     MsgBox,64,Success,All File Restored.
+    Processing = 0
     return
 ;--- RestoreUnpack File End ---
 
@@ -1172,10 +1280,10 @@ UpdateEMU:
         return
     }
 Running = 1
-Gui,UpdateEMU:New,,Auto Update Goldberg Steam Emulator
+Gui,UpdateEMU:New,,Auto Update/Download Goldberg Steam Emulator
 Gui Font
 Gui Font,s16
-Gui Add,Text,x100 y0 w600 h50 +0x200,Auto Update Goldberg Steam Emulator
+Gui Add,Text,x70 y0 w600 h50 +0x200,Auto Update/Download Goldberg Steam Emulator
 Gui Font
 Gui Add,Text,x10 y120 w100 h25 +0x200,Current JobID:
 Gui Add,Text,x105 y120 w100 h25 +0x200 vUpdateEMUCurrentJobID
@@ -1183,15 +1291,23 @@ Gui Add,Text,x10 y140 w100 h25 +0x200,Latest JobID:
 Gui Add,Text,x105 y140 w100 h25 +0x200 vUpdateEMULatestJobID
 Gui Add,Button,x300 y140 w200 h25 gUpdateEMUCheck vUpdateEMUCheck,Check Latest Version
 Gui Add,Link,x10 y170 w200 h25,<a href="https://mr_goldberg.gitlab.io/goldberg_emulator/">Goldberg Steam Emulator URL</a>
-Gui Add,Button,x20 y250 w170 h60 gUpdateEMUFile vUpdateEMUFile,Update
+Gui Add,Button,x20 y250 w170 h60 gUpdateEMUFile vUpdateEMUFile,Update/Download
+Gui Add,CheckBox,x10 y200 w150 h25 vUpdateExperimental,Use Experimental Build
 Gui Add,Button,x360 y250 w170 h60 gUpdateEMUGuiClose,Close
-Gui Show,x500 y500 w600 h400,Auto Update Goldberg Steam Emulator
+Gui Add,Text,x10 y320 w110 h25 +0x200, Download Progress:
+Gui Add,Text,x120 y320 w300 h25 +0x200 vDownloadSpeed,Download Stopped
+Gui Add,Progress,x10 y350 w550 h20 vDownloadProgress -Smooth, 0
+Gui Add,Text,x570 y345 w130 h25 +0x200 vDownloadInfo, 0`%
+Gui Show,x500 y500 w600 h400,Auto Update/Download Goldberg Steam Emulator
 UpdateEMUCheck()
 return
 
 UpdateEMUFile:
+Processing = 1
 GuiControl,Disable,UpdateEMUFile
 GuiControl,Disable,UpdateEMUCheck
+GuiControl,Disable,UpdateExperimental
+GuiControlGet,UpdateExperimental,,UpdateExperimental
 Log("Downloading Goldberg Steam Emulator Latest Version...")
 FileCreateDir,Temp
 FileDelete,TEMP\Goldberg.zip
@@ -1206,12 +1322,24 @@ if (!FileExist("TEMP\Goldberg.zip"))
     MsgBox,16,Error,Download Failed.
     GuiControl,Enable,UpdateEMUFile
     GuiControl,Enable,UpdateEMUCheck
+    GuiControl,Enable,UpdateExperimental
     return
 }
 Log("Download Complete. Unpacking...")
 RunWait,% format("""{1}\bin\7z\7za.exe"" -o""{1}\TEMP\Goldberg"" -y x ""{1}\TEMP\Goldberg.zip""",A_ScriptDir),,Hide
-FileCopy,TEMP\Goldberg\steam_api.dll,bin\Goldberg\steam_api.dll,1
-FileCopy,TEMP\Goldberg\steam_api64.dll,bin\Goldberg\steam_api64.dll,1
+if (UpdateExperimental=1)
+{
+    Log("Using Experimental Build.")
+    FileCopy,TEMP\Goldberg\experimental\steam_api.dll,bin\Goldberg\steam_api.dll,1
+    FileCopy,TEMP\Goldberg\experimental\steam_api64.dll,bin\Goldberg\steam_api64.dll,1
+    
+}
+Else
+{
+    Log("Using Stable Build.")
+    FileCopy,TEMP\Goldberg\steam_api.dll,bin\Goldberg\steam_api.dll,1
+    FileCopy,TEMP\Goldberg\steam_api64.dll,bin\Goldberg\steam_api64.dll,1
+}
 FileRemoveDir,TEMP\Goldberg,1
 FileDelete,TEMP\Goldberg.zip
 FileAppend,% LatestJobID,bin\Goldberg\job_id
@@ -1219,6 +1347,8 @@ Log("Update Completed.")
 MsgBox,64,Success,Update Completed.
 GuiControl,Enable,UpdateEMUFile
 GuiControl,Enable,UpdateEMUCheck
+GuiControl,Enable,UpdateExperimental
+Processing = 0
 return
 
 UpdateEMUCheck()
@@ -1275,6 +1405,11 @@ return
 }
 
 UpdateEMUGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Update Complete before Closing.
+    return
+}
 Running =0
 FilePath =
 FileName =
@@ -1284,6 +1419,11 @@ Gui,Destroy
 return
 
 UpdateEMUGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Update Complete before Closing.
+    return
+}
 Running =0
 FilePath =
 FileName =
@@ -1308,15 +1448,16 @@ DownloadFile(UrlToFile, SaveFileAs, Overwrite := True, UseProgressBar := True) {
           ;Store the header which holds the file size in a variable:
             FinalSize := WebRequest.GetResponseHeader("Content-Length")
           ;Create the progressbar and the timer
-            Progress, H80, , Downloading..., %UrlToFile%
             SetTimer, __UpdateProgressBar, 100
       }
     ;Download the file
       UrlDownloadToFile, %UrlToFile%, %SaveFileAs%
     ;Remove the timer and the progressbar because the download has finished
       If (UseProgressBar) {
-          Progress, Off
           SetTimer, __UpdateProgressBar, Off
+          GuiControl,UpdateEMU:,DownloadProgress,0
+          GuiControl,UpdateEMU:,DownloadInfo,0`%
+          GuiControl,UpdateEMU:,DownloadSpeed,Download Stopped
       }
     Return
     
@@ -1333,7 +1474,10 @@ DownloadFile(UrlToFile, SaveFileAs, Overwrite := True, UseProgressBar := True) {
           ;Calculate percent done
             PercentDone := Round(CurrentSize/FinalSize*100)
           ;Update the ProgressBar
-            Progress, %PercentDone%, %PercentDone%`% Done, Downloading...  (%Speed%), Downloading %SaveFileAs% (%PercentDone%`%)
+            GuiControl,UpdateEMU:,DownloadProgress,%PercentDone%
+            GuiControl,UpdateEMU:,DownloadInfo,%PercentDone%`%
+            GuiControl,UpdateEMU:,DownloadSpeed,%CurrentSize%/%FinalSize% Byte (%Speed%)
+            
       Return
 }
 ;--- DownloadFile End ---
@@ -1377,6 +1521,11 @@ GuiControl,GenCrack:,GenCrackFilePath,%FileSelectorPath%
 return
 
 GenCrackGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Generate Complete before Closing.
+    return
+}
 Running =0
 OutputPath =
 FilePath =
@@ -1387,6 +1536,11 @@ Gui,Destroy
 return
 
 GenCrackGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Generate Complete before Closing.
+    return
+}
 Running =0
 OutputPath =
 FilePath =
@@ -1399,6 +1553,7 @@ return
 
 ;--- GenCrackUnpack File Start ---
 GenCrackFile:
+    Processing = 1
     OutputPath =
     FilePath =
     FileName =
@@ -1413,12 +1568,14 @@ GenCrackFile:
     {
         Log(Format("Game Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Game Path Not Exist.
+        Processing = 0
         return
     }
     if (!FileExist(OutputPath))
     {
         Log(Format("Output Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Output Path Not Exist.
+        Processing = 0
         return
     }
     FileDelete,% format("{1}\Crack_Readme.txt",OutputPath)
@@ -1500,10 +1657,12 @@ GenCrackFile:
         Log(Format("Crack Packed in '{1}\Crack.zip'.",OutputPath))
         Run % format("explorer.exe ""{1}\Crack.zip""",OutputPath)
         MsgBox,64,Success,Crack Generated.
+        Processing = 0
         return
     }
     Run % format("explorer.exe ""{1}\Crack\""",OutputPath)
     MsgBox,64,Success,Crack Generated.
+    Processing = 0
     return
 ;--- GenCrackUnpack File End ---
 
@@ -1969,6 +2128,11 @@ Return 0
 }
 
 CrackGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Crack Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -1976,6 +2140,11 @@ Gui,Destroy
 return
 
 CrackGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Crack Complete before Closing.
+    return
+}
 Running = 0
 FilePath =
 FileSelectorPath =
@@ -2058,17 +2227,20 @@ CrackAutoFindApplyEMUApplyFile()
 
 CrackCrack()
 {
+    Processing = 1
     GuiControlGet,CrackAPPID,,CrackAPPID
 if CrackAPPID is not digit
 {
     Log("Wrong App ID.")
     MsgBox,16,Error,Wrong App ID,Crack Failed.
+    Processing = 0
     return 1
 }
 if (CrackAPPID = "" )
 {
     Log("Empty App ID.")
     MsgBox,16,Error,Empty App ID,Crack Failed.
+    Processing = 0
     return 1
 }
     GuiControlGet,FilePath,,CrackGenCrackFilePath
@@ -2076,6 +2248,7 @@ if (CrackAPPID = "" )
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Game Path Not Exist, Crack Failed.
+        Processing = 0
         return 1
     }
     Result :=
@@ -2085,6 +2258,7 @@ if (CrackAPPID = "" )
     {
         Log("Crack Failed.")
         MsgBox,16,Error,Crack Failed.
+        Processing = 0
         return
     }
     Log("Genetate Game Info End.")
@@ -2094,6 +2268,7 @@ if (CrackAPPID = "" )
     {
         Log("Crack Failed.")
         MsgBox,16,Error,Crack Failed.
+        Processing = 0
         return
     }
     Log("Emulator Setting End.")
@@ -2103,6 +2278,7 @@ if (CrackAPPID = "" )
     {
         Log("Crack Failed.")
         MsgBox,16,Error,Crack Failed.
+        Processing = 0
         return
     }
     Log("Unpack exe End.")
@@ -2112,11 +2288,13 @@ if (CrackAPPID = "" )
     {
         Log("Crack Failed.")
         MsgBox,16,Error,Crack Failed.
+        Processing = 0
         return
     }
     Log("Apply Emulator End.")
     Log("Crack Success.")
     MsgBox,64,Info,Crack Success.
+    Processing = 0
 }
 
 

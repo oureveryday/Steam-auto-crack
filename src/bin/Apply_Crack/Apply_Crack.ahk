@@ -1,4 +1,4 @@
-;Steam Auto Crack v2.0.8
+;Steam Auto Crack v2.1.0
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -19,10 +19,12 @@ global FilePath
 global FileName
 global FileDir
 global Cracked
+global Processing
+Processing = 0
 DetectHiddenWindows,On
 Running = 0
-Ver = V2.0.8
-;CheckDependFile()
+Ver = v2.1.0
+CheckDependFile()
 ;--- Script Init End ---
 
 ;--- Main ---
@@ -69,6 +71,11 @@ Log(LogString)
 ;------Logger End----------
 
 MainGuiEscape:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Crack Complete before Closing.
+    return
+}
 FileDelete,deleter.bat
 if (Cracked=1)
 {
@@ -87,6 +94,11 @@ if (Cracked=1)
 }
     Exitapp
 MainGuiClose:
+if (Processing = 1)
+{
+    MsgBox,16,Info,Please Wait Until Crack Complete before Closing.
+    return
+}
 FileDelete,deleter.bat
 if (Cracked=1)
 {
@@ -105,24 +117,26 @@ if (Cracked=1)
 }
 ExitApp
 
-AutoUnpackFindGuiClose:
-Gui,Destroy
-return
-
-AutoUnpackFindGuiEscape:
-Gui,Destroy
-return
 
 ;--- Auto Unpack Find End ---
 
 ;--- AutoUnpackFindUnpack File Start ---
 AutoUnpackFindUnpackFile:
+    Processing = 1
     FilePath = 
     GuiControlGet,FilePath,,AutoUnpackFindFilePath
+    if (!FileExist("Steamless\Steamless.CLI.exe"))
+    {
+        Log(Format("Steamless Not Exist.",FilePath))
+        MsgBox,16,Error,Steamless Not Exist.
+        Processing = 0
+        return
+    }
     if (!FileExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
+        Processing = 0
         return
     }
     Loop,Files,% Format("{1}\*.exe",FilePath),R
@@ -137,6 +151,7 @@ AutoUnpackFindUnpackFile:
     Log(Format("All File in '{1}' Unpacked and Backuped.",FilePath))
     MsgBox,64,Success,All File Unpacked and Backuped.
     Cracked=1
+    Processing = 0
     return
 ;--- AutoUnpackFindUnpack File End ---
 
