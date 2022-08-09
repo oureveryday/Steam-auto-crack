@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.1.0
+﻿;Steam Auto Crack v2.1.1
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -27,7 +27,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.1.0
+Ver = v2.1.1
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -403,9 +403,10 @@ Gui Add,Text,x15 y420 w100 h25 +0x200,Steam ID:
 Gui Add,Edit,x100 y425 w150 h20 vEMUSettingSteamID
 Gui Add,CheckBox,x300 y420 w100 h25 vEMUSettingSteamIDForce,Force
 Gui Add,CheckBox,x15 y450 w100 h25 vEMUSettingOffline,Offline mode
-Gui Add,CheckBox,x300 y450 w150 h25 vEMUDisableNet,Disable networking
+Gui Add,CheckBox,x300 y450 w150 h25 vEMUDisableNet,Disable Networking
 Gui Add,CheckBox,x15 y475 w150 h25 vEMUSettingUseCustomIP gEMUSettingUpdateCustomIP,Custom Broadcast IP:
-Gui Add,Edit,x200 y480 w150 h20 vEMUSettingCustomIP 
+Gui Add,Edit,x155 y480 w130 h20 vEMUSettingCustomIP
+Gui Add,CheckBox,x300 y475 w150 h25 vEMUDisableOverlay,Disable Overlay
 Gui Add,Button,x15 y510 w120 h25 gEMUSettingDefault,Default Setting
 Gui Add,Button,x140 y510 w120 h25 gEMUSettingOpenExample,Open Example
 Gui Add,Button,x265 y510 w150 h25 gEMUSettingSettingsFolder,Open Settings Folder
@@ -502,6 +503,7 @@ EMUSettingSave:
     GuiControlGet,EMUSettingSteamID,,EMUSettingSteamID
     GuiControlGet,EMUSettingOffline,,EMUSettingOffline
     GuiControlGet,EMUDisableNet,,EMUDisableNet
+    GuiControlGet,EMUDisableOverlay,,EMUDisableOverlay
     GuiControlGet,EMUSettingLanguage,,EMUSettingLanguage
     GuiControlGet,EMUSettingLanguageForce,,EMUSettingLanguageForce
     GuiControlGet,EMUSettingListenForce,,EMUSettingListenForce
@@ -610,6 +612,10 @@ EMUSettingSave:
     {
         FileAppend ,,Temp\steam_settings\disable_networking.txt
     }
+    If (EMUDisableOverlay = 1)
+    {
+        FileAppend ,,Temp\steam_settings\disable_overlay.txt
+    }
     If (EMUSettingUseCustomIP = 1)
     {
         FileAppend ,% EMUSettingCustomIP,Temp\steam_settings\settings\custom_broadcast_ip.txt
@@ -703,6 +709,7 @@ GuiControl,,EMUSettingUseCustomIP,0
 GuiControl,,EMUSettingCustomIP,
 GuiControl,,EMUSettingOffline,0
 GuiControl,,EMUDisableNet,0
+GuiControl,,EMUDisableOverlay,0
 GuiControl,Disable,EMUSettingCustomIP
 return
 }
@@ -1345,6 +1352,9 @@ FileDelete,TEMP\Goldberg.zip
 FileAppend,% LatestJobID,bin\Goldberg\job_id
 Log("Update Completed.")
 MsgBox,64,Success,Update Completed.
+GuiControl,,UpdateEMUCurrentJobID,% LatestJobID
+GuiControl, +c00ff00, UpdateEMULatestJobID
+GuiControl,,UpdateEMULatestJobID,% LatestJobID
 GuiControl,Enable,UpdateEMUFile
 GuiControl,Enable,UpdateEMUCheck
 GuiControl,Enable,UpdateExperimental
@@ -1712,9 +1722,10 @@ Gui Add,Text,x15 y420 w100 h25 +0x200,Steam ID:
 Gui Add,Edit,x100 y425 w150 h20 vCrackEMUSettingSteamID
 Gui Add,CheckBox,x300 y420 w100 h25 vCrackEMUSettingSteamIDForce,Force
 Gui Add,CheckBox,x15 y450 w100 h25 vCrackEMUSettingOffline,Offline mode
-Gui Add,CheckBox,x300 y450 w150 h25 vCrackEMUDisableNet,Disable networking
+Gui Add,CheckBox,x300 y450 w150 h25 vCrackEMUDisableNet,Disable Networking
 Gui Add,CheckBox,x15 y475 w150 h25 vCrackEMUSettingUseCustomIP gCrackEMUSettingUpdateCustomIP,Custom Broadcast IP:
-Gui Add,Edit,x200 y480 w150 h20 vCrackEMUSettingCustomIP 
+Gui Add,Edit,x155 y480 w130 h20 vCrackEMUSettingCustomIP
+Gui Add,CheckBox,x300 y475 w150 h25 vCrackEMUDisableOverlay,Disable Overlay
 Gui Add,Button,x15 y510 w120 h25 gCrackEMUSettingDefault,Default Setting
 Gui Add,Button,x140 y510 w120 h25 gCrackEMUSettingOpenExample,Open Example
 Gui Add,Button,x265 y510 w150 h25 gCrackEMUSettingSettingsFolder,Open Settings Folder
@@ -1838,6 +1849,7 @@ CrackEMUSetting()
     GuiControlGet,CrackEMUSettingSteamID,,CrackEMUSettingSteamID
     GuiControlGet,CrackEMUSettingOffline,,CrackEMUSettingOffline
     GuiControlGet,CrackEMUDisableNet,,CrackEMUDisableNet
+    GuiControlGet,CrackEMUDisableOverlay,,CrackEMUDisableOverlay
     GuiControlGet,CrackEMUSettingLanguage,,CrackEMUSettingLanguage
     GuiControlGet,CrackEMUSettingLanguageForce,,CrackEMUSettingLanguageForce
     GuiControlGet,CrackEMUSettingListenForce,,CrackEMUSettingListenForce
@@ -1940,6 +1952,10 @@ CrackEMUSetting()
     {
         FileAppend ,,Temp\steam_settings\disable_networking.txt
     }
+    If (CrackEMUDisableOverlay = 1)
+    {
+        FileAppend ,,Temp\steam_settings\disable_overlay.txt
+    }
     If (CrackEMUSettingUseCustomIP = 1)
     {
         FileAppend ,% CrackEMUSettingCustomIP,Temp\steam_settings\settings\custom_broadcast_ip.txt
@@ -2031,6 +2047,7 @@ GuiControl,,CrackEMUSettingUseCustomIP,0
 GuiControl,,CrackEMUSettingCustomIP,
 GuiControl,,CrackEMUSettingOffline,0
 GuiControl,,CrackEMUDisableNet,0
+GuiControl,,CrackEMUDisableOverlay,0
 GuiControl,Disable,CrackEMUSettingCustomIP
 return
 }
