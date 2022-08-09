@@ -1781,17 +1781,20 @@ return
 
 CrackGenInterfaceGen()
 {
+    Processing = 1
     GuiControlGet,CrackGenInterfaceFile,,CrackGenInterfaceFile
     if (!FileExist(CrackGenInterfaceFile))
     {
         Log(Format("File '{1}' Not Exist.",CrackGenInterfaceFile))
         MsgBox,16,Error,File Not Exist.
+        Processing = 0
         return
     }
     SplitPath,CrackGenInterfaceFile,CrackGenInterfaceFileName
     if (CrackGenInterfaceFileName != "steam_api.dll.bak" && CrackGenInterfaceFileName != "steam_api64.dll.bak")
     {
         MsgBox,16,Error,File is Not steam_api(64).dll.bak.
+        Processing = 0
         return
     }
     SplitPath,CrackGenInterfaceFile,,CrackGenInterfaceFileNameDir
@@ -1800,6 +1803,7 @@ CrackGenInterfaceGen()
     RunWait,% format("""{2}\bin\Goldberg\generate_interfaces_file.exe"" ""{1}""",CrackGenInterfaceFile,A_ScriptDir),% CrackGenInterfaceFileNameDir,Hide
     Log("Generated.")
     MsgBox,64,Info,Generated.
+    Processing = 0
     return
 CrackEMUSettingOpenExample:
     Run % format("explorer.exe ""{1}\bin\Goldberg\Example""",A_ScriptDir)
