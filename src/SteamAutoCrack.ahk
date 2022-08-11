@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.1.1
+﻿;Steam Auto Crack v2.1.2
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -27,7 +27,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.1.1
+Ver = v2.1.2
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -404,7 +404,7 @@ Gui Add,Edit,x100 y425 w150 h20 vEMUSettingSteamID
 Gui Add,CheckBox,x300 y420 w100 h25 vEMUSettingSteamIDForce,Force
 Gui Add,CheckBox,x15 y450 w100 h25 vEMUSettingOffline,Offline mode
 Gui Add,CheckBox,x300 y450 w150 h25 vEMUDisableNet,Disable Networking
-Gui Add,CheckBox,x15 y475 w150 h25 vEMUSettingUseCustomIP gEMUSettingUpdateCustomIP,Custom Broadcast IP:
+Gui Add,CheckBox,x15 y475 w140 h25 vEMUSettingUseCustomIP gEMUSettingUpdateCustomIP,Custom Broadcast IP:
 Gui Add,Edit,x155 y480 w130 h20 vEMUSettingCustomIP
 Gui Add,CheckBox,x300 y475 w150 h25 vEMUDisableOverlay,Disable Overlay
 Gui Add,Button,x15 y510 w120 h25 gEMUSettingDefault,Default Setting
@@ -1723,7 +1723,7 @@ Gui Add,Edit,x100 y425 w150 h20 vCrackEMUSettingSteamID
 Gui Add,CheckBox,x300 y420 w100 h25 vCrackEMUSettingSteamIDForce,Force
 Gui Add,CheckBox,x15 y450 w100 h25 vCrackEMUSettingOffline,Offline mode
 Gui Add,CheckBox,x300 y450 w150 h25 vCrackEMUDisableNet,Disable Networking
-Gui Add,CheckBox,x15 y475 w150 h25 vCrackEMUSettingUseCustomIP gCrackEMUSettingUpdateCustomIP,Custom Broadcast IP:
+Gui Add,CheckBox,x15 y475 w140 h25 vCrackEMUSettingUseCustomIP gCrackEMUSettingUpdateCustomIP,Custom Broadcast IP:
 Gui Add,Edit,x155 y480 w130 h20 vCrackEMUSettingCustomIP
 Gui Add,CheckBox,x300 y475 w150 h25 vCrackEMUDisableOverlay,Disable Overlay
 Gui Add,Button,x15 y510 w120 h25 gCrackEMUSettingDefault,Default Setting
