@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.1.2
+﻿;Steam Auto Crack v2.2.0
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -7,6 +7,7 @@
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance Force
+#NoTrayIcon
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetBatchLines -1
@@ -27,7 +28,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.1.2
+Ver = v2.2.0
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -36,17 +37,25 @@ MainMenu:
 Gui MainMenu:New,,Steam Auto Crack %Ver%
 ;--- Info Start ---
 Gui Font,s9,Segoe UI
-Gui Add,Picture,x25 y10 w90 h90,icon\SteamAutoCrack.png
+
+if(A_IsCompiled)
+{
+Gui Add,Picture,x300 y10 w90 h90,%A_ScriptFullPath%
+}
+else
+{
+Gui Add,Picture,x300 y10 w90 h90,icon\SteamAutoCrack.png
+}
 Gui Font
 Gui Font,s20
-Gui Add,Text,x150 y10 w380 h100 +0x200,Steam Auto Crack %Ver%
-Gui Add,Text,x250 y70 w380 h100 +0x200,Main Menu
+Gui Add,Text,x450 y10 w380 h100 +0x200,Steam Auto Crack %Ver%
+Gui Add,Text,x530 y80 w380 h30 +0x200,Main Menu
 Gui Font
 ;--- Info End ---
 ;--- Log Start ---
-Gui Add,Text,x5 y515 w200 h15 +0x200,Log
-Gui Add,Edit,x5 y530 w590 r18 vLogBox readonly VScroll
-Gui Add,Button,x495 y500 w100 h25 gClearLog,Clear Log
+Gui Add,Text,x605 y120 w200 h12 +0x200,Log
+Gui Add,Edit,x605 y135 w590 r25 vLogBox readonly VScroll
+Gui Add,Button,x1095 y110 w100 h25 gClearLog,Clear Log
 ;--- Log End ---
 ;--- Main Options Start ---
 Gui Add,Button,x10 y150 w100 h50 gAutoCrack,Auto Crack
@@ -68,14 +77,13 @@ Gui Add,Button,x10 y350 w250 h50 gAutoApplyEMU,Auto Apply Goldberg Steam Emulato
 Gui Add,Button,x260 y350 w300 h50 gAutoFindApplyEMU,Auto Find and apply Goldberg Steam Emulator
 Gui Add,Button,x10 y410 w250 h50 gEMUConfig,Goldberg Steam Emulator Configuration
 Gui Add,Button,x260 y410 w300 h50 gUpdateEMU,Update/Download Goldberg Steam Emulator
-Gui Add,GroupBox,x5 y330 w590 h160,Steam Emulator Options
+Gui Add,GroupBox,x5 y330 w590 h162,Steam Emulator Options
 ;--- Steam Emulator Options End ---
-Gui Show,w600 h800,Steam Auto Crack %Ver%
+Gui Show,w1200 h500,Steam Auto Crack %Ver%
 WinGet Gui_ID,ID,A 
 GuiControl Focus,LogBox
 ControlGetFocus LogBoxclass,ahk_id %Gui_ID% 
 Log("Steam Auto Crack "+ Ver)
-
 return
 
 MainMenuGuiEscape:
@@ -112,6 +120,7 @@ Log("Steam Auto Crack "+ Ver)
 Log("Automatic Steam Game Cracker")
 Log("Github: https://github.com/oureveryday/Steam-auto-crack")
 Log("Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack")
+Log("Autohotkey Version: " . A_AhkVersion)
 MsgBox,64,About, Steam Auto Crack %Ver%`nAutomatic Steam Game Cracker`nGithub: https://github.com/oureveryday/Steam-auto-crack`nGitlab: https://gitlab.com/oureveryday/Steam-auto-crack
 return
 ;--- About End ---
@@ -146,6 +155,8 @@ DelTMP:
 ;--- Check File Start ---
 CheckDependFile()
 {
+MissingDependFiles:=
+DependFileMissing:=0
 DependFilenames:= ["bin\7z\7za.dll"
 ,"bin\7z\7za.exe"
 ,"bin\7z\7zxa.dll"
@@ -171,13 +182,27 @@ DependFilenames:= ["bin\7z\7za.dll"
 ,"bin\Steamless\Steamless.CLI.exe"
 ,"bin\Steamless\Steamless.CLI.exe.config"
 ,"bin\Steamless\Steamless.exe"
-,"bin\Steamless\Steamless.exe.config"
-,"icon\SteamAutoCrack.png"]
+,"bin\Steamless\Steamless.exe.config"]
 for key,DependFilename in DependFilenames
 {
     if (!FileExist(DependFilename))
-        MsgBox,16,Error,File %DependFilename% is Missing.`nSteam Auto Crack May Not Operate Normally.    
+    {
+        DependFileMissing:=1
+        MissingDependFiles:=MissingDependFiles . "`n" . """" . DependFilename . """"
     }
+}
+if(!A_IsCompiled)
+{
+   if (!FileExist("icon\SteamAutoCrack.png"))
+    {
+        DependFileMissing:=1
+        MissingDependFiles:=MissingDependFiles . "`n" . """icon\SteamAutoCrack.png"""
+    } 
+}
+if (DependFileMissing)
+{
+    MsgBox,16,Error,% "Some Dependency Files are Missing.`nSteam Auto Crack May Not Operate Normally.`nMissing File List:" . MissingDependFiles
+}
 }
 ;--- Check File End ---
 
@@ -372,60 +397,60 @@ EMUConfig:
         return
     }
 Running = 1
-Gui,EMUConfig:New,,Goldberg Steam Emulator Config
+Gui,EMUConfig:New,,Goldberg Steam Emulator Configuration
 Gui Font
-Gui Font,s16
-Gui Add,Text,x130 y0 w600 h50 +0x200,Goldberg Steam Emulator Config
+Gui Font,s20
+Gui Add,Text,x370 y0 w600 h50 +0x200,Goldberg Steam Emulator Configuration
 Gui Font
-Gui Add,Text,x10 y120 w100 h25 +0x200,Steam App ID:
-Gui Add,Edit,x105 y120 w70 h25 vEMUConfigAPPID
-Gui Add,Link,x380 y130 w200 h25,Get App ID on <a href="https://steamdb.info/">SteamDB</a>
+Gui Add,Text,x10 y50 w100 h25 +0x200,Steam App ID:
+Gui Add,Edit,x105 y50 w70 h25 vEMUConfigAPPID
+Gui Add,Link,x380 y60 w200 h25,Get App ID on <a href="https://steamdb.info/">SteamDB</a>
 ;------
-Gui Add,GroupBox,x10 y190 w580 h150,Generate Game Info
-Gui Add,CheckBox,x40 y210 w130 h25 vEMUConfigGenOnline gEMUConfigGenUpdate,Generate Online
-Gui Add,CheckBox,x40 y240 w130 h25 vEMUConfigUseAPIKey gEMUConfigGenUpdate,Use Steam API Key:
-Gui Add,Edit,x190 y240 w200 h25 vEMUConfigAPIKey gEMUConfigGenUpdate
-Gui Add,CheckBox,x40 y270 w200 h25 vEMUConfigGenIMG gEMUConfigGenUpdate,Generate Achievement Images
-Gui Add,Button,x220 y300 w120 h25 gEMUConfigGenInfo,Generate Game Info
-Gui Add,Button,x100 y300 w120 h25 gEMUConfigGenInfoDefault,Default Setting
+Gui Add,GroupBox,x10 y120 w580 h150,Generate Game Info
+Gui Add,CheckBox,x40 y140 w130 h25 vEMUConfigGenOnline gEMUConfigGenUpdate,Generate Online
+Gui Add,CheckBox,x40 y170 w130 h25 vEMUConfigUseAPIKey gEMUConfigGenUpdate,Use Steam API Key:
+Gui Add,Edit,x190 y170 w200 h25 vEMUConfigAPIKey gEMUConfigGenUpdate
+Gui Add,CheckBox,x40 y200 w200 h25 vEMUConfigGenIMG gEMUConfigGenUpdate,Generate Achievement Images
+Gui Add,Button,x220 y230 w120 h25 gEMUConfigGenInfo,Generate Game Info
+Gui Add,Button,x100 y230 w120 h25 gEMUConfigGenInfoDefault,Default Setting
 ;------
-Gui Add,GroupBox,x10 y330 w580 h210,Settings
-Gui Add,Text,x15 y345 w100 h25 +0x200,Language:
-Gui Add,DropDownList,x100 y350 w100 vEMUSettingLanguage,arabic|bulgarian|schinese|tchinese|czech|danish|dutch|english|finnish|french|german|greek|hungarian|italian|japanese|koreana|norwegian|polish|portuguese|brazilian|romanian|russian|spanish|swedish|thai|turkish|ukrainian
-Gui Add,CheckBox,x300 y345 w100 h25 vEMUSettingLanguageForce,Force
-Gui Add,Text,x15 y370 w100 h25 +0x200,Listen Port:
-Gui Add,Edit,x100 y375 w150 h20 vEMUSettingListen
-Gui Add,CheckBox,x300 y370 w100 h25 vEMUSettingListenForce,Force
-Gui Add,Text,x15 y395 w100 h25 +0x200,Account Name:
-Gui Add,Edit,x100 y400 w150 h20 vEMUSettingAccount
-Gui Add,CheckBox,x300 y395 w100 h25 vEMUSettingAccountForce,Force
-Gui Add,Text,x15 y420 w100 h25 +0x200,Steam ID:
-Gui Add,Edit,x100 y425 w150 h20 vEMUSettingSteamID
-Gui Add,CheckBox,x300 y420 w100 h25 vEMUSettingSteamIDForce,Force
-Gui Add,CheckBox,x15 y450 w100 h25 vEMUSettingOffline,Offline mode
-Gui Add,CheckBox,x300 y450 w150 h25 vEMUDisableNet,Disable Networking
-Gui Add,CheckBox,x15 y475 w140 h25 vEMUSettingUseCustomIP gEMUSettingUpdateCustomIP,Custom Broadcast IP:
-Gui Add,Edit,x155 y480 w130 h20 vEMUSettingCustomIP
-Gui Add,CheckBox,x300 y475 w150 h25 vEMUDisableOverlay,Disable Overlay
-Gui Add,Button,x15 y510 w120 h25 gEMUSettingDefault,Default Setting
-Gui Add,Button,x140 y510 w120 h25 gEMUSettingOpenExample,Open Example
-Gui Add,Button,x265 y510 w150 h25 gEMUSettingSettingsFolder,Open Settings Folder
+Gui Add,GroupBox,x610 y60 w580 h210,Settings
+Gui Add,Text,x615 y75 w100 h25 +0x200,Language:
+Gui Add,DropDownList,x700 y80 w100 vEMUSettingLanguage,arabic|bulgarian|schinese|tchinese|czech|danish|dutch|english|finnish|french|german|greek|hungarian|italian|japanese|koreana|norwegian|polish|portuguese|brazilian|romanian|russian|spanish|swedish|thai|turkish|ukrainian
+Gui Add,CheckBox,x900 y75 w100 h25 vEMUSettingLanguageForce,Force
+Gui Add,Text,x615 y100 w100 h25 +0x200,Listen Port:
+Gui Add,Edit,x700 y105 w150 h20 vEMUSettingListen
+Gui Add,CheckBox,x900 y100 w100 h25 vEMUSettingListenForce,Force
+Gui Add,Text,x615 y125 w100 h25 +0x200,Account Name:
+Gui Add,Edit,x700 y130 w150 h20 vEMUSettingAccount
+Gui Add,CheckBox,x900 y125 w100 h25 vEMUSettingAccountForce,Force
+Gui Add,Text,x615 y150 w100 h25 +0x200,Steam ID:
+Gui Add,Edit,x700 y155 w150 h20 vEMUSettingSteamID
+Gui Add,CheckBox,x900 y150 w100 h25 vEMUSettingSteamIDForce,Force
+Gui Add,CheckBox,x615 y180 w100 h25 vEMUSettingOffline,Offline mode
+Gui Add,CheckBox,x900 y180 w150 h25 vEMUDisableNet,Disable Networking
+Gui Add,CheckBox,x615 y205 w140 h25 vEMUSettingUseCustomIP gEMUSettingUpdateCustomIP,Custom Broadcast IP:
+Gui Add,Edit,x755 y210 w130 h20 vEMUSettingCustomIP
+Gui Add,CheckBox,x900 y205 w150 h25 vEMUDisableOverlay,Disable Overlay
+Gui Add,Button,x615 y240 w120 h25 gEMUSettingDefault,Default Setting
+Gui Add,Button,x740 y240 w120 h25 gEMUSettingOpenExample,Open Example
+Gui Add,Button,x865 y240 w150 h25 gEMUSettingSettingsFolder,Open Settings Folder
 ;------
-Gui Add,GroupBox,x10 y545 w580 h150,Generate Steam Interfaces
-Gui Add,Text,x15 y565 w530 h25,You Only Need to Do This For steam_api(64).dll Older Than May 2016.
-Gui Add,Text,x15 y585 w530 h25,Apply Goldberg Steam Emulator first, then Select steam_api(64).dll.bak File.
-Gui Add,Text,x15 y605 w530 h25,steam_api(64).dll.bak Path:
-Gui Add,Edit,x185 y600 w360 h20 vEMUConfigGenInterfaceFile
-Gui Add,Button,x550 y600 w35 h25 gEMUConfigGenInterfaceSelectFile,...
-Gui Add,Button,x15 y630 w150 h25 gEMUConfigGenInterfaceGen,Generate
+Gui Add,GroupBox,x10 y275 w1180 h120,Generate Steam Interfaces
+Gui Add,Text,x15 y295 w530 h25,You Only Need to Do This For steam_api(64).dll Older Than May 2016.
+Gui Add,Text,x15 y315 w530 h25,Apply Goldberg Steam Emulator first, then Select steam_api(64).dll.bak File.
+Gui Add,Text,x15 y335 w530 h25,steam_api(64).dll.bak Path:
+Gui Add,Edit,x185 y330 w360 h20 vEMUConfigGenInterfaceFile
+Gui Add,Button,x550 y330 w35 h25 gEMUConfigGenInterfaceSelectFile,...
+Gui Add,Button,x15 y360 w150 h25 gEMUConfigGenInterfaceGen,Generate
 
 ;------
-Gui Add,Text,x10 y150 w100 h25 +0x200,Game Info:
-Gui Add,Text,x100 y150 w100 h25 +0x200 vGameInfoStatus
-Gui Add,Button,x200 y150 w150 h25 gEMUConfigStatus,Check Game Info Status
-Gui Add,Button,x20 y700 w170 h60 gEMUSettingSave,Save
-Gui Add,Button,x360 y700 w170 h60 gEMUConfigGuiClose,Close
-Gui Show,x500 y70 w600 h800,Goldberg Steam Emulator Config
+Gui Add,Text,x10 y80 w100 h25 +0x200,Game Info:
+Gui Add,Text,x100 y80 w100 h25 +0x200 vGameInfoStatus
+Gui Add,Button,x200 y80 w150 h25 gEMUConfigStatus,Check Game Info Status
+Gui Add,Button,x200 y420 w170 h60 gEMUSettingSave,Save
+Gui Add,Button,x700 y420 w170 h60 gEMUConfigGuiClose,Close
+Gui Show,x500 y70 w1200 h500,Goldberg Steam Emulator Config
 GuiControl,,EMUConfigGenOnline,1
 GuiControl,,EMUConfigUseAPIKey,0
 GuiControl,,EMUConfigAPIKey,0
@@ -1687,7 +1712,7 @@ Running = 1
 Gui,Crack:New,,Auto Crack
 Gui Font
 Gui Font,s20
-Gui Add,Text,x230 y0 w600 h50 +0x200,Auto Crack
+Gui Add,Text,x540 y0 w600 h50 +0x200,Auto Crack
 Gui Font
 Gui Add,Text,x10 y120 w100 h25 +0x200,Steam App ID:
 Gui Add,Edit,x105 y120 w70 h25 vCrackAPPID
@@ -1701,47 +1726,47 @@ Gui Add,Edit,x190 y90 w365 h25 vCrackAutoApplyEMUSavePath
 Gui Add,Button,x560 y90 w35 h25 gCrackAutoApplyEMUSavePathSelectFile vCrackAutoApplyEMUSavePathSelectFile,...
 ;------
 ;------
-Gui Add,GroupBox,x10 y190 w580 h150,Generate Game Info
+Gui Add,GroupBox,x10 y190 w580 h190,Generate Game Info
 Gui Add,CheckBox,x40 y210 w130 h25 vCrackGenOnline gCrackGenUpdate,Generate Online
 Gui Add,CheckBox,x40 y240 w130 h25 vCrackUseAPIKey gCrackGenUpdate,Use Steam API Key:
 Gui Add,Edit,x190 y240 w200 h25 vCrackAPIKey gCrackGenUpdate
 Gui Add,CheckBox,x40 y270 w200 h25 vCrackGenIMG gCrackGenUpdate,Generate Achievement Images
 Gui Add,Button,x100 y300 w120 h25 gCrackGenInfoDefault,Default Setting
 ;------
-Gui Add,GroupBox,x10 y330 w580 h210,Settings
-Gui Add,Text,x15 y345 w100 h25 +0x200,Language:
-Gui Add,DropDownList,x100 y350 w100 vCrackEMUSettingLanguage,arabic|bulgarian|schinese|tchinese|czech|danish|dutch|english|finnish|french|german|greek|hungarian|italian|japanese|koreana|norwegian|polish|portuguese|brazilian|romanian|russian|spanish|swedish|thai|turkish|ukrainian
-Gui Add,CheckBox,x300 y345 w100 h25 vCrackEMUSettingLanguageForce,Force
-Gui Add,Text,x15 y370 w100 h25 +0x200,Listen Port:
-Gui Add,Edit,x100 y375 w150 h20 vCrackEMUSettingListen
-Gui Add,CheckBox,x300 y370 w100 h25 vCrackEMUSettingListenForce,Force
-Gui Add,Text,x15 y395 w100 h25 +0x200,Account Name:
-Gui Add,Edit,x100 y400 w150 h20 vCrackEMUSettingAccount
-Gui Add,CheckBox,x300 y395 w100 h25 vCrackEMUSettingAccountForce,Force
-Gui Add,Text,x15 y420 w100 h25 +0x200,Steam ID:
-Gui Add,Edit,x100 y425 w150 h20 vCrackEMUSettingSteamID
-Gui Add,CheckBox,x300 y420 w100 h25 vCrackEMUSettingSteamIDForce,Force
-Gui Add,CheckBox,x15 y450 w100 h25 vCrackEMUSettingOffline,Offline mode
-Gui Add,CheckBox,x300 y450 w150 h25 vCrackEMUDisableNet,Disable Networking
-Gui Add,CheckBox,x15 y475 w140 h25 vCrackEMUSettingUseCustomIP gCrackEMUSettingUpdateCustomIP,Custom Broadcast IP:
-Gui Add,Edit,x155 y480 w130 h20 vCrackEMUSettingCustomIP
-Gui Add,CheckBox,x300 y475 w150 h25 vCrackEMUDisableOverlay,Disable Overlay
-Gui Add,Button,x15 y510 w120 h25 gCrackEMUSettingDefault,Default Setting
-Gui Add,Button,x140 y510 w120 h25 gCrackEMUSettingOpenExample,Open Example
-Gui Add,Button,x265 y510 w150 h25 gCrackEMUSettingSettingsFolder,Open Settings Folder
+Gui Add,GroupBox,x610 y45 w580 h210,Settings
+Gui Add,Text,x615 y60 w100 h25 +0x200,Language:
+Gui Add,DropDownList,x700 y65 w100 vCrackEMUSettingLanguage,arabic|bulgarian|schinese|tchinese|czech|danish|dutch|english|finnish|french|german|greek|hungarian|italian|japanese|koreana|norwegian|polish|portuguese|brazilian|romanian|russian|spanish|swedish|thai|turkish|ukrainian
+Gui Add,CheckBox,x900 y60 w100 h25 vCrackEMUSettingLanguageForce,Force
+Gui Add,Text,x615 y85 w100 h25 +0x200,Listen Port:
+Gui Add,Edit,x700 y90 w150 h20 vCrackEMUSettingListen
+Gui Add,CheckBox,x900 y85 w100 h25 vCrackEMUSettingListenForce,Force
+Gui Add,Text,x615 y110 w100 h25 +0x200,Account Name:
+Gui Add,Edit,x700 y115 w150 h20 vCrackEMUSettingAccount
+Gui Add,CheckBox,x900 y110 w100 h25 vCrackEMUSettingAccountForce,Force
+Gui Add,Text,x615 y135 w100 h25 +0x200,Steam ID:
+Gui Add,Edit,x700 y140 w150 h20 vCrackEMUSettingSteamID
+Gui Add,CheckBox,x900 y135 w100 h25 vCrackEMUSettingSteamIDForce,Force
+Gui Add,CheckBox,x615 y165 w100 h25 vCrackEMUSettingOffline,Offline mode
+Gui Add,CheckBox,x900 y165 w150 h25 vCrackEMUDisableNet,Disable Networking
+Gui Add,CheckBox,x615 y190 w140 h25 vCrackEMUSettingUseCustomIP gCrackEMUSettingUpdateCustomIP,Custom Broadcast IP:
+Gui Add,Edit,x755 y195 w130 h20 vCrackEMUSettingCustomIP
+Gui Add,CheckBox,x900 y190 w150 h25 vCrackEMUDisableOverlay,Disable Overlay
+Gui Add,Button,x615 y225 w120 h25 gCrackEMUSettingDefault,Default Setting
+Gui Add,Button,x740 y225 w120 h25 gCrackEMUSettingOpenExample,Open Example
+Gui Add,Button,x865 y225 w150 h25 gCrackEMUSettingSettingsFolder,Open Settings Folder
 ;------
-Gui Add,GroupBox,x10 y545 w580 h150,Generate Steam Interfaces
-Gui Add,Text,x15 y565 w530 h25,You Only Need to Do This For steam_api(64).dll Older Than May 2016.
-Gui Add,Text,x15 y585 w530 h25,Apply Goldberg Steam Emulator first, then Select steam_api(64).dll.bak File.
-Gui Add,Text,x15 y605 w530 h25,steam_api(64).dll.bak Path:
-Gui Add,Edit,x185 y600 w360 h20 vCrackGenInterfaceFile
-Gui Add,Button,x550 y600 w35 h25 gCrackGenInterfaceSelectFile,...
-Gui Add,Button,x15 y630 w150 h25 gCrackGenInterfaceGen,Generate
+Gui Add,GroupBox,x610 y260 w580 h120,Generate Steam Interfaces
+Gui Add,Text,x615 y280 w530 h25,You Only Need to Do This For steam_api(64).dll Older Than May 2016.
+Gui Add,Text,x615 y300 w530 h25,Apply Goldberg Steam Emulator first, then Select steam_api(64).dll.bak File.
+Gui Add,Text,x615 y320 w530 h25,steam_api(64).dll.bak Path:
+Gui Add,Edit,x785 y315 w360 h20 vCrackGenInterfaceFile
+Gui Add,Button,x1150 y315 w35 h25 gCrackGenInterfaceSelectFile,...
+Gui Add,Button,x615 y345 w150 h25 gCrackGenInterfaceGen,Generate
 
 ;------
-Gui Add,Button,x20 y700 w170 h60 gCrackCrack,Start Crack
-Gui Add,Button,x360 y700 w170 h60 gCrackGuiClose,Close
-Gui Show,x500 y70 w600 h800,Auto Crack
+Gui Add,Button,x200 y400 w170 h60 gCrackCrack,Start Crack
+Gui Add,Button,x700 y400 w170 h60 gCrackGuiClose,Close
+Gui Show,x500 y70 w1200 h500,Auto Crack
 GuiControl,,CrackGenOnline,1
 GuiControl,,CrackUseAPIKey,0
 GuiControl,,CrackAPIKey,0

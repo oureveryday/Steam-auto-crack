@@ -1,4 +1,4 @@
-;Steam Auto Crack v2.1.2
+;Steam Auto Crack v2.2.0
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -7,6 +7,7 @@
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance Force
+#NoTrayIcon
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetBatchLines -1
@@ -23,7 +24,7 @@ global Processing
 Processing = 0
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.1.2
+Ver = v2.2.0
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -32,20 +33,21 @@ Main:
 Gui,Main:New,,Steam Auto Crack Apply Crack
 Gui Font
 Gui Font,s16
-Gui Add,Text,x50 y0 w600 h50 +0x200,Steam Auto Crack %Ver% Apply Crack
+Gui Add,Text,x100 y20 w600 h30 +0x200,Steam Auto Crack %Ver% Apply Crack
 Gui Font
-Gui Add,Text,x10 y120 w100 h25 +0x200,Game Path:
-Gui Add,Edit,x105 y120 w450 h25 vAutoUnpackFindFilePath
-Gui Add,Button,x20 y250 w170 h60 gAutoUnpackFindUnpackFile,Unpack
-Gui Add,Button,x360 y250 w170 h60 gMainGuiClose,Exit
+Gui Add,Text,x10 y70 w100 h25 +0x200,Game Path:
+Gui Add,Edit,x105 y70 w450 h25 vAutoUnpackFindFilePath
+Gui Add,Button,x20 y130 w170 h60 gAutoUnpackFindUnpackFile,Unpack
+Gui Add,Button,x220 y130 w170 h60 gMainGuiClose,Exit
+Gui Add,Button,x420 y130 w170 h60 gAbout,About
 ;--- Log Start ---
-Gui Add,Text,x5 y415 w200 h15 +0x200,Log
-Gui Add,Edit,x5 y430 w590 r11 vLogBox readonly VScroll
-Gui Add,Button,x495 y400 w100 h25 gClearLog,Clear Log
+Gui Add,Text,x5 y215 w200 h15 +0x200,Log
+Gui Add,Edit,x5 y240 w590 r16 vLogBox readonly VScroll
+Gui Add,Button,x495 y210 w100 h25 gClearLog,Clear Log
 ;--- Log End ---
 GuiControl,,AutoUnpackFindFilePath,%A_ScriptDir%
 GuiControl,Disable,AutoUnpackFindFilePath
-Gui Show,x500 y300 w600 h600,Steam Auto Crack %Ver% Apply Crack
+Gui Show,x500 y300 w600 h500,Steam Auto Crack %Ver% Apply Crack
 WinGet Gui_ID,ID,A 
 GuiControl Focus,LogBox
 ControlGetFocus LogBoxclass,ahk_id %Gui_ID%
@@ -200,7 +202,25 @@ DependFilenames:= ["Steamless\Plugins\ExamplePlugin.dll"
 for key,DependFilename in DependFilenames
 {
     if (!FileExist(DependFilename))
-        MsgBox,16,Error,File %DependFilename% is Missing.`nApply Crack May Not Operate Normally.    
+    {
+        DependFileMissing:=1
+        MissingDependFiles:=MissingDependFiles . "`n" . """" . DependFilename . """"
     }
 }
+if (DependFileMissing)
+{
+    MsgBox,16,Error,% "Some Dependency Files are Missing.`nSteam Auto Crack May Not Operate Normally.`nMissing File List:" . MissingDependFiles
+}
+}
 ;--- Check File End ---
+
+;--- About Start ---
+About:
+Log("Steam Auto Crack "+ Ver)
+Log("Automatic Steam Game Cracker")
+Log("Github: https://github.com/oureveryday/Steam-auto-crack")
+Log("Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack")
+Log("Autohotkey Version: " . A_AhkVersion)
+MsgBox,64,About, Steam Auto Crack %Ver%`nAutomatic Steam Game Cracker`nGithub: https://github.com/oureveryday/Steam-auto-crack`nGitlab: https://gitlab.com/oureveryday/Steam-auto-crack
+return
+;--- About End ---
