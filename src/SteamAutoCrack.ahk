@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.2.0
+﻿;Steam Auto Crack v2.2.1
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -28,7 +28,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.2.0
+Ver = v2.2.1
 CheckDependFile()
 ;--- Script Init End ---
 
@@ -376,7 +376,7 @@ Log(Format("Unpacking File '{1}'...",Path))
 RunWait,bin\Steamless\Steamless.CLI.exe --keepbind "%Path%",,Hide
 if (ErrorLevel = 1)
 {
-    Log(Format("Unpack '{1}' Failed. (File not Packed/Other Packer)",FilePath))
+    Log(Format("Unpack '{1}' Failed. (File not Packed/Other Packer)",Path))
     return 1
 }
 Else
@@ -384,6 +384,7 @@ Else
 Log(Format("Backuping File '{1}'...",Path))
 FileMove,% Path,% Format("{1}.bak",Path),1
 FileMove,% Format("{1}.unpacked.exe",Path),% Path,1
+Log(Format("Unpack '{1}' Success.",Path))
 return 0
 }
 }
