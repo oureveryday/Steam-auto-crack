@@ -1,7 +1,0 @@
-lifetime_experience=int=0
-experience=int=0
-stat_example_name1=float=3.5
-stat_example_name2=int=1337
-stat_example_name3=int=0
-stat_example_name4=float=0
-stat_example_name5=avgrate=0

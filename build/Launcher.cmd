@@ -1,0 +1,1 @@
+call %b2eincfilepath%\src\SteamAutoCrack.cmd
