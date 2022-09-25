@@ -166,7 +166,7 @@ Log(Format("Backup File '{1}.bak' Already Exists,Skipping ...",Path))
 return 0
 }
 Log(Format("Unpacking File '{1}'...",Path))
-RunWait,bin\Steamless\Steamless.CLI.exe --keepbind "%Path%",,Hide
+RunWait,Steamless\Steamless.CLI.exe --keepbind "%Path%",,Hide
 if (ErrorLevel = 1)
 {
     Log(Format("Unpack '{1}' Failed. (File not Packed/Other Packer)",Path))
