@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.2.3
+﻿;Steam Auto Crack v2.2.4
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -28,7 +28,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.2.3
+Ver = v2.2.4
 CheckDependFile()
 
 OnError("ErrorHandler")
@@ -263,6 +263,16 @@ FilePath =
 FileSelectorPath =
 Gui,Destroy
 return
+
+AutoUnpackGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="AutoUnpackFilePath")
+    {   
+        GuiControl,AutoUnpack:,AutoUnpackFilePath,% A_GuiEvent
+    }
+}
+return
 ;--- Auto Unpack End ---
 
 ;--- AutoUnpackUnpack File Start ---
@@ -340,6 +350,16 @@ Running = 0
 FilePath =
 FileSelectorPath =
 Gui,Destroy
+return
+
+AutoUnpackFindGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="AutoUnpackFindFilePath")
+    {   
+        GuiControl,AutoUnpackFind:,AutoUnpackFindFilePath,% A_GuiEvent
+    }
+}
 return
 
 ;--- Auto Unpack Find End ---
@@ -891,6 +911,16 @@ FilePath =
 FileSelectorPath =
 Gui,Destroy
 return
+
+EMUConfigGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="EMUConfigGenInterfaceFile")
+    {   
+        GuiControl,EMUConfig:,EMUConfigGenInterfaceFile,% A_GuiEvent
+    }
+}
+return
 ;--- EMU Config End ---
 ;--- Get EMU Config Status Start ---
 EMUConfigStatus()
@@ -981,6 +1011,7 @@ GuiControl,Enable,AutoApplyEMUSavePathSelectFile
 }
 else
 {
+GuiControl,AutoApplyEMU:,AutoApplyEMUSavePath
 GuiControl,Disable,AutoApplyEMUSavePath
 GuiControl,Disable,AutoApplyEMUSavePathSelectFile
 }
@@ -1025,6 +1056,25 @@ FileName =
 FileDir =
 FileSelectorPath =
 Gui,Destroy
+return
+
+AutoApplyEMUGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="AutoApplyEMUFilePath")
+    {   
+        GuiControl,AutoApplyEMU:,AutoApplyEMUFilePath,% A_GuiEvent
+    }
+    if (A_GuiControl="AutoApplyEMUSavePath")
+    {   
+        GuiControlGet,AutoApplyEMUUseSavePath,,AutoApplyEMUUseSavePath
+        if ( AutoApplyEMUUseSavePath = 1 )
+        {
+            GuiControl,AutoApplyEMU:,AutoApplyEMUSavePath,% A_GuiEvent
+        }
+        
+    }
+}
 return
 ;--- AutoApplyEMU End ---
 
@@ -1125,6 +1175,7 @@ GuiControl,Enable,AutoFindApplyEMUSavePathSelectFile
 }
 else
 {
+GuiControl,,AutoFindApplyEMUSavePath
 GuiControl,Disable,AutoFindApplyEMUSavePath
 GuiControl,Disable,AutoFindApplyEMUSavePathSelectFile
 }
@@ -1169,6 +1220,25 @@ FileName =
 FileDir =
 FileSelectorPath =
 Gui,Destroy
+return
+
+AutoFindApplyEMUGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="AutoFindApplyEMUFilePath")
+    {   
+        GuiControl,AutoFindApplyEMU:,AutoFindApplyEMUFilePath,% A_GuiEvent
+    }
+    if (A_GuiControl="AutoFindApplyEMUSavePath")
+    {   
+        GuiControlGet,AutoFindApplyEMUUseSavePath,,AutoFindApplyEMUUseSavePath
+        if ( AutoFindApplyEMUUseSavePath = 1 )
+        {
+            GuiControl,AutoFindApplyEMU:,AutoFindApplyEMUSavePath,% A_GuiEvent
+        }
+        
+    }
+}
 return
 ;--- AutoFindApplyEMU End ---
 
@@ -1263,6 +1333,16 @@ FileName =
 FileDir =
 FileSelectorPath =
 Gui,Destroy
+return
+
+RestoreGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="RestoreFilePath")
+    {   
+        GuiControl,Restore:,RestoreFilePath,% A_GuiEvent
+    }
+}
 return
 ;--- Restore End ---
 
@@ -1591,6 +1671,20 @@ FileDir =
 FileSelectorPath =
 Gui,Destroy
 return
+
+GenCrackGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="GenCrackFileOutputPath")
+    {   
+        GuiControl,GenCrack:,GenCrackFileOutputPath,% A_GuiEvent
+    }
+    if (A_GuiControl="GenCrackFilePath")
+    {   
+        GuiControl,GenCrack:,GenCrackFilePath,% A_GuiEvent
+    }
+}
+return
 ;--- GenCrack End ---
 
 ;--- GenCrackUnpack File Start ---
@@ -1798,6 +1892,7 @@ GuiControl,Enable,CrackAutoFindApplyEMUSavePathSelectFile
 }
 else
 {
+GuiControl,Crack:,CrackAutoFindApplyEMUSavePath,
 GuiControl,Disable,CrackAutoFindApplyEMUSavePath
 GuiControl,Disable,CrackAutoFindApplyEMUSavePathSelectFile
 }
@@ -2204,7 +2299,28 @@ FileSelectorPath =
 Gui,Destroy
 return
 
-    ExitApp
+CrackGuiDropFiles:
+if(A_EventInfo=1)
+{
+    if (A_GuiControl="CrackGenCrackFilePath")
+    {   
+        GuiControl,Crack:,CrackGenCrackFilePath,% A_GuiEvent
+    }
+    if (A_GuiControl="CrackGenInterfaceFile")
+    {   
+        GuiControl,Crack:,CrackGenInterfaceFile,% A_GuiEvent
+    }
+    if (A_GuiControl="CrackAutoFindApplyEMUSavePath")
+    {   
+        GuiControlGet,CrackAutoFindApplyEMUUseSavePath,,CrackAutoFindApplyEMUUseSavePath
+        if ( CrackAutoFindApplyEMUUseSavePath = 1 )
+        {
+            GuiControl,Crack:,CrackAutoFindApplyEMUSavePath,% A_GuiEvent
+        }
+        
+    }
+}
+return
 ;------------ Auto Crack End ------------
 
 ;--- Get CrackEMU Config Status Start ---
