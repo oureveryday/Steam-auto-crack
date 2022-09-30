@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.2.2
+﻿;Steam Auto Crack v2.2.3
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -28,7 +28,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.2.2
+Ver = v2.2.3
 CheckDependFile()
 
 OnError("ErrorHandler")
@@ -1728,9 +1728,9 @@ Gui Add,Link,x380 y130 w200 h25,Get App ID on <a href="https://steamdb.info/">St
 Gui Add,Text,x10 y50 w100 h25 +0x200,Game Path:
 Gui Add,Edit,x105 y50 w450 h25 vCrackGenCrackFilePath
 Gui Add,Button,x560 y50 w35 h25 gCrackGenCrackSelectFile,...
-Gui Add,CheckBox,x10 y90 w170 h25 +0x200 gCrackAutoApplyEMUUseSavePath vCrackAutoApplyEMUUseSavePath,Change Default Save Path:
-Gui Add,Edit,x190 y90 w365 h25 vCrackAutoApplyEMUSavePath
-Gui Add,Button,x560 y90 w35 h25 gCrackAutoApplyEMUSavePathSelectFile vCrackAutoApplyEMUSavePathSelectFile,...
+Gui Add,CheckBox,x10 y90 w170 h25 +0x200 gCrackAutoFindApplyEMUUseSavePath vCrackAutoFindApplyEMUUseSavePath,Change Default Save Path:
+Gui Add,Edit,x190 y90 w365 h25 vCrackAutoFindApplyEMUSavePath
+Gui Add,Button,x560 y90 w35 h25 gCrackAutoFindApplyEMUSavePathSelectFile vCrackAutoFindApplyEMUSavePathSelectFile,...
 ;------
 ;------
 Gui Add,GroupBox,x10 y190 w580 h190,Generate Game Info
@@ -1785,29 +1785,29 @@ GuiControl,Disable,CrackEMUSettingCustomIP
 CrackGenInfoDefault()
 CrackStatus()
 CrackEMUSettingDefault()
-CrackAutoApplyEMUUseSavePath()
+CrackAutoFindApplyEMUUseSavePath()
 return
 
-CrackAutoApplyEMUUseSavePath()
+CrackAutoFindApplyEMUUseSavePath()
 {
-GuiControlGet,CrackAutoApplyEMUUseSavePath,,CrackAutoApplyEMUUseSavePath
-if ( CrackAutoApplyEMUUseSavePath = 1 )
+GuiControlGet,CrackAutoFindApplyEMUUseSavePath,,CrackAutoFindApplyEMUUseSavePath
+if ( CrackAutoFindApplyEMUUseSavePath = 1 )
 {
-GuiControl,Enable,CrackAutoApplyEMUSavePath
-GuiControl,Enable,CrackAutoApplyEMUSavePathSelectFile
+GuiControl,Enable,CrackAutoFindApplyEMUSavePath
+GuiControl,Enable,CrackAutoFindApplyEMUSavePathSelectFile
 }
 else
 {
-GuiControl,Disable,CrackAutoApplyEMUSavePath
-GuiControl,Disable,CrackAutoApplyEMUSavePathSelectFile
+GuiControl,Disable,CrackAutoFindApplyEMUSavePath
+GuiControl,Disable,CrackAutoFindApplyEMUSavePathSelectFile
 }
 return
 }
 
-CrackAutoApplyEMUSavePathSelectFile:
+CrackAutoFindApplyEMUSavePathSelectFile:
 FileSelectorPath =
 FileSelectFolder,FileSelectorPath,,0,Select Path
-GuiControl,,CrackAutoApplyEMUUseSavePath,%FileSelectorPath%
+GuiControl,,CrackAutoFindApplyEMUSavePath,%FileSelectorPath%
 return
 
 CrackGenCrackSelectFile:
@@ -2335,7 +2335,7 @@ if (CrackAPPID = "" )
         return
     }
     Log("Unpack exe End.")
-    Log("Apply Emulator End.")
+    Log("Apply Emulator Start.")
     Result :=CrackAutoFindApplyEMUApplyFile()
     if (Result=1)
     {
