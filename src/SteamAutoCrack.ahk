@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.2.1
+﻿;Steam Auto Crack v2.2.2
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -9,7 +9,7 @@
 #SingleInstance Force
 #NoTrayIcon
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.R
 SetBatchLines -1
 ;--- Script Settings End ---
 
@@ -28,8 +28,18 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.2.1
+Ver = v2.2.2
 CheckDependFile()
+
+OnError("ErrorHandler")
+
+ErrorHandler(exception) {
+    FileAppend % "Error on line " exception.Line ": " exception.Message "`n" , error.log
+    MsgBox,16,Error,% "Error on line " exception.Line ": " exception.Message "`n" , error.log
+    Processing = 0
+    Running = 0
+    return true
+}
 ;--- Script Init End ---
 
 
@@ -54,7 +64,7 @@ Gui Font
 ;--- Info End ---
 ;--- Log Start ---
 Gui Add,Text,x605 y120 w200 h12 +0x200,Log
-Gui Add,Edit,x605 y135 w590 r25 vLogBox readonly VScroll
+Gui Add,Edit,x605 y135 w590 r25 vLogBox HwndhLogBox readonly VScroll
 Gui Add,Button,x1095 y110 w100 h25 gClearLog,Clear Log
 ;--- Log End ---
 ;--- Main Options Start ---
@@ -134,11 +144,8 @@ ClearLog:
 ;--- Logger Start ---
 Log(LogString)
 {
-    global LogBoxClass
-    global Gui_ID
-    GuiControlGet,LogBox,MainMenu: ,LogBox
-    GuiControl,MainMenu:,LogBox,%LogBox%`n%LogString%
-    ControlSend %LogBoxClass%,^{End},ahk_id %Gui_ID% 
+    global hLogBox
+    Edit_Append(hLogBox,LogString . "`r`n")
 }
 ;------Logger End----------
 
@@ -905,6 +912,7 @@ EMUConfigStatus()
 }
 ;--- Get EMU Config Status End ---
 ;--- Run With Log Start ---
+/*
 RunWithLog(CMD,WorkingDir)
 {
 DllCall("AllocConsole")
@@ -921,22 +929,20 @@ Log(Exec.StdOut.readline())
 SetWorkingDir %A_ScriptDir%
 return
 }
-RunWithLogDelay(CMD,WorkingDir,Delay)
+*/
+RunWithLog(CMD,WorkingDir)
 {
-DllCall("AllocConsole")
-hConsole := DllCall("GetConsoleWindow")
-WinWait % "ahk_id " hConsole
-WinHide
-Shell:=ComObjCreate("WScript.Shell")
-Shell.CurrentDirectory := WorkingDir
-exec:=Shell.Exec(CMD)
-while,!Exec.StdOut.AtEndOfStream
-{
-Sleep,% Delay
-Log(Exec.StdOut.readline())
-}
-SetWorkingDir %A_ScriptDir%
+RunCMD(CMD,WorkingDir,,"RunWithLogOutput")
 return
+}
+RunWithLogOutput(Line, LineNum)
+{
+If ( SubStr(Line,-1)!="`n" )
+{
+    len = % StrLen(Line)
+    Line = % SubStr(Line,1,StrLen(Line)-1)
+}
+Log(Line)
 }
 ;--- Run With Log End ---
 
@@ -2346,3 +2352,59 @@ if (CrackAPPID = "" )
 
 
 ;------------ Auto Crack End ------------
+;------------ Edit_Append Start ----------
+Edit_Append(hEdit, Txt) { ; Modified version by SKAN
+Local        ; Original by TheGood on 09-Apr-2010 @ autohotkey.com/board/topic/52441-/?p=328342
+  L := DllCall("SendMessage", "Ptr",hEdit, "UInt",0x0E, "Ptr",0 , "Ptr",0)   ; WM_GETTEXTLENGTH
+       DllCall("SendMessage", "Ptr",hEdit, "UInt",0xB1, "Ptr",L , "Ptr",L)   ; EM_SETSEL
+       DllCall("SendMessage", "Ptr",hEdit, "UInt",0xC2, "Ptr",0 , "Str",Txt) ; EM_REPLACESEL
+}
+;------------ Edit_Append End ----------
+;------------ RunCMD Start ----------
+RunCMD(CmdLine, WorkingDir:="", Codepage:="CP0", Fn:="RunCMD_Output") {  ;         RunCMD v0.94        
+Local         ; RunCMD v0.94 by SKAN on D34E/D37C @ autohotkey.com/boards/viewtopic.php?t=74647                                                             
+Global A_Args ; Based on StdOutToVar.ahk by Sean @ autohotkey.com/board/topic/15455-stdouttovar
+
+  Fn := IsFunc(Fn) ? Func(Fn) : 0
+, DllCall("CreatePipe", "PtrP",hPipeR:=0, "PtrP",hPipeW:=0, "Ptr",0, "Int",0)
+, DllCall("SetHandleInformation", "Ptr",hPipeW, "Int",1, "Int",1)
+, DllCall("SetNamedPipeHandleState","Ptr",hPipeR, "UIntP",PIPE_NOWAIT:=1, "Ptr",0, "Ptr",0)
+
+, P8 := (A_PtrSize=8)
+, VarSetCapacity(SI, P8 ? 104 : 68, 0)                          ; STARTUPINFO structure      
+, NumPut(P8 ? 104 : 68, SI)                                     ; size of STARTUPINFO
+, NumPut(STARTF_USESTDHANDLES:=0x100, SI, P8 ? 60 : 44,"UInt")  ; dwFlags
+, NumPut(hPipeW, SI, P8 ? 88 : 60)                              ; hStdOutput
+, NumPut(hPipeW, SI, P8 ? 96 : 64)                              ; hStdError
+, VarSetCapacity(PI, P8 ? 24 : 16)                              ; PROCESS_INFORMATION structure
+
+  If not DllCall("CreateProcess", "Ptr",0, "Str",CmdLine, "Ptr",0, "Int",0, "Int",True
+                ,"Int",0x08000000 | DllCall("GetPriorityClass", "Ptr",-1, "UInt"), "Int",0
+                ,"Ptr",WorkingDir ? &WorkingDir : 0, "Ptr",&SI, "Ptr",&PI)  
+     Return Format("{1:}", "", ErrorLevel := -1
+                   ,DllCall("CloseHandle", "Ptr",hPipeW), DllCall("CloseHandle", "Ptr",hPipeR))
+
+  DllCall("CloseHandle", "Ptr",hPipeW)
+, A_Args.RunCMD := { "PID": NumGet(PI, P8? 16 : 8, "UInt") }      
+, File := FileOpen(hPipeR, "h", Codepage)
+
+, LineNum := 1,  sOutput := ""
+  While (A_Args.RunCMD.PID + DllCall("Sleep", "Int",0))
+    and DllCall("PeekNamedPipe", "Ptr",hPipeR, "Ptr",0, "Int",0, "Ptr",0, "Ptr",0, "Ptr",0)
+        While A_Args.RunCMD.PID and (Line := File.ReadLine())
+          sOutput .= Fn ? Fn.Call(Line, LineNum++) : Line
+
+  A_Args.RunCMD.PID := 0
+, hProcess := NumGet(PI, 0)
+, hThread  := NumGet(PI, A_PtrSize)
+
+, DllCall("GetExitCodeProcess", "Ptr",hProcess, "PtrP",ExitCode:=0)
+, DllCall("CloseHandle", "Ptr",hProcess)
+, DllCall("CloseHandle", "Ptr",hThread)
+, DllCall("CloseHandle", "Ptr",hPipeR)
+
+, ErrorLevel := ExitCode
+
+Return sOutput  
+}
+;------------ RunCMD End ----------

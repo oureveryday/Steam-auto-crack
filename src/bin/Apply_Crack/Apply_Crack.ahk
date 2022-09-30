@@ -1,4 +1,4 @@
-;Steam Auto Crack v2.2.1
+;Steam Auto Crack v2.2.2
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -24,8 +24,18 @@ global Processing
 Processing = 0
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.2.1
+Ver = v2.2.2
 CheckDependFile()
+
+OnError("ErrorHandler")
+
+ErrorHandler(exception) {
+    FileAppend % "Error on line " exception.Line ": " exception.Message "`n" , error.log
+    MsgBox,16,Error,% "Error on line " exception.Line ": " exception.Message "`n" , error.log
+    Processing = 0
+    Running = 0
+    return true
+}
 ;--- Script Init End ---
 
 ;--- Main ---
@@ -42,7 +52,7 @@ Gui Add,Button,x220 y130 w170 h60 gMainGuiClose,Exit
 Gui Add,Button,x420 y130 w170 h60 gAbout,About
 ;--- Log Start ---
 Gui Add,Text,x5 y215 w200 h15 +0x200,Log
-Gui Add,Edit,x5 y240 w590 r16 vLogBox readonly VScroll
+Gui Add,Edit,x5 y240 w590 r16 vLogBox HwndhLogBox readonly VScroll
 Gui Add,Button,x495 y210 w100 h25 gClearLog,Clear Log
 ;--- Log End ---
 GuiControl,,AutoUnpackFindFilePath,%A_ScriptDir%
@@ -64,11 +74,8 @@ ClearLog:
 ;--- Logger Start ---
 Log(LogString)
 {
-    global LogBoxClass
-    global Gui_ID
-    GuiControlGet,LogBox,Main:,LogBox
-    GuiControl,Main:,LogBox,%LogBox%`n%LogString%
-    ControlSend %LogBoxClass%,^{End},ahk_id %Gui_ID% 
+    global hLogBox
+    Edit_Append(hLogBox,LogString . "`r`n")
 }
 ;------Logger End----------
 
@@ -225,3 +232,12 @@ Log("Autohotkey Version: " . A_AhkVersion)
 MsgBox,64,About, Steam Auto Crack %Ver%`nAutomatic Steam Game Cracker`nGithub: https://github.com/oureveryday/Steam-auto-crack`nGitlab: https://gitlab.com/oureveryday/Steam-auto-crack
 return
 ;--- About End ---
+
+;------------ Edit_Append Start ----------
+Edit_Append(hEdit, Txt) { ; Modified version by SKAN
+Local        ; Original by TheGood on 09-Apr-2010 @ autohotkey.com/board/topic/52441-/?p=328342
+  L := DllCall("SendMessage", "Ptr",hEdit, "UInt",0x0E, "Ptr",0 , "Ptr",0)   ; WM_GETTEXTLENGTH
+       DllCall("SendMessage", "Ptr",hEdit, "UInt",0xB1, "Ptr",L , "Ptr",L)   ; EM_SETSEL
+       DllCall("SendMessage", "Ptr",hEdit, "UInt",0xC2, "Ptr",0 , "Str",Txt) ; EM_REPLACESEL
+}
+;------------ Edit_Append End ----------
