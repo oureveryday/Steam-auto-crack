@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.3.0
+﻿;Steam Auto Crack v2.3.1
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -28,7 +28,7 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.3.0
+Ver = v2.3.1
 CheckDependFile()
 
 OnError("ErrorHandler")
@@ -2952,13 +2952,22 @@ AppIDFinderLoad()
         return
     }
     LV_Add("","Loading App List From Steam...(This Might Take a While)")	
+    SetTimer, AppIDFinderLoad2,50
     GetAppList()
+}
+
+AppIDFinderLoad2:
+Gui, AppIDFinder:Default
+if (IsObject(AppIDFinderAppList))
+{
     LV_Delete()
     GuiControl,Enable,AppIDFinderSearch
     LV_Add("","Ready To Search.")
     Log("AppID Finder Loaded.")
+    SetTimer,AppIDFinderLoad2,Off
     return
 }
+return
 
 AppIDFinderSearch()
 {
@@ -3021,6 +3030,8 @@ GetAppList()
     return
 }
 
+
+
 DownloadToString(url, encoding = "utf-8")
 {
     static a := "AutoHotkey/" A_AhkVersion
@@ -3047,6 +3058,7 @@ if (AppIDFinderProcessing = 1)
     MsgBox,16,Info,Please Wait Until Process Complete before Closing.
     return
 }
+SetTimer, AppIDFinderLoad2,Off
 AppIDFinderRunning = 0
 Gui,Destroy
 return
@@ -3057,6 +3069,7 @@ if (AppIDFinderProcessing = 1)
     MsgBox,16,Info,Please Wait Until Process Complete before Closing.
     return
 }
+SetTimer, AppIDFinderLoad2,Off
 AppIDFinderRunning = 0
 Gui,Destroy
 return
