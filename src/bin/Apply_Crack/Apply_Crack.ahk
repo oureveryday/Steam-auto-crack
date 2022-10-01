@@ -1,4 +1,4 @@
-;Steam Auto Crack v2.2.4
+;Steam Auto Crack v2.3.0
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -24,7 +24,7 @@ global Processing
 Processing = 0
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.2.4
+Ver = v2.3.0
 CheckDependFile()
 
 OnError("ErrorHandler")
