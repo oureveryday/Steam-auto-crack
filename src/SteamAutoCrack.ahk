@@ -370,7 +370,7 @@ AutoUnpackFindUnpackFile:
     Processing = 1
     FilePath = 
     GuiControlGet,FilePath,AutoUnpackFind: ,AutoUnpackFindFilePath
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
@@ -1258,7 +1258,7 @@ AutoFindApplyEMUApplyFile:
         Processing = 0
         return
     }
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
@@ -1354,7 +1354,7 @@ RestoreFile:
     FileName =
     FileDir =
     GuiControlGet,FilePath,Restore: ,RestoreFilePath
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
@@ -1701,14 +1701,14 @@ GenCrackFile:
     GuiControlGet,GenCrackCreateReadme,,GenCrackCreateReadme
     GuiControlGet,GenCrackPack,,GenCrackPack
     
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Game Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Game Path Not Exist.
         Processing = 0
         return
     }
-    if (!FileExist(OutputPath))
+    if (!DirExist(OutputPath))
     {
         Log(Format("Output Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Output Path Not Exist.
@@ -2366,7 +2366,7 @@ CrackAutoUnpackFindUnpackFile()
 {
     FilePath = 
     GuiControlGet,FilePath,,CrackGenCrackFilePath
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
@@ -2399,7 +2399,7 @@ CrackAutoFindApplyEMUApplyFile()
         MsgBox,16,Info,Steam Emulator Settings Not Generated.
         return 2
     }
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Path Not Exist.
@@ -2438,7 +2438,7 @@ if (CrackAPPID = "" )
     return 1
 }
     GuiControlGet,FilePath,,CrackGenCrackFilePath
-    if (!FileExist(FilePath))
+    if (!DirExist(FilePath))
     {
         Log(Format("Path '{1}' Not Exist.",FilePath))
         MsgBox,16,Error,Game Path Not Exist, Crack Failed.
@@ -3202,3 +3202,10 @@ Sift_SortResults(ByRef Data)
 	return
 }
 ;----------Sift Fuzzy Search End -----
+;----------DirExist Start-----------
+DirExist(FilePattern)
+{
+    local AttributeString := FileExist(FilePattern)
+    return InStr(AttributeString, "D") ? AttributeString : ""
+}
+;----------DirExist End-----------
