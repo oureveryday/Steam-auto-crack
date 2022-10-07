@@ -9,6 +9,8 @@ Automatic Crack Games With SteamStub and Steam API.
 Written by AutoHotKey. Latest Version 2.0 Introduced GUI Interface.  
 [Latest Release](https://github.com/oureveryday/Steam-auto-crack/releases) 
 
+ * User manual: https://github.com/oureveryday/Steam-auto-crack/wiki 
+
  * Github: https://github.com/oureveryday/Steam-auto-crack 
  * Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack 
 
