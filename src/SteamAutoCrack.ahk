@@ -1,4 +1,4 @@
-﻿;Steam Auto Crack v2.3.1
+﻿;Steam Auto Crack v2.3.2
 ;Automatic Steam Game Cracker
 ;Github: https://github.com/oureveryday/Steam-auto-crack
 ;Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack
@@ -28,16 +28,17 @@ global Processing
 Processing = 0 
 DetectHiddenWindows,On
 Running = 0
-Ver = v2.3.1
+Ver = v2.3.2
 CheckDependFile()
 
 OnError("ErrorHandler")
 
 ErrorHandler(exception) {
-    FileAppend % "Error on line " exception.Line ": " exception.Message "`n" , error.log
-    MsgBox,16,Error,% "Error on line " exception.Line ": " exception.Message "`n" , error.log
+    FileAppend % "Error on line " exception.Line ": " exception.Message "`n" , Error.log
+    MsgBox,16,Error,% "Error on line " exception.Line ": " exception.Message "`n" , Error.log
     Processing = 0
     Running = 0
+    AppIDFinderRunning = 0
     return true
 }
 ;--- Script Init End ---
@@ -433,7 +434,7 @@ Gui Font
 Gui Add,Text,x10 y50 w100 h25 +0x200,Steam App ID:
 Gui Add,Edit,x105 y50 w70 h25 vEMUConfigAPPID
 Gui Add,Button,x200 y50 w150 h25 gEMUConfigAppIDFinder,App ID Finder
-Gui Add,Link,x380 y60 w200 h25,Get App ID on <a href="https://steamdb.info/">SteamDB</a>
+Gui Add,Link,x380 y60 w200 h25,Or Get App ID on <a href="https://steamdb.info/">SteamDB</a>
 ;------
 Gui Add,GroupBox,x10 y120 w580 h150,Generate Game Info
 Gui Add,CheckBox,x40 y140 w130 h25 vEMUConfigGenOnline gEMUConfigGenUpdate,Generate Online
@@ -1135,7 +1136,7 @@ if (UseLocalSave = 1)
     FileDelete,% format("{1}\local_save.txt",FileDir)
     FileAppend,% SavePath,% format("{1}\local_save.txt",FileDir)
 }
-Log("Emulator Applied.")
+Log("Steam Emulator Applied.")
 return
 }
 ;--- ApplyEmu End ---
@@ -1818,7 +1819,7 @@ Gui Font
 Gui Add,Text,x10 y120 w100 h25 +0x200,Steam App ID:
 Gui Add,Edit,x105 y120 w70 h25 vCrackAPPID
 Gui Add,Button,x200 y120 w150 h25 gCrackAppIDFinder,App ID Finder
-Gui Add,Link,x380 y130 w200 h25,Get App ID on <a href="https://steamdb.info/">SteamDB</a>
+Gui Add,Link,x380 y130 w200 h25,Or Get App ID on <a href="https://steamdb.info/">SteamDB</a>
 ;------
 Gui Add,Text,x10 y50 w100 h25 +0x200,Game Path:
 Gui Add,Edit,x105 y50 w450 h25 vCrackGenCrackFilePath
@@ -2943,6 +2944,7 @@ AppIDFinderLoad()
     global AppIDFinderAppList
     Log("Loading AppID Finder...")
     LV_ModifyCol(1,400)
+    LV_ModifyCol(2,245)
     if (IsObject(AppIDFinderAppList))
     {
         Log("AppID Finder App List Already Loaded.")
@@ -3026,11 +3028,30 @@ AppIDFinderSearch()
 GetAppList()
 {
     global
-    AppIDFinderAppList := JSON.Load(DownloadToString("https://api.steampowered.com/ISteamApps/GetAppList/v2/")).applist.apps
+    if FileExist("Temp\SteamAppList.json")
+    {
+        Log("Using Cached Steam App List. (To Download Latest App List Please Delete TEMP File.)")
+        FileRead,AppIDFinderAppListJson,*P65001 Temp\SteamAppList.json
+    }
+    else
+    {
+        Log("Downloading Steam App List...")
+        FileCreateDir,Temp
+        AppIDFinderAppListJson := DownloadToString("https://api.steampowered.com/ISteamApps/GetAppList/v2/")
+        FileAppend ,% AppIDFinderAppListJson,Temp\SteamAppList.json, UTF-8
+    }
+    try
+    {
+        AppIDFinderAppList := JSON.Load(AppIDFinderAppListJson).applist.apps
+    }
+    catch e
+    {
+        Log("Json Parse Error.")
+        MsgBox,16,Error,Json Parse Error.`nPlease Reopen AppID Finder To Retry.
+        FileDelete,Temp\SteamAppList.json
+    }
     return
 }
-
-
 
 DownloadToString(url, encoding = "utf-8")
 {
