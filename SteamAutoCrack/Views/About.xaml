@@ -15,19 +15,22 @@
         <TextBlock x:Name="SteamAutoCrack" HorizontalAlignment="Left" Margin="110,10,0,0" TextWrapping="Wrap" Text="{Binding Ver}" VerticalAlignment="Top" Height="35" Width="235" FontSize="20"/>
         <Image x:Name="Logo" HorizontalAlignment="Left" Height="40" Margin="60,5,0,0" VerticalAlignment="Top" Width="40" Source="/Views/SteamAutoCrack.png"/>
 
-        <Image x:Name="Github" HorizontalAlignment="Left" Margin="25,70,0,0" VerticalAlignment="Top" Width="40" Height="40" Source="/Views/Github.png"/>
-        <TextBlock HorizontalAlignment="Left" Margin="90,80,0,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Left" Margin="95,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219" Height="25" FontSize="14"><Run Language="zh-cn" Text="Steam Game Auto"/><Run Text="matic Cracker"/></TextBlock>
+
+        <Image x:Name="Github" HorizontalAlignment="Left" Margin="25,150,0,0" VerticalAlignment="Top" Width="40" Height="40" Source="/Views/Github.png"/>
+        <TextBlock HorizontalAlignment="Left" Margin="90,160,0,0" VerticalAlignment="Top">
                 <Hyperlink NavigateUri="https://github.com/oureveryday/Steam-auto-crack" RequestNavigate="Hyperlink_RequestNavigate">
                 Github
                 </Hyperlink>
         </TextBlock>
 
-        <Image x:Name="Gitlab" HorizontalAlignment="Left" Margin="230,70,0,0" VerticalAlignment="Top" Width="40" Height="40" Source="/Views/Gitlab.png"/>
-        <TextBlock HorizontalAlignment="Left" Margin="295,80,0,0" VerticalAlignment="Top">
+        <Image x:Name="Gitlab" HorizontalAlignment="Left" Margin="230,150,0,0" VerticalAlignment="Top" Width="40" Height="40" Source="/Views/Gitlab.png"/>
+        <TextBlock HorizontalAlignment="Left" Margin="295,160,0,0" VerticalAlignment="Top">
                 <Hyperlink NavigateUri="https://gitlab.com/oureveryday/Steam-auto-crack" RequestNavigate="Hyperlink_RequestNavigate">
                 Gitlab
                 </Hyperlink>
         </TextBlock>
-        
+
+
     </Grid>
 </Window>

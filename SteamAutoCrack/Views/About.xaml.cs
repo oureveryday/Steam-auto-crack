@@ -19,7 +19,7 @@ namespace SteamAutoCrack.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-            _log.Information("Steam Auto Crack {Ver}", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            _log.Information("Steam Auto Crack " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             _log.Information("Github: https://gitlab.com/oureveryday/Steam-auto-crack");
             _log.Information("Gitlab: https://github.com/oureveryday/Steam-auto-crack");
         }

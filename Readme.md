@@ -22,18 +22,14 @@ Latest Version 3.0 Using .Net 6.0.
  * Automatic Restore Crack. 
 
 ## Dependencies 
- * https://github.com/oureveryday/Goldberg-generate_game_info 
  * https://github.com/atom0s/Steamless 
  * https://gitlab.com/Mr_Goldberg/goldberg_emulator 
- * https://www.7-zip.org/ 
- * https://www.autohotkey.com/ 
 
 ## Build 
- * Windows: Run `build\build.bat` 
+ * Build with Visual Studio 2022. 
  
 ## Usage 
  * Download all files and run bin\Release\SteamAutoCrack.zip" or download from [Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases). 
-
 
 ## Bugs 
 If You Have Any Bugs, Please Submit a Issue On Github. 

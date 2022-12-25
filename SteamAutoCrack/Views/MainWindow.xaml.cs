@@ -63,12 +63,13 @@ namespace SteamAutoCrack
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             Settings.IsEnabled = false;
-
+            Start.IsEnabled = false;
             Task.Run(async () =>
             {
                 await new Processor().ProcessFileGUI().ConfigureAwait(false);
                 Dispatcher.Invoke(new Action(() => {
                     Settings.IsEnabled = true;
+                    Start.IsEnabled = true;
                 }));
             });
         }
@@ -375,7 +376,6 @@ namespace SteamAutoCrack
             viewModel.GenerateEMUConfig = true;
             viewModel.Unpack = true;
             viewModel.ApplyEMU = true;
-            viewModel.GenerateCrackOnly = true;
         }
 
         #endregion

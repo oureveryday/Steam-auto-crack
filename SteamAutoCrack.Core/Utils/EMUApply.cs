@@ -130,7 +130,7 @@ namespace SteamAutoCrack.Core.Utils
             {
                 if (!CheckGoldberg(emuApplyConfig))
                 {
-                    _log.Error("Goldberg emulator file missing. Please download it in settings.");
+                    _log.Error("Goldberg emulator file missing.");
                     return false;
                 }
                 if (!File.Exists(Path.Combine(emuApplyConfig.ConfigPath, "steam_appid.txt")))
@@ -169,7 +169,7 @@ namespace SteamAutoCrack.Core.Utils
             }
         }
 
-        private bool CheckGoldberg(EMUApplyConfig emuApplyConfig)
+        public bool CheckGoldberg(EMUApplyConfig emuApplyConfig)
         {
             try
             {

@@ -482,16 +482,11 @@ namespace SteamAutoCrack.Core.Config
         /// Pack Crack only file with .zip archive.
         /// </summary>
         public bool Pack { get; set; } = GenCrackOnlyConfigDefault.Pack;
-        /// <summary>
-        /// Generate crack applier (Steamstub unpacker) if found packed .exe .
-        /// </summary>
-        public bool GenerateApplier { get; set; } = GenCrackOnlyConfigDefault.GenerateApplier;
         public void ResettoDefault()
         {
             OutputPath = GenCrackOnlyConfigDefault.OutputPath;
             CreateReadme = GenCrackOnlyConfigDefault.CreateReadme;
             Pack = GenCrackOnlyConfigDefault.Pack;
-            GenerateApplier = GenCrackOnlyConfigDefault.GenerateApplier;
         }
         public GenCrackOnlyConfig GetGenCrackOnlyConfig()
         {
@@ -501,7 +496,6 @@ namespace SteamAutoCrack.Core.Config
                 OutputPath = OutputPath,
                 CreateReadme = CreateReadme,
                 Pack = Pack,
-                GenerateApplier = GenerateApplier,
             };
         }
     }

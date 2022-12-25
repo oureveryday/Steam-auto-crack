@@ -118,18 +118,17 @@
         </Grid>
 
         <CheckBox x:Name="GenerateCrackOnly" Content="5. Generate Crack Only Files" HorizontalAlignment="Left" Margin="10,510,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateCrackOnly}"/>
-        <Grid Margin="10,475,0,10" Height="75" Width="480">
+        <Grid Margin="10,455,0,10" Height="55" Width="480">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Output Path:" VerticalAlignment="Top"/>
             <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="93,9,0,0" TextWrapping="NoWrap" Text="{Binding OutputPath}" VerticalAlignment="Top" Width="349"/>
 
             <CheckBox x:Name="CreateReadme" Content="Create Crack Readme File" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" IsChecked="{Binding CreateReadme}"/>
             <CheckBox x:Name="Pack" Content="Pack File With Zip Archive" HorizontalAlignment="Left" Margin="223,31,0,0" VerticalAlignment="Top" IsChecked="{Binding Pack}"/>
-            <CheckBox x:Name="GenerateApplier" Content="Generate Crack Applier (SteamStub Unpacker)" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateApplier}"/>
             <Button x:Name="SelectOutpath" Content="..." HorizontalAlignment="Left" Margin="450,8,0,0" VerticalAlignment="Top" Width="25" Height="17" Click="SelectOutpath_Click"/>
         </Grid>
 
-        <CheckBox x:Name="Restore" Content="6. Restore Crack" HorizontalAlignment="Left" Margin="10,605,0,0" VerticalAlignment="Top" IsChecked="{Binding Restore}" Checked="Restore_Checked" Unchecked="Restore_Unchecked"/>
+        <CheckBox x:Name="Restore" Content="6. Restore Crack" HorizontalAlignment="Left" Margin="10,585,0,0" VerticalAlignment="Top" IsChecked="{Binding Restore}" Checked="Restore_Checked" Unchecked="Restore_Unchecked"/>
 
 
 

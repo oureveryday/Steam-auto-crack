@@ -66,7 +66,6 @@ namespace SteamAutoCrack.ViewModels
             NotifyPropertyChanged("ForceGenerateInterfacesFiles");
             NotifyPropertyChanged("OutputPath");
             NotifyPropertyChanged("CreateReadme"); 
-            NotifyPropertyChanged("GenerateApplier");
             NotifyPropertyChanged("Pack");
         }
         #endregion
@@ -715,22 +714,6 @@ namespace SteamAutoCrack.ViewModels
                 {
                     Config.GenCrackOnlyConfigs.Pack = value;
                     NotifyPropertyChanged("Pack");
-                }
-            }
-        }
-        public bool GenerateApplier
-        {
-            get
-            {
-                return Config.GenCrackOnlyConfigs.GenerateApplier;
-            }
-
-            set
-            {
-                if (value != Config.GenCrackOnlyConfigs.GenerateApplier)
-                {
-                    Config.GenCrackOnlyConfigs.GenerateApplier = value;
-                    NotifyPropertyChanged("GenerateApplier");
                 }
             }
         }

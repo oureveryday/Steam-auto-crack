@@ -202,13 +202,13 @@
                             else
                             {
                                 bError = true;
-                                _log.Error("Failed to unpack file \"{path}\".(File not Packed/Other Protector)", path);
+                                _log.Warning("Failed to unpack file \"{path}\".(File not Packed/Other Protector)", path);
                             }
                         }
                     }
                     if (!bSuccess && !bError)
                     {
-                        _log.Error("Cannot to unpack file \"{path}\".(File not Packed/Other Protector)", path);
+                        _log.Warning("Cannot to unpack file \"{path}\".(File not Packed/Other Protector)", path);
                     }
                 }
                 catch (Exception e)

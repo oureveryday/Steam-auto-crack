@@ -49,6 +49,10 @@ namespace SteamAutoCrack.Core.Utils
                 if (Config.Config.ProcessConfigs.ApplyEMU)
                 {
                     emuApplyConfigs = Config.Config.EMUApplyConfigs.GetEMUApplyConfig();
+                    if (!new EMUApply().CheckGoldberg(emuApplyConfigs))
+                    {
+                        throw new Exception("Goldberg emulator file missing. Please download it in settings.");
+                    }
                 }
                 if (Config.Config.ProcessConfigs.GenerateCrackOnly)
                 {
