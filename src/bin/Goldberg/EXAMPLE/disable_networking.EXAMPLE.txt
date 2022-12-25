@@ -1,1 +1,0 @@
-Rename this to: disable_networking.txt to disable all networking functionality.

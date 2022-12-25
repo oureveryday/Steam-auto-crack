@@ -1,0 +1,403 @@
+﻿using Serilog;
+using SteamKit2;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System;
+using static SteamKit2.Internal.CChatUsability_ClientUsabilityMetrics_Notification;
+using System.IO;
+using System.Text.RegularExpressions;
+using AuthenticodeExaminer;
+using static SteamKit2.Internal.CMsgClientUGSGetGlobalStatsResponse;
+using static SteamKit2.DepotManifest;
+
+namespace SteamAutoCrack.Core.Utils
+{
+    public class EMUApplyConfig
+    {
+        /// <summary>
+        /// Steam emulator config path.
+        /// </summary>
+        public string? ConfigPath { get; set; } = Path.Combine(Config.Config.TempPath, "steam_settings");
+        /// <summary>
+        /// Path of steam emulator files.
+        /// </summary>
+        public string? GoldbergPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Goldberg");
+        /// <summary>
+        /// Path to apply steam emulator.
+        /// </summary>
+        public string? ApplyPath { get; set; }
+        /// <summary>
+        /// Emulator save location.
+        /// </summary>
+        public string? LocalSave { get; set; } = Path.Combine("steam_settings", "settings");
+        /// <summary>
+        /// Enable change default emulator save location.
+        /// </summary>
+        public bool UseLocalSave { get; set; } = false;
+        /// <summary>
+        /// Use Experimental version of goldberg emulator.
+        /// </summary>
+        public bool UseGoldbergExperimental { get; set; } = false;
+        /// <summary>
+        /// Detect file sign date and generate steam_interfaces.txt
+        /// </summary>
+        public bool GenerateInterfacesFile { get; set; } = false;
+        /// <summary>
+        /// Force generate file steam_interfaces.txt (Ignore file sign date)
+        /// </summary>
+        public bool ForceGenerateInterfacesFiles { get; set;} = false;
+    }
+
+    public class EMUApplyConfigDefault
+    {
+        /// <summary>
+        /// Steam emulator config path.
+        /// </summary>  
+        public static readonly string? ConfigPath = Path.Combine(Config.Config.TempPath, "steam_settings");
+        /// <summary>
+        /// Path to apply steam emulator.
+        /// </summary>
+        public static readonly string? ApplyPath;
+        /// <summary>
+        /// Path of steam emulator files.
+        /// </summary>
+        public static readonly string? GoldbergPath = Path.Combine(Directory.GetCurrentDirectory(), "Goldberg");
+        /// <summary>
+        /// Emulator save location.
+        /// </summary>
+        public static readonly string? LocalSave = Path.Combine("steam_settings", "settings");
+        /// <summary>
+        /// Enable change default emulator save location.
+        /// </summary>
+        public static readonly bool UseLocalSave = false;
+        /// <summary>
+        /// Use Experimental version of goldberg emulator.
+        /// </summary>
+        public static readonly bool UseGoldbergExperimental = false;
+        /// <summary>
+        /// Detect file sign date and generate steam_interfaces.txt
+        /// </summary>
+        public static readonly bool GenerateInterfacesFile = false;
+        /// <summary>
+        /// Force generate file steam_interfaces.txt (Ignore file sign date)
+        /// </summary>
+        public static readonly bool ForceGenerateInterfacesFiles = false;
+    }
+
+    public interface IEMUApply
+    {
+        public Task<bool> Apply(EMUApplyConfig emuApplyConfig);
+    }
+
+    public class EMUApply : IEMUApply
+    {
+        private readonly List<string> InterfaceNames= new List<string> {"SteamClient",
+        "SteamGameServer",
+        "SteamGameServerStats",
+        "SteamUser",
+        "SteamFriends",
+        "SteamUtils",
+        "SteamMatchMaking",
+        "SteamMatchMakingServers",
+        "STEAMUSERSTATS_INTERFACE_VERSION",
+        "STEAMAPPS_INTERFACE_VERSION",
+        "SteamNetworking",
+        "STEAMREMOTESTORAGE_INTERFACE_VERSION",
+        "STEAMSCREENSHOTS_INTERFACE_VERSION",
+        "STEAMHTTP_INTERFACE_VERSION",
+        "STEAMUNIFIEDMESSAGES_INTERFACE_VERSION",
+        "STEAMUGC_INTERFACE_VERSION",
+        "STEAMAPPLIST_INTERFACE_VERSION",
+        "STEAMMUSIC_INTERFACE_VERSION",
+        "STEAMMUSICREMOTE_INTERFACE_VERSION",
+        "STEAMHTMLSURFACE_INTERFACE_VERSION_",
+        "STEAMINVENTORY_INTERFACE_V",
+        "SteamController",
+        "SteamMasterServerUpdater",
+        "STEAMVIDEO_INTERFACE_V"};
+        private readonly ILogger _log;
+        public EMUApply()
+        {
+            _log = Log.ForContext<EMUApply>();
+        }
+        public async Task<bool> Apply(EMUApplyConfig emuApplyConfig)
+        {
+            try
+            {
+                if (!CheckGoldberg(emuApplyConfig))
+                {
+                    _log.Error("Goldberg emulator file missing. Please download it in settings.");
+                    return false;
+                }
+                if (!File.Exists(Path.Combine(emuApplyConfig.ConfigPath, "steam_appid.txt")))
+                {
+                    _log.Error("Emulator Config Not Exist. (Please generate emulator game info first)");
+                    return false;
+                }
+                if (string.IsNullOrEmpty(emuApplyConfig.ApplyPath) || !(File.Exists(emuApplyConfig.ApplyPath) || Directory.Exists(emuApplyConfig.ApplyPath)))
+                {
+                    _log.Error("Invaild input path.");
+                    return false;
+                }
+                if (File.GetAttributes(emuApplyConfig.ApplyPath).HasFlag(FileAttributes.Directory))
+                {
+                    await ApplytoFolder(emuApplyConfig).ConfigureAwait(false);
+                }
+                else if (Path.GetFileNameWithoutExtension(emuApplyConfig.ApplyPath) == "steam_api")
+                {
+                    await Applyx86(emuApplyConfig.ApplyPath,emuApplyConfig).ConfigureAwait(false);
+                }
+                else if (Path.GetFileNameWithoutExtension(emuApplyConfig.ApplyPath) == "steam_api64")
+                {
+                    await Applyx64(emuApplyConfig.ApplyPath, emuApplyConfig).ConfigureAwait(false);
+                }
+                else
+                {
+                    _log.Error("Cannot apply file \"{path}\". (Wrong file type)", emuApplyConfig.ApplyPath);
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Failed to apply Steam emulator.");
+                return false;
+            }
+        }
+
+        private bool CheckGoldberg(EMUApplyConfig emuApplyConfig)
+        {
+            try
+            {
+                _log.Debug("Checking all goldberg emulator file exists or not...");
+                if (!Directory.Exists(emuApplyConfig.GoldbergPath))
+                {
+                    return false;
+                }
+                List<string> filelist = new List<string>()
+                {
+                    Path.Combine(emuApplyConfig.GoldbergPath,"steam_api64.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath,"steam_api.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath, "experimental","steam_api64.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath, "experimental","steam_api.dll"),
+                };
+                foreach (string file in filelist)
+                {
+                    if (!File.Exists(file))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Failed to Check goldberg emulator.");
+                return false;
+            }
+        }
+
+        private async Task Applyx64(string filePath, EMUApplyConfig emuApplyConfig)
+        {
+            try
+            {
+                _log.Debug("Applying Steam emulator to \"{filePath}\"...", filePath);
+                if (File.Exists(Path.ChangeExtension(filePath, ".dll.bak"))) 
+                {
+                    _log.Information("Backup file already exists, skipping apply Steam emulator \"{filePath}\"...", filePath);
+                    return;
+                }
+                File.Move(filePath, Path.ChangeExtension(filePath, ".dll.bak"));
+                if (emuApplyConfig.UseGoldbergExperimental)
+                {
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "experimental", "steam_api64.dll"),filePath);
+                }
+                else
+                {
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "steam_api64.dll"), filePath);
+                }
+                if (emuApplyConfig.UseLocalSave)
+                {
+                    if (!File.Exists(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt")))
+                    {
+                        File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt"),emuApplyConfig.LocalSave);
+                        _log.Debug("Generated local_save.txt.");
+                    }
+                }
+                if (emuApplyConfig.GenerateInterfacesFile)
+                {
+                    await GenerateInterfacesFile(Path.ChangeExtension(filePath, ".dll.bak"), emuApplyConfig.ForceGenerateInterfacesFiles).ConfigureAwait(false);
+                }
+                if (Directory.Exists(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))) 
+                {
+                    _log.Debug("steam_settings folder already exists, skipping copy steam_settings folder...");
+                    _log.Information("Steam emulator \"{filePath}\" applied.",filePath);
+                    return;
+                }
+                CopyDirectory(new DirectoryInfo(emuApplyConfig.ConfigPath), new DirectoryInfo((Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))));
+                return;
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", filePath);
+                return;
+            }
+        }
+
+        private async Task Applyx86(string filePath, EMUApplyConfig emuApplyConfig)
+        {
+            try
+            {
+                _log.Debug("Applying Steam emulator to \"{filePath}\"...", filePath);
+                if (File.Exists(Path.ChangeExtension(filePath, ".dll.bak")))
+                {
+                    _log.Information("Backup file already exists, skipping apply Steam emulator \"{filePath}\"...", filePath);
+                    return;
+                }
+                File.Move(filePath, Path.ChangeExtension(filePath, ".dll.bak"));
+                if (emuApplyConfig.UseGoldbergExperimental)
+                {
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "experimental", "steam_api.dll"), filePath);
+                }
+                else
+                {
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "steam_api.dll"), filePath);
+                }
+                if (emuApplyConfig.GenerateInterfacesFile)
+                {
+                    await GenerateInterfacesFile(Path.ChangeExtension(filePath, ".dll.bak"), emuApplyConfig.ForceGenerateInterfacesFiles).ConfigureAwait(false);
+                }
+                if (emuApplyConfig.UseLocalSave)
+                {
+                    if (!File.Exists(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt")))
+                    {
+                        File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt"), emuApplyConfig.LocalSave);
+                        _log.Debug("Generated local_save.txt.");
+                    }
+                }
+                if (Directory.Exists(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings")))
+                {
+                    _log.Debug("steam_settings folder already exists, skipping copy steam_settings folder...");
+                    _log.Information("Steam emulator \"{filePath}\" applied.", filePath);
+                    return;
+                }
+                CopyDirectory(new DirectoryInfo(emuApplyConfig.ConfigPath), new DirectoryInfo((Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))));
+                return;
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", filePath);
+                return;
+            }
+        }
+
+        private async Task ApplytoFolder(EMUApplyConfig emuApplyConfig)
+        {
+            try
+            {
+                _log.Debug("Applying Steam emulator to \"{filePath}\"...", emuApplyConfig.ApplyPath);
+                foreach (string dllpath in Directory.EnumerateFiles(emuApplyConfig.ApplyPath, "steam_api.dll", SearchOption.AllDirectories))
+                {
+                    await Applyx86(dllpath, emuApplyConfig).ConfigureAwait(false);
+                }
+                foreach (string dllpath in Directory.EnumerateFiles(emuApplyConfig.ApplyPath, "steam_api64.dll", SearchOption.AllDirectories))
+                {
+                    await Applyx64(dllpath, emuApplyConfig).ConfigureAwait(false);
+                }
+                _log.Information("Applyed Steam emulator to \"{filePath}\"...", emuApplyConfig.ApplyPath);
+                return;
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", emuApplyConfig.ApplyPath);
+                return;
+            }
+        }
+
+        public void CopyDirectory(DirectoryInfo source, DirectoryInfo target)
+        {
+            Directory.CreateDirectory(target.FullName);
+
+            // Copy each file into the new directory.
+            foreach (FileInfo fi in source.GetFiles())
+            {
+                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+            }
+
+            // Copy each subdirectory using recursion.
+            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
+            {
+                DirectoryInfo nextTargetSubDir =
+                    target.CreateSubdirectory(diSourceSubDir.Name);
+                CopyDirectory(diSourceSubDir, nextTargetSubDir);
+            }
+        }
+
+        private async Task GenerateInterfacesFile(string filePath, bool force)
+        {
+            try
+            {
+                if (File.Exists(Path.Combine(Path.GetDirectoryName(filePath), "steam_interfaces.txt")))
+                {
+                    _log.Debug("steam_interfaces.txt already exists, skipping generate interfaces.");
+                }
+                _log.Debug("Generating interface file for \"{filePath}\"", filePath);
+                if (!force)
+                {
+                    var extractor = new FileInspector(filePath);
+                    var signTime = extractor.GetSignatures().FirstOrDefault()?.TimestampSignatures.FirstOrDefault()?.TimestampDateTime?.UtcDateTime;
+                    if (signTime == null)
+                    {
+                        _log.Debug("No sign timestamp, skipping generate interface file.");
+                        return;
+                    }
+                    if ((DateTime.Compare((DateTime)signTime, DateTime.Parse("2016-05-01 00:00:00")) >= 0))
+                    {
+                        _log.Debug("Timestamp is after May 2016, skipping generate interface file.");
+                        return;
+                    }
+                }
+                var result = new HashSet<string>();
+                var dllContent = File.ReadAllText(filePath);
+                // find interfaces
+                foreach (var name in InterfaceNames)
+                {
+                    FindInterfaces(ref result, dllContent, new Regex($"{name}\\d{{3}}"));
+                    if (!FindInterfaces(ref result, dllContent, new Regex(@"STEAMCONTROLLER_INTERFACE_VERSION\d{3}")))
+                    {
+                        FindInterfaces(ref result, dllContent, new Regex("STEAMCONTROLLER_INTERFACE_VERSION"));
+                    }
+                }
+                var dirPath = Path.GetDirectoryName(filePath);
+                if (dirPath == null) return;
+                await using var destination = File.CreateText(Path.Combine(dirPath, "steam_interfaces.txt"));
+                foreach (var s in result)
+                {
+                    await destination.WriteLineAsync(s).ConfigureAwait(false);
+                }
+                destination.Close();
+            }
+            catch(Exception e) 
+            {
+                _log.Error(e, "Failed to generate Interfaces File.");
+            }
+        }
+
+        private static bool FindInterfaces(ref HashSet<string> result, string dllContent, Regex regex)
+        {
+            var success = false;
+            var matches = regex.Matches(dllContent);
+            foreach (Match match in matches)
+            {
+                success = true;
+                //result += $@"{match.Value}\n";
+                result.Add(match.Value);
+            }
+            return success;
+        }
+    }
+}

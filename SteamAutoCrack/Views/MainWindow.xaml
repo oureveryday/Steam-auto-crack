@@ -1,0 +1,137 @@
+﻿<Window x:Class="SteamAutoCrack.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:SteamAutoCrack" 
+        xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
+        xmlns:utils="clr-namespace:SteamAutoCrack.Utils"
+        mc:Ignorable="d"
+        Title="SteamAutoCrack" Height="700" Width="1000"
+        ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <viewmodels:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <utils:EnumDescriptionConverter x:Key="enumConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500*"/>
+            <ColumnDefinition Width="500*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image x:Name="Logo" HorizontalAlignment="Left" Height="40" Margin="120,5,0,0" VerticalAlignment="Top" Width="40" Source="/Views/SteamAutoCrack.png"/>
+        <TextBlock x:Name="SteamAutoCrack" HorizontalAlignment="Left" Margin="175,10,0,0" TextWrapping="Wrap" Text="{Binding Ver}" VerticalAlignment="Top" Height="35" Width="235" FontSize="20"/>
+
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,20,0,0" TextWrapping="Wrap" Text="Log" VerticalAlignment="Top" Height="19" Width="39"/>
+        <Button x:Name="Clear_Log" Grid.Column="1" Content="Clear Log" HorizontalAlignment="Left" Margin="380,15,0,0" VerticalAlignment="Top" Height="20" RenderTransformOrigin="0.82,-0.368" Width="95" Click="Clear_Log_Click"/>
+        <Button x:Name="Settings" Content="Settings" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="24" Width="65" Click="Settings_Click"/>
+        <Button x:Name="About" Content="About" HorizontalAlignment="Left" Margin="425,10,0,0" VerticalAlignment="Top" Height="24" Width="65" Click="About_Click"/>
+        <Button x:Name="Start" Content="Start" HorizontalAlignment="Center" Margin="0,630,150,0" VerticalAlignment="Top" Height="24" Width="85" Click="Start_Click"/>
+        <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Center" Margin="150,630,0,0" VerticalAlignment="Top" Height="24" Width="85" Click="Exit_Click"/>
+        <ListView x:Name="LogBox" Grid.Column="1" Margin="10,40,15,10"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" Text="Path: " VerticalAlignment="Top"/>
+        <TextBox x:Name="InputPath" HorizontalAlignment="Left" Margin="45,50,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="410" MaxLines="1" PreviewDragOver="InputPath_PreviewDragOver" PreviewDrop="InputPath_PreviewDrop" Text="{Binding InputPath}"/>
+        <Button x:Name="Select" Content="..." HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="25" Height="17" Click="Select_Click"/>
+
+        <CheckBox x:Name="GenerateEMUGameInfo" Content="1. Generate Goldberg Steam Emulator Game Info" Margin="10,75,10,400" IsChecked="{Binding GenerateEMUGameInfo}"/>
+        <Grid Margin="10,40,0,415" Height="100" Width="480">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,5,0,0" Text="Steam AppID:" VerticalAlignment="Top"/>
+            <TextBox x:Name="AppID" HorizontalAlignment="Left" Margin="95,5,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="65" MaxLines="1" MaxLength="8" Text="{Binding AppID}" PreviewTextInput="AppID_PreviewTextInput" DataObject.Pasting="AppID_Pasting"/>
+            <Button x:Name="AppIDFinder" Content="AppID Finder" HorizontalAlignment="Left" Margin="170,5,0,0" VerticalAlignment="Top" Width="90" Click="AppIDFinder_Click"/>
+            <TextBlock HorizontalAlignment="Left" Margin="270,5,0,0" VerticalAlignment="Top">
+                Or get Steam AppID on 
+                <Hyperlink NavigateUri="https://steamdb.info/" RequestNavigate="Hyperlink_RequestNavigate">
+                SteamDB
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="10,32,0,0" TextWrapping="Wrap" Text="Generator API:" VerticalAlignment="Top"/>
+            <ComboBox x:Name="Generator" HorizontalAlignment="Left" Margin="100,30,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding GameInfoAPIs}" SelectedItem="{Binding GameInfoAPI}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource enumConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <CheckBox x:Name="UseXan105API" Content="Use Xan105 API" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" IsChecked="{Binding UseXan105API}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="128,58,0,0" TextWrapping="Wrap" Text="Steam Web API Key:" VerticalAlignment="Top"/>
+            <CheckBox x:Name="UseSteamWebAppList" Content="Use Steam Web App List" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" IsChecked="{Binding UseSteamWebAppList}"/>
+            <CheckBox x:Name="GenerateImages" Content="Generate Achievement Images" HorizontalAlignment="Left" Margin="215,80,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateImages}"/>
+            <TextBox x:Name="SteamWebAPIKey" HorizontalAlignment="Left" Margin="250,58,0,0" TextWrapping="NoWrap" Text="{Binding SteamWebAPIKey}" VerticalAlignment="Top" Width="212" MaxLines="1"/>
+        </Grid>
+
+        <CheckBox x:Name="GenerateEMUConfig" Content="2. Generate Goldberg Steam Emulator Configuration" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateEMUConfig}"/>
+        <Grid Margin="10,165,0,260" Height="130" Width="480" >
+            <Rectangle HorizontalAlignment="Left" Height="130" Stroke="Black" VerticalAlignment="Top" Width="300"/>
+            <Border BorderBrush="Black" BorderThickness="1"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="Language:" VerticalAlignment="Top"/>
+            <ComboBox x:Name="Language" HorizontalAlignment="Left" Margin="105,5,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}"/>
+            <CheckBox x:Name="LanguageForce" Content="Force" HorizontalAlignment="Left" Margin="240,5,0,0" VerticalAlignment="Top" IsChecked="{Binding LanguageForce}"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" TextWrapping="Wrap" Text="Listen Port:" VerticalAlignment="Top"/>
+            <TextBox x:Name="ListenPort" HorizontalAlignment="Left" Margin="105,30,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" MaxLength="5" PreviewTextInput="ListenPort_PreviewTextInput" DataObject.Pasting="ListenPort_Pasting" Text="{Binding ListenPort}"/>
+            <CheckBox x:Name="ListenPortForce" Content="Force" HorizontalAlignment="Left" Margin="240,30,0,0" VerticalAlignment="Top" IsChecked="{Binding ListenPortForce}"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="10,55,0,0" TextWrapping="Wrap" Text="Account Name:" VerticalAlignment="Top"/>
+            <TextBox x:Name="AccountName" HorizontalAlignment="Left" Margin="105,55,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" Text="{Binding AccountName}"/>
+            <CheckBox x:Name="AccountNameForce" Content="Force" HorizontalAlignment="Left" Margin="240,55,0,0" VerticalAlignment="Top" IsChecked="{Binding AccountNameForce}"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" TextWrapping="Wrap" Text="Steam ID:" VerticalAlignment="Top"/>
+            <TextBox x:Name="SteamID" HorizontalAlignment="Left" Margin="105,80,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" MaxLength="17" PreviewTextInput="SteamID_PreviewTextInput" DataObject.Pasting="SteamID_Pasting" Text="{Binding SteamID}"/>
+            <CheckBox x:Name="SteamIDForce" Content="Force" HorizontalAlignment="Left" Margin="240,80,0,0" VerticalAlignment="Top" IsChecked="{Binding SteamIDForce}"/>
+
+            <TextBox x:Name="CustomIP" HorizontalAlignment="Center" Margin="0,105,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="105" Text="{Binding CustomIP}"/>
+            <CheckBox x:Name="UseCustomIP" Content="Use Custom Broadcast IP:" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" IsChecked="{Binding UseCustomIP}"/>
+
+            <CheckBox x:Name="DisableNetworking" Content="Disable Networking" HorizontalAlignment="Left" Margin="305,5,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableNetworking}"/>
+            <CheckBox x:Name="Offline" Content="Offline Mode" HorizontalAlignment="Left" Margin="305,30,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding Offline}"/>
+            <CheckBox x:Name="DisableOverlay" Content="Disable Overlay" HorizontalAlignment="Left" Margin="305,55,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableOverlay}"/>
+            <Button x:Name="OpenExample" Content="Open Example Config" HorizontalAlignment="Left" Margin="305,80,0,0" VerticalAlignment="Top" Width="140" Click="OpenExample_Click"/>
+            <Button x:Name="OpenConfigFolder" Content="Open Config Folder" HorizontalAlignment="Left" Margin="305,105,0,0" VerticalAlignment="Top" Width="140" Click="OpenConfigFolder_Click"/>
+
+        </Grid>
+
+        <CheckBox x:Name="Unpack" Content="3. Unpack SteamStub" HorizontalAlignment="Left" Margin="10,355,0,0" VerticalAlignment="Top" IsChecked="{Binding Unpack}"/>
+        <Grid Margin="10,135,0,10" Height="45" Width="480">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+            <CheckBox x:Name="KeepBind" Content="Keep Bind Section" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" IsChecked="{Binding KeepBind}"/>
+            <CheckBox x:Name="KeepStub" Content="Keep DOS Stub Data" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" IsChecked="{Binding KeepStub}"/>
+            <CheckBox x:Name="Realign" Content="Realign Sections" HorizontalAlignment="Left" Margin="360,5,0,0" VerticalAlignment="Top" IsChecked="{Binding Realign}"/>
+            <CheckBox x:Name="ReCalcChecksum" Content="Recalculate File Checksum" HorizontalAlignment="Left" Margin="175,25,0,0" VerticalAlignment="Top" IsChecked="{Binding ReCalcChecksum}"/>
+            <CheckBox x:Name="UseExperimentalFeatures" Content="Use Experimental Features" HorizontalAlignment="Left" Margin="175,5,0,0" VerticalAlignment="Top" IsChecked="{Binding UseExperimentalFeatures}"/>
+        </Grid>
+
+        <CheckBox x:Name="ApplyEMU" Content="4. Apply Goldberg Steam Emulator" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" IsChecked="{Binding ApplyEMU}"/>
+        <Grid Margin="10,320,0,40" Height="70" Width="480">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+
+            <CheckBox x:Name="UseLocalSave" Content="Use Custom Save Location:" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" IsChecked="{Binding UseLocalSave}"/>
+            <TextBox HorizontalAlignment="Left" Margin="190,5,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="285" Text="{Binding LocalSave}"/>
+
+            <CheckBox x:Name="UseGoldbergExperimental" Content="Use Experimental version Goldberg Emulator" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" IsChecked="{Binding UseGoldbergExperimental}"/>
+            <CheckBox x:Name="GenerateInterfacesFile" Content="Generate Steam Interfaces file" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateInterfacesFile}"/>
+            <CheckBox x:Name="ForceGenerateInterfacesFiles" Content="Force Generate for each steam_api(64).dll" HorizontalAlignment="Left" Margin="215,45,0,0" VerticalAlignment="Top" IsChecked="{Binding ForceGenerateInterfacesFiles}"/>
+        </Grid>
+
+        <CheckBox x:Name="GenerateCrackOnly" Content="5. Generate Crack Only Files" HorizontalAlignment="Left" Margin="10,510,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateCrackOnly}"/>
+        <Grid Margin="10,475,0,10" Height="75" Width="480">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Output Path:" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="93,9,0,0" TextWrapping="NoWrap" Text="{Binding OutputPath}" VerticalAlignment="Top" Width="349"/>
+
+            <CheckBox x:Name="CreateReadme" Content="Create Crack Readme File" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" IsChecked="{Binding CreateReadme}"/>
+            <CheckBox x:Name="Pack" Content="Pack File With Zip Archive" HorizontalAlignment="Left" Margin="223,31,0,0" VerticalAlignment="Top" IsChecked="{Binding Pack}"/>
+            <CheckBox x:Name="GenerateApplier" Content="Generate Crack Applier (SteamStub Unpacker)" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateApplier}"/>
+            <Button x:Name="SelectOutpath" Content="..." HorizontalAlignment="Left" Margin="450,8,0,0" VerticalAlignment="Top" Width="25" Height="17" Click="SelectOutpath_Click"/>
+        </Grid>
+
+        <CheckBox x:Name="Restore" Content="6. Restore Crack" HorizontalAlignment="Left" Margin="10,605,0,0" VerticalAlignment="Top" IsChecked="{Binding Restore}" Checked="Restore_Checked" Unchecked="Restore_Unchecked"/>
+
+
+
+    </Grid>
+</Window>

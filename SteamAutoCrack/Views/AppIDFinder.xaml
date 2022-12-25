@@ -1,0 +1,31 @@
+﻿<Window x:Class="SteamAutoCrack.Views.AppIDFinder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SteamAutoCrack.Views"
+        xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
+        mc:Ignorable="d"
+        Title="AppID Finder" Height="540" Width="420">
+    <Window.DataContext>
+        <viewmodels:AppIDFinderViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <DataGrid x:Name="Apps" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding Apps}" SelectedItem="{Binding Selected}" Margin="10,55,10,60" MouseDoubleClick="Apps_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="AppID" Binding="{Binding AppId}" Width="70" />
+                <DataGridTextColumn Header="Game Name" Binding="{Binding Name}" Width="305" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="Search" Content="{Binding SearchBtnString}" HorizontalAlignment="Left" Margin="300,10,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="Search_Click" IsDefault="True"/>
+        <CheckBox x:Name="Fuzzy" Content="Fuzzy Search" HorizontalAlignment="Left" Margin="300,35,0,0" VerticalAlignment="Top" IsChecked="{Binding Fuzzy}"/>
+        <TextBox x:Name="AppName" HorizontalAlignment="Left" Margin="85,18,0,0" TextWrapping="NoWrap" Text="{Binding AppName}" VerticalAlignment="Top" Width="190"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" TextWrapping="Wrap" Text="App Name:" VerticalAlignment="Top" Width="70"/>
+
+        <Button x:Name="OK" Content="OK" HorizontalAlignment="Left" Margin="74,470,0,0" VerticalAlignment="Top" Width="90" Click="OK_Click"/>
+        <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="255,470,0,0" VerticalAlignment="Top" Width="90" Click="Cancel_Click"/>
+
+
+
+    </Grid>
+</Window>

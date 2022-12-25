@@ -1,0 +1,10 @@
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless\bin\x86\Release\Plugins\net6.0-windows\Steamless.API.deps.json
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless\bin\x86\Release\Plugins\net6.0-windows\Steamless.API.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless\bin\x86\Release\Plugins\net6.0-windows\Steamless.API.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\Steamless.API.csproj.AssemblyReference.cache
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\Steamless.API.GeneratedMSBuildEditorConfig.editorconfig
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\Steamless.API.csproj.CoreCompileInputs.cache
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\Steamless.API.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\refint\Steamless.API.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\Steamless.API.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.API\obj\x86\Release\net6.0-windows\ref\Steamless.API.dll

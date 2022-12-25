@@ -1,3 +1,0 @@
-1234=DLCNAME
-23454=This is another example DLC name
-7869=It's the same format as other emus like the codex emu

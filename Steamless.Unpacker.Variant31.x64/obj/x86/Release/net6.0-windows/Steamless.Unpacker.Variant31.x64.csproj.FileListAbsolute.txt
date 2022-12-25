@@ -1,0 +1,11 @@
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless\bin\x86\Release\Plugins\net6.0-windows\Steamless.Unpacker.Variant31.x64.deps.json
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless\bin\x86\Release\Plugins\net6.0-windows\Steamless.Unpacker.Variant31.x64.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless\bin\x86\Release\Plugins\net6.0-windows\Steamless.Unpacker.Variant31.x64.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\Steamless.Unpacker.Variant31.x64.csproj.AssemblyReference.cache
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\Steamless.Unpacker.Variant31.x64.GeneratedMSBuildEditorConfig.editorconfig
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\Steamless.Unpacker.Variant31.x64.csproj.CoreCompileInputs.cache
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\Steamless.Unpacker.Variant31.x64.csproj.CopyComplete
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\Steamless.Unpacker.Variant31.x64.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\refint\Steamless.Unpacker.Variant31.x64.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\Steamless.Unpacker.Variant31.x64.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\Steamless.Unpacker.Variant31.x64\obj\x86\Release\net6.0-windows\ref\Steamless.Unpacker.Variant31.x64.dll

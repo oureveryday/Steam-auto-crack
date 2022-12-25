@@ -1,4 +1,0 @@
-556760=../DLCRoot0
-1234=./folder_where_steam_api_is
-3456=../folder_one_level_above_where_steam_api_is
-5678=../../folder_two_levels_above_where_steam_api_is

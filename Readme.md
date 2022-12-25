@@ -6,10 +6,8 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/oureveryday/Steam-auto-crack?color=yellow&label=Stars)
 
 Automatic Crack Games With SteamStub and Steam API.  
-Written by AutoHotKey. Latest Version 2.0 Introduced GUI Interface.  
+Latest Version 3.0 Using .Net 6.0.  
 [Latest Release](https://github.com/oureveryday/Steam-auto-crack/releases) 
-
- * User manual: https://github.com/oureveryday/Steam-auto-crack/wiki 
 
  * Github: https://github.com/oureveryday/Steam-auto-crack 
  * Gitlab: https://gitlab.com/oureveryday/Steam-auto-crack 
@@ -34,13 +32,8 @@ Written by AutoHotKey. Latest Version 2.0 Introduced GUI Interface.
  * Windows: Run `build\build.bat` 
  
 ## Usage 
- * Download all files and run "bin\Steamautocrack\SteamAutoCrack.exe" or download from [Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases). 
- * Use `Auto Crack` to Automatic Crack Game. 
+ * Download all files and run bin\Release\SteamAutoCrack.zip" or download from [Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases). 
 
-## Virus False Positive 
-All Files are virus free and open-sourced. 
-Some anti-virus software may detect AutoHotKey Built script as virus, so please disable them temporary.  
-A lot of cracking tools are detected as malware, either because their behavior is suspect (bypass game protections), or because they have been flagged manually (happens with a lot of tools). 
 
 ## Bugs 
 If You Have Any Bugs, Please Submit a Issue On Github. 

@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
+    <PackageReference Include="NinjaNye.SearchExtensions" Version="3.0.1" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+    <PackageReference Include="SteamKit2" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Steamless.API\Steamless.API.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant10.x86\Steamless.Unpacker.Variant10.x86.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant20.x86\Steamless.Unpacker.Variant20.x86.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant21.x86\Steamless.Unpacker.Variant21.x86.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant30.x64\Steamless.Unpacker.Variant30.x64.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant30.x86\Steamless.Unpacker.Variant30.x86.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant31.x64\Steamless.Unpacker.Variant31.x64.csproj" />
+    <ProjectReference Include="..\Steamless.Unpacker.Variant31.x86\Steamless.Unpacker.Variant31.x86.csproj" />
+  </ItemGroup>
+
+</Project>

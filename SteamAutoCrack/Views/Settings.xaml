@@ -1,0 +1,41 @@
+﻿<Window x:Class="SteamAutoCrack.Views.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
+        xmlns:local="clr-namespace:SteamAutoCrack.Views"
+        mc:Ignorable="d"
+        Title="Settings" Height="300" Width="500">
+    <Window.DataContext>
+        <viewmodels:SettingsViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Settings" VerticalAlignment="Top" FontSize="20"/>
+        <Grid Margin="0,40,0,170">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+            <CheckBox x:Name="SaveConfig" Content="Save Config File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="{Binding SaveCrackConfig}"/>
+            <CheckBox x:Name="DebugLog" Content="Enable Debug Log" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" IsChecked="{Binding EnableDebugLog}"/>
+            <CheckBox x:Name="LogToFile" Content="Output Log to File" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" IsChecked="{Binding LogToFile}"/>
+            <Button x:Name="RestoreConfig" Content="Restore to Default Config" HorizontalAlignment="Left" Margin="250,30,0,0" VerticalAlignment="Top" Width="155" Click="RestoreConfig_Click"/>
+        </Grid>
+        <Grid Margin="0,100,0,110">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+            <Button x:Name="Download" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Click="Download_Click" Content="{Binding UpdateBtnString}" Width="120"/>
+            <TextBlock x:Name="GoldbergVersion" HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="{Binding GoldbergVer}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="ForceUpdate" Content="Force Download" HorizontalAlignment="Left" Margin="135,25,0,0" VerticalAlignment="Top" IsChecked="{Binding ForceUpdate}"/>
+
+        </Grid>
+        
+        
+        <Grid Margin="0,158,0,72">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+            <Button x:Name="UpdateAppList" Content="Force Update Steam App List" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Click="UpdateAppList_Click"/>
+
+        </Grid>
+        <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,230,0,0" VerticalAlignment="Top" Width="77" Click="Close_Click"/>
+
+
+
+    </Grid>
+</Window>

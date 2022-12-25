@@ -1,0 +1,13 @@
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\SteamAutoCrack.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\sni.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\e_sqlite3.dll
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\SteamAutoCrack.Core.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.API.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant10.x86.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant20.x86.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant21.x86.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant30.x64.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant30.x86.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant31.x64.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\Steamless.Unpacker.Variant31.x86.pdb
+F:\tools\SteamAutoCrack_dotnet\SteamAutoCrack\SteamAutoCrack\SteamAutoCrack\bin\Release\SteamAutoCrack.exe
