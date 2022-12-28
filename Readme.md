@@ -33,3 +33,9 @@ Latest Version 3.0 Using .Net 6.0.
 
 ## Bugs 
 If You Have Any Bugs, Please Submit a Issue On Github. 
+
+## Donate 
+Bitcoin: bc1qk39k55wxwx8yj4w35qu4vh3x4nhn90kq2mempn  
+Bitcoin Cash: qzlc8qv59y5lssm9rct2rq5puznqpv9s4qhvhw3k7j  
+Ethereum: 0xCBEF4582Fd0d049F3eBB7552027848f54C99cb38  
+Stellar: GCMQOHLH6I6QZKCFXWS6VKTDHABFK5KA3CQIZW5JL6GBQYSDCFF5VL2E  
