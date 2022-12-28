@@ -33,7 +33,7 @@ namespace SteamAutoCrack.Core.Utils
         /// <summary>
         /// Emulator save location.
         /// </summary>
-        public string? LocalSave { get; set; } = Path.Combine("steam_settings", "settings");
+        public string? LocalSave { get; set; } = Path.Combine("steam_settings");
         /// <summary>
         /// Enable change default emulator save location.
         /// </summary>
@@ -69,7 +69,7 @@ namespace SteamAutoCrack.Core.Utils
         /// <summary>
         /// Emulator save location.
         /// </summary>
-        public static readonly string? LocalSave = Path.Combine("steam_settings", "settings");
+        public static readonly string? LocalSave = Path.Combine("steam_settings");
         /// <summary>
         /// Enable change default emulator save location.
         /// </summary>

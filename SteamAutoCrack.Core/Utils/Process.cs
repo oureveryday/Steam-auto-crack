@@ -30,7 +30,7 @@ namespace SteamAutoCrack.Core.Utils
                 SteamStubUnpackerConfig steamStubUnpackerConfigs = null;
                 EMUApplyConfig emuApplyConfigs = null;
                 GenCrackOnlyConfig genCrackOnlyConfigs = null;
-                if (!File.Exists(Config.Config.InputPath) & !Directory.Exists(Config.Config.InputPath)) 
+                if ((Config.Config.ProcessConfigs.Unpack || Config.Config.ProcessConfigs.ApplyEMU || Config.Config.ProcessConfigs.GenerateCrackOnly) && (!File.Exists(Config.Config.InputPath) & !Directory.Exists(Config.Config.InputPath))) 
                 {
                     throw new Exception("Invaild input path.");
                 }

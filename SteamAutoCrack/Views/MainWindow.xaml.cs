@@ -64,12 +64,14 @@ namespace SteamAutoCrack
         {
             Settings.IsEnabled = false;
             Start.IsEnabled = false;
+            AppIDFinder.IsEnabled = false;
             Task.Run(async () =>
             {
                 await new Processor().ProcessFileGUI().ConfigureAwait(false);
                 Dispatcher.Invoke(new Action(() => {
                     Settings.IsEnabled = true;
                     Start.IsEnabled = true;
+                    AppIDFinder.IsEnabled = true;
                 }));
             });
         }
@@ -157,6 +159,8 @@ namespace SteamAutoCrack
             {
                 bSettingsOpened = true;
                 Start.IsEnabled = false;
+                AppIDFinder.IsEnabled = false;
+                Settings.IsEnabled = false;
                 var settings = new Settings();
                 settings.ClosingEvent += new SettingsClosingHandler(SettingClosed);
                 settings.ReloadValueEvent += new ReloadValueHandler(viewModel.ReloadValue);
@@ -172,7 +176,8 @@ namespace SteamAutoCrack
             {
                 bAppIDFinderOpened = true;
                 Start.IsEnabled = false;
-
+                Settings.IsEnabled = false;
+                AppIDFinder.IsEnabled = false;
                 var finder = new AppIDFinder(GetAppName());
                 finder.ClosingEvent += new AppIDFinderClosingHandler(AppIDFinderClosed);
                 finder.OKEvent += new AppIDFinderOKHandler(AppIDFinderOK);
@@ -216,6 +221,8 @@ namespace SteamAutoCrack
         {
             bAppIDFinderOpened = false;
             Start.IsEnabled = true;
+            Settings.IsEnabled = true;
+            AppIDFinder.IsEnabled = true;
         }
 
         private void AppIDFinderOK(uint appid)
@@ -223,6 +230,8 @@ namespace SteamAutoCrack
             viewModel.AppID = appid.ToString();
             bAppIDFinderOpened = false;
             Start.IsEnabled = true;
+            Settings.IsEnabled = true;
+            AppIDFinder.IsEnabled = true;
         }
 
         private void AboutClosed()
@@ -234,6 +243,8 @@ namespace SteamAutoCrack
         {
             bSettingsOpened = false;
             Start.IsEnabled = true;
+            AppIDFinder.IsEnabled = true;
+            Settings.IsEnabled = true;
         }
         #endregion
         #region GenerateEMUGameInfo

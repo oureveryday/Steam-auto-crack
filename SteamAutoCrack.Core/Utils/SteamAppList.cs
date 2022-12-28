@@ -94,7 +94,7 @@ namespace SteamAutoCrack.Core.Utils
                 _log.Information("Applist already updated to latest version.");
             }
             _log.Debug("App Count: {count}", db.Table<SteamApp>().CountAsync().ConfigureAwait(false).GetAwaiter().GetResult());
-            _log.Information("Initialized Steam App list.");
+            _log.Information("Updated Steam App list.");
             bInited = true;
             return;
             }

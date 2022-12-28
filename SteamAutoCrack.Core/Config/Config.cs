@@ -457,6 +457,7 @@ namespace SteamAutoCrack.Core.Config
         {
             var emuGameInfoConfig = new EMUGameInfoConfig
             {
+                GameInfoAPI = GameInfoAPI,
                 SteamWebAPIKey = SteamWebAPIKey,
                 GenerateImages = GenerateImages,
                 UseXan105API = UseXan105API,
