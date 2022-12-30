@@ -30,24 +30,36 @@ namespace SteamAutoCrack.Utils
             switch (logEvent.Level)
             { 
                 case LogEventLevel.Debug:
-                    level = "[Debug]"; logColor = Brushes.Gray; break;
+                    level = "Debug"; logColor = Brushes.Gray; break;
                 case LogEventLevel.Warning:
-                    level = "[Warn]"; logColor = Brushes.Yellow; break;
+                    level = "Warn"; logColor = Brushes.Yellow; break;
                 case LogEventLevel.Information:
-                    level = "[Info]"; break;
+                    level = "Info"; break;
                 case LogEventLevel.Error:
-                    level = "[Error]"; logColor = Brushes.Red; break;
+                    level = "Error"; logColor = Brushes.Red; break;
                 default: break;
             }
 
             logEvent.Properties.TryGetValue("SourceContext", out SourceContext);
             SourceContextStr = SourceContext.ToString();
-            SourceContextStr = "[" + SourceContextStr.Substring(SourceContextStr.LastIndexOf('.') + 1).Replace("\"", "").Replace("\\", "") + "]";
+            SourceContextStr = SourceContextStr.Substring(SourceContextStr.LastIndexOf('.') + 1).Replace("\"", "").Replace("\\", "");
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
-                var item = new ListViewItem { Content = level + SourceContextStr + " " + logEvent.RenderMessage() + logEvent.Exception, Background = logColor };
-                _ListView.Items.Add(item);
-                _ListView.ScrollIntoView(item);
+                if (logEvent.RenderMessage() != String.Empty)
+                {
+                    var item = new { Level = level, Source = SourceContextStr, Message = logEvent.RenderMessage() };
+                    var listviewitem = new ListViewItem { Content = item, Background = logColor };
+                    _ListView.Items.Add(listviewitem);
+                    _ListView.ScrollIntoView(item);
+                }
+                if (logEvent.Exception != null)
+                {
+                    var itemex = new { Level = level , Source = SourceContextStr, Message = logEvent.Exception.Message };
+                    var listviewitemex = new ListViewItem { Content = itemex, Background = logColor };
+                    _ListView.Items.Add(listviewitemex);
+                    _ListView.ScrollIntoView(itemex);
+                }
+                
             }));
             
         }

@@ -30,7 +30,15 @@
         <Button x:Name="About" Content="About" HorizontalAlignment="Left" Margin="425,10,0,0" VerticalAlignment="Top" Height="24" Width="65" Click="About_Click"/>
         <Button x:Name="Start" Content="Start" HorizontalAlignment="Center" Margin="0,630,150,0" VerticalAlignment="Top" Height="24" Width="85" Click="Start_Click"/>
         <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Center" Margin="150,630,0,0" VerticalAlignment="Top" Height="24" Width="85" Click="Exit_Click"/>
-        <ListView x:Name="LogBox" Grid.Column="1" Margin="10,40,15,10"/>
+        <ListView x:Name="LogBox" Grid.Column="1" Margin="10,40,15,10" Foreground="Black">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Level" Width="50" DisplayMemberBinding="{Binding Level}"/>
+                    <GridViewColumn Header="Source" Width="100" DisplayMemberBinding="{Binding Source}"/>
+                    <GridViewColumn Header="Message" Width="500" DisplayMemberBinding="{Binding Message}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
         <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" Text="Path: " VerticalAlignment="Top"/>
         <TextBox x:Name="InputPath" HorizontalAlignment="Left" Margin="45,50,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="410" MaxLines="1" PreviewDragOver="InputPath_PreviewDragOver" PreviewDrop="InputPath_PreviewDrop" Text="{Binding InputPath}"/>
@@ -114,7 +122,7 @@
 
             <CheckBox x:Name="UseGoldbergExperimental" Content="Use Experimental version Goldberg Emulator" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" IsChecked="{Binding UseGoldbergExperimental}"/>
             <CheckBox x:Name="GenerateInterfacesFile" Content="Generate Steam Interfaces file" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateInterfacesFile}"/>
-            <CheckBox x:Name="ForceGenerateInterfacesFiles" Content="Force Generate for each steam_api(64).dll" HorizontalAlignment="Left" Margin="215,45,0,0" VerticalAlignment="Top" IsChecked="{Binding ForceGenerateInterfacesFiles}"/>
+            <CheckBox x:Name="ForceGenerateInterfacesFiles" Content="Force Generate for each steam__api(64).dll" HorizontalAlignment="Left" Margin="215,45,0,0" VerticalAlignment="Top" IsChecked="{Binding ForceGenerateInterfacesFiles}"/>
         </Grid>
 
         <CheckBox x:Name="GenerateCrackOnly" Content="5. Generate Crack Only Files" HorizontalAlignment="Left" Margin="10,510,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateCrackOnly}"/>

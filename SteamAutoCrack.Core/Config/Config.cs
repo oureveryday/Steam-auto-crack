@@ -79,7 +79,7 @@ namespace SteamAutoCrack.Core.Config
                 _EnableDebugLog = value;
                 if (value) 
                 { 
-                    loggingLevelSwitch.MinimumLevel = LogEventLevel.Debug; 
+                    loggingLevelSwitch.MinimumLevel = LogEventLevel.Debug;
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace SteamAutoCrack.Core.Config
             }
         }
         private static bool _EnableDebugLog = false;
-        public static readonly LoggingLevelSwitch loggingLevelSwitch = new LoggingLevelSwitch();
+        public static LoggingLevelSwitch loggingLevelSwitch = new LoggingLevelSwitch();
         /// <summary>
         /// Output log to file.
         /// </summary>
@@ -203,8 +203,8 @@ namespace SteamAutoCrack.Core.Config
                     EMUGameInfoConfigs = configs.EMUGameInfoConfigs ?? EMUGameInfoConfigs;
                     GenCrackOnlyConfigs = configs.GenCrackOnlyConfigs ?? GenCrackOnlyConfigs;
                     ProcessConfigs = configs.ProcessConfigs ?? ProcessConfigs;
-                    EnableDebugLog = EnableDebugLog;
-                    LogToFile = LogToFile;
+                    EnableDebugLog = configs.EnableDebugLog;
+                    LogToFile = configs.LogToFile;
                 }
                 _log.Information("Config loaded.");
                 return;

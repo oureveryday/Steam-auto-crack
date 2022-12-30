@@ -7,8 +7,10 @@ using SteamAutoCrack.Utils;
 using SteamAutoCrack.ViewModels;
 using SteamAutoCrack.Views;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using WPFCustomMessageBox;
@@ -24,7 +26,7 @@ namespace SteamAutoCrack
         private bool bSettingsOpened = false;
         private bool bAppIDFinderOpened = false;
         private bool bAboutOpened = false;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -57,7 +59,21 @@ namespace SteamAutoCrack
             {
                 await SteamAppList.Initialize().ConfigureAwait(false);
             });
-            
+
+            if (!CheckGoldberg())
+            {
+                var result = CustomMessageBox.ShowYesNo("Goldberg emulator file is missing.\nDownload Goldberg emulator?", "Download Goldberg emulator?", "Download", "Cancel");
+                if (result == MessageBoxResult.Yes)
+                {
+                    Task.Run(async () =>
+                    {
+                        var updater = new EMUUpdater();
+                        await updater.Init();
+                        await updater.Download(true);
+                    });
+
+                }
+            }
         }
         #region Basic
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -65,8 +81,17 @@ namespace SteamAutoCrack
             Settings.IsEnabled = false;
             Start.IsEnabled = false;
             AppIDFinder.IsEnabled = false;
+            
             Task.Run(async () =>
             {
+                if (viewModel.GenerateEMUGameInfo && viewModel.AppID == String.Empty)
+                {
+                    _log.Information("Empty AppID. Please select one using AppID Finder.");
+                    Dispatcher.Invoke(new Action(() => {
+                        AppIDFinder_Click(sender, e);
+                    }));
+                    while (bAppIDFinderOpened) ;
+                }
                 await new Processor().ProcessFileGUI().ConfigureAwait(false);
                 Dispatcher.Invoke(new Action(() => {
                     Settings.IsEnabled = true;
@@ -245,6 +270,38 @@ namespace SteamAutoCrack
             Start.IsEnabled = true;
             AppIDFinder.IsEnabled = true;
             Settings.IsEnabled = true;
+        }
+
+        public bool CheckGoldberg()
+        {
+            try
+            {
+                _log.Debug("Checking all goldberg emulator file exists or not...");
+                if (!Directory.Exists(Config.GoldbergPath))
+                {
+                    return false;
+                }
+                List<string> filelist = new List<string>()
+                {
+                    Path.Combine(Config.GoldbergPath,"steam_api64.dll"),
+                    Path.Combine(Config.GoldbergPath,"steam_api.dll"),
+                    Path.Combine(Config.GoldbergPath, "experimental","steam_api64.dll"),
+                    Path.Combine(Config.GoldbergPath, "experimental","steam_api.dll"),
+                };
+                foreach (string file in filelist)
+                {
+                    if (!File.Exists(file))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Failed to Check goldberg emulator.");
+                return false;
+            }
         }
         #endregion
         #region GenerateEMUGameInfo

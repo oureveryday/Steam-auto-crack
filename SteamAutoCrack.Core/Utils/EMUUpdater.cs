@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using SteamAutoCrack.Core.Config;
 using SteamKit2.GC.Artifact.Internal;
 using System.IO.Compression;
 using System.Linq.Expressions;
@@ -15,6 +16,17 @@ namespace SteamAutoCrack.Core.Utils
         private UInt64 latestjobid = 0;
         private bool bGotlatestjobid = false;
         private bool bInited = false;
+        private List<string> goldberguselessFolders = new List<string>
+        {
+            "debug_experimental",
+            "debug_experimental_steamclient",
+            "experimental_steamclient",
+            "linux",
+            "source_code",
+            "tools",
+            "lobby_connect"
+        };
+
         public EMUUpdater()
         {
             _log = Log.ForContext<EMUUpdater>();
@@ -47,6 +59,7 @@ namespace SteamAutoCrack.Core.Utils
                 {
                     await StartDownload(latestjobid).ConfigureAwait(false);
                     await Extract(Path.Combine(Config.Config.TempPath, "Goldberg.zip")).ConfigureAwait(false);
+                    await Clean(Config.Config.GoldbergPath);
                 }
                 else
                 {
@@ -130,6 +143,22 @@ namespace SteamAutoCrack.Core.Utils
                 }
             }
             _log.Information("Extraction was successful!");
+        }
+        private async Task Clean(string goldbergPath)
+        {
+            try
+            {
+                _log.Debug("Start Clean Goldberg emulator Files...");
+                foreach (var path in goldberguselessFolders)
+                {
+                    Directory.Delete(Path.Combine(goldbergPath, path), true);
+                }
+                _log.Information("Clean was successful!");
+            }
+            catch (Exception e)
+            {
+                _log.Error(e,"Failed in clean Goldberg emulator files.");
+            }
         }
         private UInt64 GetCurrentGoldbergVersion()
         {
