@@ -26,6 +26,7 @@ namespace SteamAutoCrack
         private bool bSettingsOpened = false;
         private bool bAppIDFinderOpened = false;
         private bool bAboutOpened = false;
+        private bool bStarted = false;
         
         public MainWindow()
         {
@@ -98,8 +99,6 @@ namespace SteamAutoCrack
                             Settings.IsEnabled = false;
                             AppIDFinder.IsEnabled = false;
                             var finder = new AppIDFinder(GetAppName());
-                            finder.ClosingEvent += new AppIDFinderClosingHandler(AppIDFinderClosed);
-                            finder.OKEvent += new AppIDFinderOKHandler(AppIDFinderOK);
                             finder.ClosingEvent += new AppIDFinderClosingHandler(AppIDFinderClosedStart);
                             finder.OKEvent += new AppIDFinderOKHandler(AppIDFinderOKStart);
                             finder.Show();
@@ -131,6 +130,7 @@ namespace SteamAutoCrack
 
         private void AppIDFinderClosedStart()
         {
+            if (bStarted) return;
             Task.Run(async () =>
             {
                 bAppIDFinderOpened = false;
@@ -158,11 +158,12 @@ namespace SteamAutoCrack
 
         private void AppIDFinderOKStart(uint appid)
         {
+            bStarted = true;
             Task.Run(async () =>
             {
                 viewModel.AppID = appid.ToString();
                 bAppIDFinderOpened = false;
-                new Processor().ProcessFileGUI().ConfigureAwait(false);
+                await new Processor().ProcessFileGUI().ConfigureAwait(false);
                 Dispatcher.Invoke(new Action(() =>
                 {
                     Settings.IsEnabled = true;
@@ -181,6 +182,7 @@ namespace SteamAutoCrack
                     Restore.IsEnabled = true;
                     InputPath.IsEnabled = true;
                     Select.IsEnabled = true;
+                    bStarted = false;
                 }));
             });
         }
