@@ -131,50 +131,58 @@ namespace SteamAutoCrack
 
         private void AppIDFinderClosedStart()
         {
-            bAppIDFinderOpened = false;
-            Dispatcher.Invoke(new Action(() => {
-                Settings.IsEnabled = true;
-                Start.IsEnabled = true;
-                AppIDFinder.IsEnabled = true;
-                GenerateEMUGameInfoGrid.IsEnabled = true;
-                GenerateEMUConfigGrid.IsEnabled = true;
-                UnpackGrid.IsEnabled = true;
-                ApplyEMUGrid.IsEnabled = true;
-                GenerateCrackOnlyGrid.IsEnabled = true;
-                GenerateEMUGameInfo.IsEnabled = true;
-                GenerateEMUConfig.IsEnabled = true;
-                Unpack.IsEnabled = true;
-                ApplyEMU.IsEnabled = true;
-                GenerateCrackOnly.IsEnabled = true;
-                Restore.IsEnabled = true;
-                InputPath.IsEnabled = true;
-                Select.IsEnabled = true;
-            }));
+            Task.Run(async () =>
+            {
+                bAppIDFinderOpened = false;
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Settings.IsEnabled = true;
+                    Start.IsEnabled = true;
+                    AppIDFinder.IsEnabled = true;
+                    GenerateEMUGameInfoGrid.IsEnabled = true;
+                    GenerateEMUConfigGrid.IsEnabled = true;
+                    UnpackGrid.IsEnabled = true;
+                    ApplyEMUGrid.IsEnabled = true;
+                    GenerateCrackOnlyGrid.IsEnabled = true;
+                    GenerateEMUGameInfo.IsEnabled = true;
+                    GenerateEMUConfig.IsEnabled = true;
+                    Unpack.IsEnabled = true;
+                    ApplyEMU.IsEnabled = true;
+                    GenerateCrackOnly.IsEnabled = true;
+                    Restore.IsEnabled = true;
+                    InputPath.IsEnabled = true;
+                    Select.IsEnabled = true;
+                }));
+            });
         }
 
         private void AppIDFinderOKStart(uint appid)
         {
-            viewModel.AppID = appid.ToString();
-            bAppIDFinderOpened = false;
-            new Processor().ProcessFileGUI().ConfigureAwait(false);
-            Dispatcher.Invoke(new Action(() => {
-                Settings.IsEnabled = true;
-                Start.IsEnabled = true;
-                AppIDFinder.IsEnabled = true;
-                GenerateEMUGameInfoGrid.IsEnabled = true;
-                GenerateEMUConfigGrid.IsEnabled = true;
-                UnpackGrid.IsEnabled = true;
-                ApplyEMUGrid.IsEnabled = true;
-                GenerateCrackOnlyGrid.IsEnabled = true;
-                GenerateEMUGameInfo.IsEnabled = true;
-                GenerateEMUConfig.IsEnabled = true;
-                Unpack.IsEnabled = true;
-                ApplyEMU.IsEnabled = true;
-                GenerateCrackOnly.IsEnabled = true;
-                Restore.IsEnabled = true;
-                InputPath.IsEnabled = true;
-                Select.IsEnabled = true;
-            }));
+            Task.Run(async () =>
+            {
+                viewModel.AppID = appid.ToString();
+                bAppIDFinderOpened = false;
+                new Processor().ProcessFileGUI().ConfigureAwait(false);
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Settings.IsEnabled = true;
+                    Start.IsEnabled = true;
+                    AppIDFinder.IsEnabled = true;
+                    GenerateEMUGameInfoGrid.IsEnabled = true;
+                    GenerateEMUConfigGrid.IsEnabled = true;
+                    UnpackGrid.IsEnabled = true;
+                    ApplyEMUGrid.IsEnabled = true;
+                    GenerateCrackOnlyGrid.IsEnabled = true;
+                    GenerateEMUGameInfo.IsEnabled = true;
+                    GenerateEMUConfig.IsEnabled = true;
+                    Unpack.IsEnabled = true;
+                    ApplyEMU.IsEnabled = true;
+                    GenerateCrackOnly.IsEnabled = true;
+                    Restore.IsEnabled = true;
+                    InputPath.IsEnabled = true;
+                    Select.IsEnabled = true;
+                }));
+            });
         }
 
         private void Clear_Log_Click(object sender, RoutedEventArgs e)
