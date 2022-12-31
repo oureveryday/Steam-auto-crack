@@ -356,10 +356,13 @@ namespace SteamAutoCrack
                     var result = CustomMessageBox.ShowYesNo("Goldberg emulator file is missing.\nDownload Goldberg emulator?", "Download Goldberg emulator?", "Download", "Cancel");
                     if (result == MessageBoxResult.Yes)
                     {
-                        var updater = new EMUUpdater();
-                         updater.Init();
-                         updater.Download(true);
-                     }
+                        Task.Run(async () =>
+                        {
+                            var updater = new EMUUpdater();
+                            await updater.Init().ConfigureAwait(false);
+                            await updater.Download(true).ConfigureAwait(false);
+                        });
+                    }
                 }));
             }
             return;
