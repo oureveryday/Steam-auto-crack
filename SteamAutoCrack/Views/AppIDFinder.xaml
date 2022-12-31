@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SteamAutoCrack.Views"
         xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
         mc:Ignorable="d"
-        Title="AppID Finder" Height="540" Width="420">
+        Title="AppID Finder" Height="540" Width="420"
+        ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:AppIDFinderViewModel/>
     </Window.DataContext>

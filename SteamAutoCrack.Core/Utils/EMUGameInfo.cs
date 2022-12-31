@@ -544,7 +544,7 @@ namespace SteamAutoCrack.Core.Utils
                 KeyValue GameInfoCommon = await GetSteam3AppSection(AppID, EAppInfoSection.Common).ConfigureAwait(false);
                 if (GameInfoCommon == null)
                 {
-                    _log.Error("Failed to get game info, skipping...(AppID: {appid})", AppID);
+                    _log.Error("Failed to get game info, skipping generate supported languages...(AppID: {appid})", AppID);
                     return;
                 }
                 if (GameInfoCommon["supported_languages"] != KeyValue.Invalid)
@@ -580,7 +580,7 @@ namespace SteamAutoCrack.Core.Utils
                 KeyValue GameInfoDepots = await GetSteam3AppSection(AppID, EAppInfoSection.Depots).ConfigureAwait(false);
                 if (GameInfoDepots == null)
                 {
-                    _log.Error("Failed to get game info, skipping...(AppID: {appid})", AppID);
+                    _log.Error("Failed to get game info, skipping generate depots...(AppID: {appid})", AppID);
                     return;
                 }
                 if (GameInfoDepots != KeyValue.Invalid)
@@ -625,7 +625,7 @@ namespace SteamAutoCrack.Core.Utils
                 KeyValue GameInfoDepots = await GetSteam3AppSection(AppID, EAppInfoSection.Depots).ConfigureAwait(false);
                 if (GameInfoDLCs == null && GameInfoDepots == null)
                 {
-                    _log.Error("Failed to get game info, skipping...(AppID: {appid})", AppID);
+                    _log.Error("Failed to get game info, skipping generate DLCs...(AppID: {appid})", AppID);
                     return;
                 }
                 

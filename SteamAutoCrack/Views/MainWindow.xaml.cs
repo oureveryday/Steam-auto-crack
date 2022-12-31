@@ -59,21 +59,10 @@ namespace SteamAutoCrack
             {
                 await SteamAppList.Initialize().ConfigureAwait(false);
             });
-
-            if (!CheckGoldberg())
+            Task.Run(() =>
             {
-                var result = CustomMessageBox.ShowYesNo("Goldberg emulator file is missing.\nDownload Goldberg emulator?", "Download Goldberg emulator?", "Download", "Cancel");
-                if (result == MessageBoxResult.Yes)
-                {
-                    Task.Run(async () =>
-                    {
-                        var updater = new EMUUpdater();
-                        await updater.Init();
-                        await updater.Download(true);
-                    });
-
-                }
-            }
+                CheckGoldberg();
+            });
         }
         #region Basic
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -81,26 +70,112 @@ namespace SteamAutoCrack
             Settings.IsEnabled = false;
             Start.IsEnabled = false;
             AppIDFinder.IsEnabled = false;
-            
+            GenerateEMUGameInfoGrid.IsEnabled = false;
+            GenerateEMUConfigGrid.IsEnabled = false;
+            UnpackGrid.IsEnabled = false;
+            ApplyEMUGrid.IsEnabled = false;
+            GenerateCrackOnlyGrid.IsEnabled = false;
+            GenerateEMUGameInfo.IsEnabled = false;
+            GenerateEMUConfig.IsEnabled = false;
+            Unpack.IsEnabled = false;
+            ApplyEMU.IsEnabled = false;
+            GenerateCrackOnly.IsEnabled = false;
+            Restore.IsEnabled = false;
+            InputPath.IsEnabled = false;
+            Select.IsEnabled = false;
+           
+
             Task.Run(async () =>
             {
                 if (viewModel.GenerateEMUGameInfo && viewModel.AppID == String.Empty)
                 {
                     _log.Information("Empty AppID. Please select one using AppID Finder.");
                     Dispatcher.Invoke(new Action(() => {
-                        AppIDFinder_Click(sender, e);
+                        if (!bAppIDFinderOpened)
+                        {
+                            bAppIDFinderOpened = true;
+                            Start.IsEnabled = false;
+                            Settings.IsEnabled = false;
+                            AppIDFinder.IsEnabled = false;
+                            var finder = new AppIDFinder(GetAppName());
+                            finder.ClosingEvent += new AppIDFinderClosingHandler(AppIDFinderClosed);
+                            finder.OKEvent += new AppIDFinderOKHandler(AppIDFinderOK);
+                            finder.ClosingEvent += new AppIDFinderClosingHandler(AppIDFinderClosedStart);
+                            finder.OKEvent += new AppIDFinderOKHandler(AppIDFinderOKStart);
+                            finder.Show();
+                        }
                     }));
-                    while (bAppIDFinderOpened) ;
+                    return;
                 }
                 await new Processor().ProcessFileGUI().ConfigureAwait(false);
                 Dispatcher.Invoke(new Action(() => {
                     Settings.IsEnabled = true;
                     Start.IsEnabled = true;
                     AppIDFinder.IsEnabled = true;
+                    GenerateEMUGameInfoGrid.IsEnabled = true;
+                    GenerateEMUConfigGrid.IsEnabled = true;
+                    UnpackGrid.IsEnabled = true;
+                    ApplyEMUGrid.IsEnabled = true;
+                    GenerateCrackOnlyGrid.IsEnabled = true;
+                    GenerateEMUGameInfo.IsEnabled = true;
+                    GenerateEMUConfig.IsEnabled = true;
+                    Unpack.IsEnabled = true;
+                    ApplyEMU.IsEnabled = true;
+                    GenerateCrackOnly.IsEnabled = true;
+                    Restore.IsEnabled = true;
+                    InputPath.IsEnabled = true;
+                    Select.IsEnabled = true;
                 }));
             });
         }
 
+        private void AppIDFinderClosedStart()
+        {
+            bAppIDFinderOpened = false;
+            Dispatcher.Invoke(new Action(() => {
+                Settings.IsEnabled = true;
+                Start.IsEnabled = true;
+                AppIDFinder.IsEnabled = true;
+                GenerateEMUGameInfoGrid.IsEnabled = true;
+                GenerateEMUConfigGrid.IsEnabled = true;
+                UnpackGrid.IsEnabled = true;
+                ApplyEMUGrid.IsEnabled = true;
+                GenerateCrackOnlyGrid.IsEnabled = true;
+                GenerateEMUGameInfo.IsEnabled = true;
+                GenerateEMUConfig.IsEnabled = true;
+                Unpack.IsEnabled = true;
+                ApplyEMU.IsEnabled = true;
+                GenerateCrackOnly.IsEnabled = true;
+                Restore.IsEnabled = true;
+                InputPath.IsEnabled = true;
+                Select.IsEnabled = true;
+            }));
+        }
+
+        private void AppIDFinderOKStart(uint appid)
+        {
+            viewModel.AppID = appid.ToString();
+            bAppIDFinderOpened = false;
+            new Processor().ProcessFileGUI().ConfigureAwait(false);
+            Dispatcher.Invoke(new Action(() => {
+                Settings.IsEnabled = true;
+                Start.IsEnabled = true;
+                AppIDFinder.IsEnabled = true;
+                GenerateEMUGameInfoGrid.IsEnabled = true;
+                GenerateEMUConfigGrid.IsEnabled = true;
+                UnpackGrid.IsEnabled = true;
+                ApplyEMUGrid.IsEnabled = true;
+                GenerateCrackOnlyGrid.IsEnabled = true;
+                GenerateEMUGameInfo.IsEnabled = true;
+                GenerateEMUConfig.IsEnabled = true;
+                Unpack.IsEnabled = true;
+                ApplyEMU.IsEnabled = true;
+                GenerateCrackOnly.IsEnabled = true;
+                Restore.IsEnabled = true;
+                InputPath.IsEnabled = true;
+                Select.IsEnabled = true;
+            }));
+        }
 
         private void Clear_Log_Click(object sender, RoutedEventArgs e)
         {
@@ -272,7 +347,25 @@ namespace SteamAutoCrack
             Settings.IsEnabled = true;
         }
 
-        public bool CheckGoldberg()
+        public void CheckGoldberg()
+        {
+            if (!GoldbergStatus())
+            {
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    var result = CustomMessageBox.ShowYesNo("Goldberg emulator file is missing.\nDownload Goldberg emulator?", "Download Goldberg emulator?", "Download", "Cancel");
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var updater = new EMUUpdater();
+                         updater.Init();
+                         updater.Download(true);
+                     }
+                }));
+            }
+            return;
+        }
+
+        public bool GoldbergStatus()
         {
             try
             {

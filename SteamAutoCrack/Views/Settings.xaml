@@ -6,7 +6,8 @@
         xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
         xmlns:local="clr-namespace:SteamAutoCrack.Views"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="500">
+        Title="Settings" Height="300" Width="500"
+        ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:SettingsViewModel/>
     </Window.DataContext>

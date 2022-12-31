@@ -45,7 +45,7 @@
         <Button x:Name="Select" Content="..." HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="25" Height="17" Click="Select_Click"/>
 
         <CheckBox x:Name="GenerateEMUGameInfo" Content="1. Generate Goldberg Steam Emulator Game Info" Margin="10,75,10,400" IsChecked="{Binding GenerateEMUGameInfo}"/>
-        <Grid Margin="10,40,0,415" Height="100" Width="480">
+        <Grid Margin="10,40,0,415" Height="100" Width="480" Name="GenerateEMUGameInfoGrid">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,5,0,0" Text="Steam AppID:" VerticalAlignment="Top"/>
             <TextBox x:Name="AppID" HorizontalAlignment="Left" Margin="95,5,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="65" MaxLines="1" MaxLength="8" Text="{Binding AppID}" PreviewTextInput="AppID_PreviewTextInput" DataObject.Pasting="AppID_Pasting"/>
@@ -72,7 +72,7 @@
         </Grid>
 
         <CheckBox x:Name="GenerateEMUConfig" Content="2. Generate Goldberg Steam Emulator Configuration" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateEMUConfig}"/>
-        <Grid Margin="10,165,0,260" Height="130" Width="480" >
+        <Grid x:Name="GenerateEMUConfigGrid" Margin="10,165,0,260" Height="130" Width="480" >
             <Rectangle HorizontalAlignment="Left" Height="130" Stroke="Black" VerticalAlignment="Top" Width="300"/>
             <Border BorderBrush="Black" BorderThickness="1"/>
 
@@ -104,7 +104,7 @@
         </Grid>
 
         <CheckBox x:Name="Unpack" Content="3. Unpack SteamStub" HorizontalAlignment="Left" Margin="10,355,0,0" VerticalAlignment="Top" IsChecked="{Binding Unpack}"/>
-        <Grid Margin="10,135,0,10" Height="45" Width="480">
+        <Grid x:Name="UnpackGrid" Margin="10,135,0,10" Height="45" Width="480">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <CheckBox x:Name="KeepBind" Content="Keep Bind Section" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" IsChecked="{Binding KeepBind}"/>
             <CheckBox x:Name="KeepStub" Content="Keep DOS Stub Data" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" IsChecked="{Binding KeepStub}"/>
@@ -114,7 +114,7 @@
         </Grid>
 
         <CheckBox x:Name="ApplyEMU" Content="4. Apply Goldberg Steam Emulator" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" IsChecked="{Binding ApplyEMU}"/>
-        <Grid Margin="10,320,0,40" Height="70" Width="480">
+        <Grid x:Name="ApplyEMUGrid" Margin="10,320,0,40" Height="70" Width="480">
             <Border BorderBrush="Black" BorderThickness="1"/>
 
             <CheckBox x:Name="UseLocalSave" Content="Use Custom Save Location:" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" IsChecked="{Binding UseLocalSave}"/>
@@ -126,7 +126,7 @@
         </Grid>
 
         <CheckBox x:Name="GenerateCrackOnly" Content="5. Generate Crack Only Files" HorizontalAlignment="Left" Margin="10,510,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateCrackOnly}"/>
-        <Grid Margin="10,455,0,10" Height="55" Width="480">
+        <Grid x:Name="GenerateCrackOnlyGrid" Margin="10,455,0,10" Height="55" Width="480">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Output Path:" VerticalAlignment="Top"/>
             <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="93,9,0,0" TextWrapping="NoWrap" Text="{Binding OutputPath}" VerticalAlignment="Top" Width="349"/>

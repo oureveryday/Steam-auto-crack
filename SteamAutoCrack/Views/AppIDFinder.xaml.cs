@@ -45,6 +45,10 @@ namespace SteamAutoCrack.Views
                     Dispatcher.Invoke(new Action(() => {
                         Search.IsEnabled = true;
                         viewModel.SearchBtnString = "Search";
+                        if (viewModel.AppName != string.Empty)
+                        {
+                            Search_Click(new Object(), new RoutedEventArgs());
+                        }
                     }));
                     
                 }

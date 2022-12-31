@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SteamAutoCrack.Views"
         xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
         mc:Ignorable="d"
-        Title="About" Height="400" Width="400">
+        Title="About" Height="400" Width="400"
+        ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:AboutViewModel/>
     </Window.DataContext>
