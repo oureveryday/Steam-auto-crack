@@ -1,5 +1,5 @@
 # Steam Game Automatic Cracker 
-<div align=center><center><img width = '150' height ='150' src ="icon/SteamAutoCrack.ico"/></center></div>
+<div align=center><center><img width = '150' height ='150' src ="SteamAutoCrack/SteamAutoCrack.ico"/></center></div>
 
 ![GitHub all releases](https://img.shields.io/github/downloads/oureveryday/Steam-auto-crack/total?color=brightgreen&label=Total%20downloads)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/oureveryday/Steam-auto-crack/latest/total?color=green&label=Latest%20version%20downloads)
