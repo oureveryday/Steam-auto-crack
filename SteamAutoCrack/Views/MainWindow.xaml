@@ -44,7 +44,7 @@
         <TextBox x:Name="InputPath" HorizontalAlignment="Left" Margin="45,50,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="410" MaxLines="1" PreviewDragOver="InputPath_PreviewDragOver" PreviewDrop="InputPath_PreviewDrop" Text="{Binding InputPath}"/>
         <Button x:Name="Select" Content="..." HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="25" Height="17" Click="Select_Click"/>
 
-        <CheckBox x:Name="GenerateEMUGameInfo" Content="1. Generate Goldberg Steam Emulator Game Info" Margin="10,75,10,400" IsChecked="{Binding GenerateEMUGameInfo}"/>
+        <CheckBox x:Name="GenerateEMUGameInfo" Content="1. Generate Goldberg Steam Emulator Game Info" Margin="10,75,175,570" IsChecked="{Binding GenerateEMUGameInfo}"/>
         <Grid Margin="10,40,0,415" Height="100" Width="480" Name="GenerateEMUGameInfoGrid">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,5,0,0" Text="Steam AppID:" VerticalAlignment="Top"/>
