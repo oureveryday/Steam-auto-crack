@@ -88,13 +88,14 @@ namespace SteamAutoCrack.Core.Utils
                 var steamApps = DeserializeSteamApps(responseBody);
                 foreach (var appListApp in steamApps.AppList.Apps) appList.Add(appListApp);
                 await db.InsertAllAsync(appList, "OR IGNORE").ConfigureAwait(false);
+                _log.Information("Updated Steam App list.");
             }
             else
             {
                 _log.Information("Applist already updated to latest version.");
             }
             _log.Debug("App Count: {count}", db.Table<SteamApp>().CountAsync().ConfigureAwait(false).GetAwaiter().GetResult());
-            _log.Information("Updated Steam App list.");
+            _log.Information("Initialized Steam App list.");
             bInited = true;
             return;
             }

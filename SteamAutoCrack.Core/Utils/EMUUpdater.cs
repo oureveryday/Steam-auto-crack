@@ -71,6 +71,7 @@ namespace SteamAutoCrack.Core.Utils
                     {
                         await StartDownload(latestjobid).ConfigureAwait(false);
                         await Extract(Path.Combine(Config.Config.TempPath, "Goldberg.zip")).ConfigureAwait(false);
+                        await Clean(Config.Config.GoldbergPath);
                     }
                 }
                 _log.Information("Update Success.");

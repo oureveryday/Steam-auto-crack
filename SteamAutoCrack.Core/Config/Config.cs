@@ -11,7 +11,6 @@ namespace SteamAutoCrack.Core.Config
 {
     public class Config
     {
-        [JsonIgnore]
         private static readonly ILogger _log = Log.ForContext<Config>();
         /// <summary>
         /// Temp file path.
@@ -105,7 +104,6 @@ namespace SteamAutoCrack.Core.Config
 
         public static EMUApplyConfigs EMUApplyConfigs { get; set; } = new EMUApplyConfigs();
         public static EMUConfigs EMUConfigs { get; set; } = new EMUConfigs();
-        public static SteamAppListConfigs SteamAppListConfigs { get; set; } = new SteamAppListConfigs();
         public static SteamStubUnpackerConfigs SteamStubUnpackerConfigs { get; set; } = new SteamStubUnpackerConfigs();
         public static EMUGameInfoConfigs EMUGameInfoConfigs { get; set; } = new EMUGameInfoConfigs();
         public static GenCrackOnlyConfigs GenCrackOnlyConfigs { get; set; } = new GenCrackOnlyConfigs();
@@ -148,7 +146,6 @@ namespace SteamAutoCrack.Core.Config
         {
             EMUApplyConfigs.ResettoDefault();
             EMUConfigs.ResettoDefault();
-            SteamAppListConfigs.ResettoDefault();
             SteamStubUnpackerConfigs.ResettoDefault();
             EMUGameInfoConfigs.ResettoDefault();
             GenCrackOnlyConfigs.ResettoDefault();
@@ -171,7 +168,6 @@ namespace SteamAutoCrack.Core.Config
                 {
                     EMUApplyConfigs = EMUApplyConfigs,
                     EMUConfigs = EMUConfigs,
-                    SteamAppListConfigs = SteamAppListConfigs,
                     SteamStubUnpackerConfigs = SteamStubUnpackerConfigs,
                     EMUGameInfoConfigs = EMUGameInfoConfigs,
                     GenCrackOnlyConfigs = GenCrackOnlyConfigs,
@@ -188,7 +184,7 @@ namespace SteamAutoCrack.Core.Config
                 return;
             }
         }
-        public static void LoadConfig()
+        public static bool LoadConfig()
         {
             try
             {
@@ -198,7 +194,6 @@ namespace SteamAutoCrack.Core.Config
                 {
                     EMUApplyConfigs = configs.EMUApplyConfigs ?? EMUApplyConfigs;
                     EMUConfigs = configs.EMUConfigs ?? EMUConfigs;
-                    SteamAppListConfigs = configs.SteamAppListConfigs ?? SteamAppListConfigs;
                     SteamStubUnpackerConfigs = configs.SteamStubUnpackerConfigs ?? SteamStubUnpackerConfigs;
                     EMUGameInfoConfigs = configs.EMUGameInfoConfigs ?? EMUGameInfoConfigs;
                     GenCrackOnlyConfigs = configs.GenCrackOnlyConfigs ?? GenCrackOnlyConfigs;
@@ -207,13 +202,13 @@ namespace SteamAutoCrack.Core.Config
                     LogToFile = configs.LogToFile;
                 }
                 _log.Information("Config loaded.");
-                return;
+                return true;
             }
             catch (Exception e)
             {
-                _log.Error(e, "Error in reading config file. Restoring to default value...");
+                _log.Warning(e, "Error in reading config file. Restoring to default value...");
                 ResettoDefaultConfigs();
-                return;
+                return false;
             }
         }
     }
@@ -222,7 +217,6 @@ namespace SteamAutoCrack.Core.Config
     {
         public EMUApplyConfigs? EMUApplyConfigs { get; set; }
         public EMUConfigs? EMUConfigs { get; set; }
-        public SteamAppListConfigs? SteamAppListConfigs { get; set; }
         public SteamStubUnpackerConfigs? SteamStubUnpackerConfigs { get; set; }
         public EMUGameInfoConfigs? EMUGameInfoConfigs { get; set; } 
         public GenCrackOnlyConfigs? GenCrackOnlyConfigs { get; set; } 
@@ -368,15 +362,6 @@ namespace SteamAutoCrack.Core.Config
             emuConfig.SetListenPortFromString(ListenPort);
             emuConfig.SetCustomIPFromString(CustomIP);
             return emuConfig;
-        }
-    }
-
-    public class SteamAppListConfigs
-    {
-        public bool ForceUpdate { get; set; } = false;
-        public void ResettoDefault()
-        {
-            ForceUpdate = false;
         }
     }
 

@@ -107,7 +107,16 @@ namespace SteamAutoCrack.Core.Utils
             _log.Information("Generating game info...");
             try
             {
-                Generator = (Generator)Activator.CreateInstance(Type.GetType(typeof(Generator).Namespace + "." + GameInfoConfig.GameInfoAPI.ToString()), new object[] { GameInfoConfig });
+                switch (GameInfoConfig.GameInfoAPI)
+                {
+                    case GeneratorGameInfoAPI.GeneratorSteamClient:
+                        Generator = new GeneratorSteamClient(GameInfoConfig); break;
+                    case GeneratorGameInfoAPI.GeneratorSteamWeb:
+                        Generator = new GeneratorSteamWeb(GameInfoConfig); break;
+                    case GeneratorGameInfoAPI.GeneratorOffline:
+                        Generator = new GeneratorOffline(GameInfoConfig); break;
+                    default: throw new Exception("Invaild game info API.");
+                }
             }
             catch (Exception e)
             {
@@ -241,7 +250,10 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Information("Getting game schema...");
                 string GameSchemaUrl = UseXan105API ? "https://api.xan105.com/steam/ach/" : "https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/";
-
+                if (!UseXan105API && (SteamWebAPIKey == String.Empty || SteamWebAPIKey == null))
+                {
+                    _log.Warning("Empty Steam Web API Key, skipping getting game schcma...");
+                }
                 _log.Debug($"Getting schema for App {AppID}");
 
                 var client = new HttpClient();
@@ -260,8 +272,8 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 else if (responseCode == HttpStatusCode.Forbidden && !UseXan105API)
                 {
-                        _log.Error("Error 403 in getting game schema, please check your Steam Web API key. Skipping...");
-                        throw new Exception("Error 403 in getting game schema.");
+                    _log.Error("Error 403 in getting game schema, please check your Steam Web API key. Skipping...");
+                    throw new Exception("Error 403 in getting game schema.");
                 }
                 else
                 {
