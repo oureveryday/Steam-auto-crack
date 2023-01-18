@@ -76,14 +76,6 @@ namespace SteamAutoCrack
             UnpackGrid.IsEnabled = false;
             ApplyEMUGrid.IsEnabled = false;
             GenerateCrackOnlyGrid.IsEnabled = false;
-            if (!Restore.IsEnabled)
-            {
-                GenerateEMUGameInfo.IsEnabled = false;
-                GenerateEMUConfig.IsEnabled = false;
-                Unpack.IsEnabled = false;
-                ApplyEMU.IsEnabled = false;
-                GenerateCrackOnly.IsEnabled = false;
-            }
             Restore.IsEnabled = false;
             InputPath.IsEnabled = false;
             Select.IsEnabled = false;
@@ -121,11 +113,11 @@ namespace SteamAutoCrack
                     GenerateCrackOnlyGrid.IsEnabled = true;
                     if (!Restore.IsEnabled)
                     {
-                        GenerateEMUGameInfo.IsEnabled = false;
-                        GenerateEMUConfig.IsEnabled = false;
-                        Unpack.IsEnabled = false;
-                        ApplyEMU.IsEnabled = false;
-                        GenerateCrackOnly.IsEnabled = false;
+                        GenerateEMUGameInfo.IsEnabled = true;
+                        GenerateEMUConfig.IsEnabled = true;
+                        Unpack.IsEnabled = true;
+                        ApplyEMU.IsEnabled = true;
+                        GenerateCrackOnly.IsEnabled = true;
                     }
                     Restore.IsEnabled = true;
                     InputPath.IsEnabled = true;
@@ -152,11 +144,11 @@ namespace SteamAutoCrack
                     GenerateCrackOnlyGrid.IsEnabled = true;
                     if (!Restore.IsEnabled)
                     {
-                        GenerateEMUGameInfo.IsEnabled = false;
-                        GenerateEMUConfig.IsEnabled = false;
-                        Unpack.IsEnabled = false;
-                        ApplyEMU.IsEnabled = false;
-                        GenerateCrackOnly.IsEnabled = false;
+                        GenerateEMUGameInfo.IsEnabled = true;
+                        GenerateEMUConfig.IsEnabled = true;
+                        Unpack.IsEnabled = true;
+                        ApplyEMU.IsEnabled = true;
+                        GenerateCrackOnly.IsEnabled = true;
                     }
                     Restore.IsEnabled = true;
                     InputPath.IsEnabled = true;
@@ -185,11 +177,11 @@ namespace SteamAutoCrack
                     GenerateCrackOnlyGrid.IsEnabled = true;
                     if (!Restore.IsEnabled)
                     {
-                        GenerateEMUGameInfo.IsEnabled = false;
-                        GenerateEMUConfig.IsEnabled = false;
-                        Unpack.IsEnabled = false;
-                        ApplyEMU.IsEnabled = false;
-                        GenerateCrackOnly.IsEnabled = false;
+                        GenerateEMUGameInfo.IsEnabled = true;
+                        GenerateEMUConfig.IsEnabled = true;
+                        Unpack.IsEnabled = true;
+                        ApplyEMU.IsEnabled = true;
+                        GenerateCrackOnly.IsEnabled = true;
                     }
                     Restore.IsEnabled = true;
                     InputPath.IsEnabled = true;
