@@ -39,6 +39,7 @@ Latest Version 3.0 Using .Net 6.0.
 ## Bugs
 
 If You Have Any Bugs, Please Submit a Issue On Github.
+cs.rin.ru thread: <https://cs.rin.ru/forum/viewtopic.php?f=29&t=110605>
 
 ## Donate
 
