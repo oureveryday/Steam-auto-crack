@@ -111,7 +111,7 @@ namespace SteamAutoCrack
                     UnpackGrid.IsEnabled = true;
                     ApplyEMUGrid.IsEnabled = true;
                     GenerateCrackOnlyGrid.IsEnabled = true;
-                    if (!Restore.IsEnabled)
+                    if (!viewModel.Restore)
                     {
                         GenerateEMUGameInfo.IsEnabled = true;
                         GenerateEMUConfig.IsEnabled = true;
@@ -142,7 +142,7 @@ namespace SteamAutoCrack
                     UnpackGrid.IsEnabled = true;
                     ApplyEMUGrid.IsEnabled = true;
                     GenerateCrackOnlyGrid.IsEnabled = true;
-                    if (!Restore.IsEnabled)
+                    if (!viewModel.Restore)
                     {
                         GenerateEMUGameInfo.IsEnabled = true;
                         GenerateEMUConfig.IsEnabled = true;
@@ -175,7 +175,7 @@ namespace SteamAutoCrack
                     UnpackGrid.IsEnabled = true;
                     ApplyEMUGrid.IsEnabled = true;
                     GenerateCrackOnlyGrid.IsEnabled = true;
-                    if (!Restore.IsEnabled)
+                    if (!viewModel.Restore)
                     {
                         GenerateEMUGameInfo.IsEnabled = true;
                         GenerateEMUConfig.IsEnabled = true;
