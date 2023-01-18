@@ -3,3 +3,5 @@ obj/
 bin/
 !/bin/
 !/SteamAutoCrack.CLI/bin
+/SteamAutoCrack.CLI/bin/x86
+/SteamAutoCrack.CLI/bin/Release/*.pdb
