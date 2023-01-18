@@ -50,14 +50,14 @@ namespace SteamAutoCrack.Utils
                     var item = new { Level = level, Source = SourceContextStr, Message = logEvent.RenderMessage() };
                     var listviewitem = new ListViewItem { Content = item, Background = logColor };
                     _ListView.Items.Add(listviewitem);
-                    _ListView.ScrollIntoView(item);
+                    _ListView.ScrollIntoView(listviewitem);
                 }
                 if (logEvent.Exception != null)
                 {
                     var itemex = new { Level = level , Source = SourceContextStr, Message = logEvent.Exception.Message };
                     var listviewitemex = new ListViewItem { Content = itemex, Background = logColor };
                     _ListView.Items.Add(listviewitemex);
-                    _ListView.ScrollIntoView(itemex);
+                    _ListView.ScrollIntoView(listviewitemex);
                 }
                 
             }));
