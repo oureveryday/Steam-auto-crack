@@ -76,6 +76,11 @@ namespace SteamAutoCrack
             UnpackGrid.IsEnabled = false;
             ApplyEMUGrid.IsEnabled = false;
             GenerateCrackOnlyGrid.IsEnabled = false;
+            GenerateEMUGameInfo.IsEnabled = false;
+            GenerateEMUConfig.IsEnabled = false;
+            Unpack.IsEnabled = false;
+            ApplyEMU.IsEnabled = false;
+            GenerateCrackOnly.IsEnabled = false;
             Restore.IsEnabled = false;
             InputPath.IsEnabled = false;
             Select.IsEnabled = false;
