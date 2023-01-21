@@ -114,6 +114,7 @@ namespace SteamAutoCrack.CLI
                     if (File.Exists(Config.ConfigPath))
                     {
                         _log.Information("Config file already exists.");
+                        return;
                     }
                     Config.ResettoDefaultConfigs();
                     Config.SaveConfig();
