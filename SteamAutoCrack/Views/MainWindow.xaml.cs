@@ -88,7 +88,7 @@ namespace SteamAutoCrack
 
             Task.Run(async () =>
             {
-                if (viewModel.GenerateEMUGameInfo && viewModel.AppID == String.Empty)
+                if (viewModel.GenerateEMUGameInfo && viewModel.AppID == String.Empty && viewModel.InputPath != String.Empty)
                 {
                     _log.Information("Empty AppID. Please select one using AppID Finder.");
                     Dispatcher.Invoke(new Action(() => {

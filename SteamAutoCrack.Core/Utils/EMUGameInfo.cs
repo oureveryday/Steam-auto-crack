@@ -252,7 +252,8 @@ namespace SteamAutoCrack.Core.Utils
                 string GameSchemaUrl = UseXan105API ? "https://api.xan105.com/steam/ach/" : "https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/";
                 if (!UseXan105API && (SteamWebAPIKey == String.Empty || SteamWebAPIKey == null))
                 {
-                    _log.Warning("Empty Steam Web API Key, skipping getting game schcma...");
+                    _log.Warning("Empty Steam Web API Key, skipping getting game schema...");
+                    return false;
                 }
                 _log.Debug($"Getting schema for App {AppID}");
 
@@ -392,7 +393,7 @@ namespace SteamAutoCrack.Core.Utils
             }
             catch (KeyNotFoundException)
             {
-                _log.Information("No stats, skipping...");
+                _log.Information("No achievements, skipping...");
             }
             catch (Exception e)
             {
@@ -803,6 +804,10 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 _log.Debug("Generated inventory info.");
             }
+            catch (KeyNotFoundException)
+            {
+                _log.Information("No inventory, skipping...");
+            }
             catch (Exception e)
             {
                 _log.Information(e, "Failed to generate inventory info. Skipping...");
@@ -1039,9 +1044,13 @@ namespace SteamAutoCrack.Core.Utils
                 
                 _log.Debug("Generated inventory info.");
             }
+            catch (KeyNotFoundException)
+            {
+                _log.Information("No inventory, skipping...");
+            }
             catch (Exception e)
             {
-                _log.Information(e, "Failed to generate inventory info. Skipping...");
+                _log.Error(e, "Failed to generate inventory info. Skipping...");
             }
         }
 

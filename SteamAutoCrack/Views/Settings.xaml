@@ -34,7 +34,7 @@
             <Button x:Name="UpdateAppList" Content="Force Update Steam App List" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Click="UpdateAppList_Click"/>
 
         </Grid>
-        <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,230,0,0" VerticalAlignment="Top" Width="77" Click="Close_Click"/>
+        <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,230,0,0" VerticalAlignment="Top" Width="77" Click="Close_Click" IsDefault="True"/>
 
 
 

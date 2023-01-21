@@ -12,7 +12,7 @@
         <viewmodels:AboutViewModel/>
     </Window.DataContext>
     <Grid>
-        <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,324,0,0" VerticalAlignment="Top" Click="Close_Click" Width="60"/>
+        <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,324,0,0" VerticalAlignment="Top" Click="Close_Click" Width="60" IsDefault="True"/>
         <TextBlock x:Name="SteamAutoCrack" HorizontalAlignment="Left" Margin="110,10,0,0" TextWrapping="Wrap" Text="{Binding Ver}" VerticalAlignment="Top" Height="35" Width="235" FontSize="20"/>
         <Image x:Name="Logo" HorizontalAlignment="Left" Height="40" Margin="60,5,0,0" VerticalAlignment="Top" Width="40" Source="/Views/SteamAutoCrack.png"/>
 
