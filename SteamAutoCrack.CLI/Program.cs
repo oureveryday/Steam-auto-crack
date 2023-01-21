@@ -111,6 +111,10 @@ namespace SteamAutoCrack.CLI
                 {
                     if (Debug) SetDebugLogLevel(levelSwitch);
                     Config.ConfigPath = ConfigPath == null ? Config.ConfigPath : ConfigPath.FullName;
+                    if (File.Exists(Config.ConfigPath))
+                    {
+                        _log.Information("Config file already exists.");
+                    }
                     Config.ResettoDefaultConfigs();
                     Config.SaveConfig();
                     _log.Information("Config Created.");
