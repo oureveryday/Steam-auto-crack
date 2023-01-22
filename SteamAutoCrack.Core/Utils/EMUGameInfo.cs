@@ -635,8 +635,7 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Debug("Generating DLCs...");
                 KeyValue GameInfoDLCs = await GetSteam3AppSection(AppID, EAppInfoSection.Extended).ConfigureAwait(false);
-                KeyValue GameInfoDepots = await GetSteam3AppSection(AppID, EAppInfoSection.Depots).ConfigureAwait(false);
-                if (GameInfoDLCs == null && GameInfoDepots == null)
+                if (GameInfoDLCs == null)
                 {
                     _log.Error("Failed to get game info, skipping generate DLCs...(AppID: {appid})", AppID);
                     return;
@@ -653,18 +652,7 @@ namespace SteamAutoCrack.Core.Utils
                     }
                     DLCIds.AddRange(new List<string>(GameInfoDLCs["listofdlc"].Value.Split(',')).ConvertAll<uint>(x => Convert.ToUInt32(x)));
                 }
-                if (GameInfoDepots != KeyValue.Invalid)
-                {
-                    _log.Debug("Getting DLCs from Depot section...");
-                    GameInfoDepots.Children.ForEach(delegate (KeyValue Depot)
-                    {
-                        uint DLCAppID = 0;
-                        if (Depot.Children.Exists(x => x.Name == "dlcappid"))
-                        {
-                            DLCIds.Add(Convert.ToUInt32(Depot["dlcappid"].Value));
-                        }
-                    });
-                }
+               
                 if (DLCIds.Count == 0)
                 {
                     _log.Debug("No DLCs. Skipping...");
