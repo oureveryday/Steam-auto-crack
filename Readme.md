@@ -14,6 +14,8 @@ Latest Version 3.0 Using .Net 6.0.
 * Github: <https://github.com/oureveryday/Steam-auto-crack>
 * Gitlab: <https://gitlab.com/oureveryday/Steam-auto-crack>
 
+* If you like this project, you can just give this project a star or donate me. (Donation methods are at the bottom)
+
 ## Functions
 
 * Fully automatic crack Steam DRM Only Game.
