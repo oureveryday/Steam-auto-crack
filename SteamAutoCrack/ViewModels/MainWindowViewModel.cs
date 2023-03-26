@@ -8,66 +8,48 @@ using System.Linq;
 using System.Collections.Generic;
 using SteamAutoCrack.Views;
 using System.Windows.Input;
+using System.Reflection;
 
 namespace SteamAutoCrack.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
         #region INPC
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (Config.SaveCrackConfig)
             {
                 Config.SaveConfig();
             }
+
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         public void ReloadValue()
         {
-            NotifyPropertyChanged("InputPath");
-            NotifyPropertyChanged("GenerateEMUGameInfo");
-            NotifyPropertyChanged("GenerateEMUConfig");
-            NotifyPropertyChanged("Unpack");
-            NotifyPropertyChanged("ApplyEMU");
-            NotifyPropertyChanged("GenerateCrackOnly");
-            NotifyPropertyChanged("Restore");
-            NotifyPropertyChanged("AppID");
-            NotifyPropertyChanged("SteamWebAPIKey");
-            NotifyPropertyChanged("UseXan105API");
-            NotifyPropertyChanged("UseSteamWebAppList");
-            NotifyPropertyChanged("GenerateImages");
-            NotifyPropertyChanged("GameInfoAPI");
-            NotifyPropertyChanged("Language");
-            NotifyPropertyChanged("SteamID");
-            NotifyPropertyChanged("AccountName");
-            NotifyPropertyChanged("ListenPort");
-            NotifyPropertyChanged("CustomIP");
-            NotifyPropertyChanged("UseCustomIP");
-            NotifyPropertyChanged("LanguageForce");
-            NotifyPropertyChanged("SteamIDForce");
-            NotifyPropertyChanged("AccountNameForce");
-            NotifyPropertyChanged("ListenPortForce");
-            NotifyPropertyChanged("DisableNetworking");
-            NotifyPropertyChanged("Offline");
-            NotifyPropertyChanged("DisableOverlay");
-            NotifyPropertyChanged("KeepBind");
-            NotifyPropertyChanged("KeepStub");
-            NotifyPropertyChanged("Realign");
-            NotifyPropertyChanged("ReCalcChecksum");
-            NotifyPropertyChanged("UseExperimentalFeatures");
-            NotifyPropertyChanged("LocalSave");
-            NotifyPropertyChanged("UseLocalSave");
-            NotifyPropertyChanged("UseGoldbergExperimental");
-            NotifyPropertyChanged("GenerateInterfacesFile");
-            NotifyPropertyChanged("ForceGenerateInterfacesFiles");
-            NotifyPropertyChanged("OutputPath");
-            NotifyPropertyChanged("CreateReadme"); 
-            NotifyPropertyChanged("Pack");
+            Type type = GetType();
+
+            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                
+                    string propertyName = property.Name;
+
+                    if (propertyName.StartsWith("_"))
+                    {
+                        propertyName = propertyName.Substring(1);
+                    }
+
+                    NotifyPropertyChanged(propertyName);
+                
+            }
         }
+
         #endregion
         #region BasicConfigs
         public string InputPath
