@@ -120,9 +120,17 @@ namespace SteamAutoCrack.Core.Utils
         public static async Task<IEnumerable<SteamApp>> GetListOfAppsByName(string name)
         {
             var query = await db.Table<SteamApp>().ToListAsync().ConfigureAwait(false);
-            var listOfAppsByName = query.Search(x => x.Name)
+            var SearchOfAppsByName = query.Search(x => x.Name)
                 .SetCulture(StringComparison.OrdinalIgnoreCase)
                 .ContainingAll(name.Split(' '));
+            var listOfAppsByName = SearchOfAppsByName.ToList();
+            if (UInt32.TryParse(name, out var appid))
+            {
+                var app = await GetAppById(appid).ConfigureAwait(false);
+                listOfAppsByName.Remove(listOfAppsByName.Find(d => d.AppId == appid));
+                listOfAppsByName.Insert(0, app);
+            }
+            return listOfAppsByName;
             return listOfAppsByName;
         }
 
@@ -134,6 +142,13 @@ namespace SteamAutoCrack.Core.Utils
             foreach (var item in results)
             {
                 listOfAppsByName.Add(item.Value);
+            }
+
+            if (UInt32.TryParse(name, out var appid))
+            {
+                var app = await GetAppById(appid).ConfigureAwait(false);
+                listOfAppsByName.Remove(listOfAppsByName.Find(d => d.AppId == appid));
+                listOfAppsByName.Insert(0, app);
             }
             return listOfAppsByName;
         }

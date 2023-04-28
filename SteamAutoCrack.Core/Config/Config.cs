@@ -15,11 +15,11 @@ namespace SteamAutoCrack.Core.Config
         /// <summary>
         /// Temp file path.
         /// </summary>
-        public static string? TempPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "TEMP");
+        public static string? TempPath { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TEMP");
         /// <summary>
         /// Config file path.
         /// </summary>
-        public static string? ConfigPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
+        public static string? ConfigPath { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
         /// <summary>
         /// Steam emulator config path.
         /// </summary>
@@ -27,7 +27,7 @@ namespace SteamAutoCrack.Core.Config
         /// <summary>
         /// Path of steam emulator files.
         /// </summary>
-        public static string? GoldbergPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Goldberg");
+        public static string? GoldbergPath { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Goldberg");
         /// <summary>
         /// Path to process.
         /// </summary>
@@ -136,8 +136,8 @@ namespace SteamAutoCrack.Core.Config
         public static void ResettoDefaultAll()
         {
             EMUConfigPath = Path.Combine(TempPath, "steam_settings");
-            GoldbergPath = Path.Combine(Directory.GetCurrentDirectory(), "Goldberg");
-            TempPath = Path.Combine(Directory.GetCurrentDirectory(), "TEMP");
+            GoldbergPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Goldberg");
+            TempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TEMP");
             EnableDebugLog = false;
             LogToFile = false;
             ResettoDefaultConfigs();
@@ -153,7 +153,7 @@ namespace SteamAutoCrack.Core.Config
         }
         public static bool CheckCrackApplierMode()
         {
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "Apply_Crack")))
+            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Apply_Crack")))
             {
                 return true;
             }

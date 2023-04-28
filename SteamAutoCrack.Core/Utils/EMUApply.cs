@@ -25,7 +25,7 @@ namespace SteamAutoCrack.Core.Utils
         /// <summary>
         /// Path of steam emulator files.
         /// </summary>
-        public string? GoldbergPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Goldberg");
+        public string? GoldbergPath { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Goldberg");
         /// <summary>
         /// Path to apply steam emulator.
         /// </summary>
@@ -65,7 +65,7 @@ namespace SteamAutoCrack.Core.Utils
         /// <summary>
         /// Path of steam emulator files.
         /// </summary>
-        public static readonly string? GoldbergPath = Path.Combine(Directory.GetCurrentDirectory(), "Goldberg");
+        public static readonly string? GoldbergPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Goldberg");
         /// <summary>
         /// Emulator save location.
         /// </summary>
