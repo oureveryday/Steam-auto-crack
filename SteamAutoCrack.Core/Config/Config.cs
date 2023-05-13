@@ -3,9 +3,12 @@ using Serilog.Core;
 using Serilog.Events;
 using SteamAutoCrack.Core.Utils;
 using SteamAutoCrack.Core.Utils.SteamAutoCrack.Core.Utils;
+using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace SteamAutoCrack.Core.Config
 {
@@ -92,6 +95,11 @@ namespace SteamAutoCrack.Core.Config
         /// Output log to file.
         /// </summary>
         public static bool LogToFile { get; set; } = false;
+        /// <summary>
+        /// Program Language.
+        /// </summary>
+        public enum Languages { [Description("English")] en_US , [Description("中文")] zh_CN }
+        public static Languages Language { get; set; } = GetDefaultLanguage();
 
         private static bool CheckConfigFile()
         {
@@ -140,6 +148,7 @@ namespace SteamAutoCrack.Core.Config
             TempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TEMP");
             EnableDebugLog = false;
             LogToFile = false;
+            Language = GetDefaultLanguage();
             ResettoDefaultConfigs();
         }
         public static void ResettoDefaultConfigs()
@@ -174,6 +183,7 @@ namespace SteamAutoCrack.Core.Config
                     ProcessConfigs = ProcessConfigs,
                     EnableDebugLog = EnableDebugLog,
                     LogToFile = LogToFile,
+                    Language = Language,
                 }, options);
                 File.WriteAllText(ConfigPath, jsonString);
                 return;
@@ -200,6 +210,7 @@ namespace SteamAutoCrack.Core.Config
                     ProcessConfigs = configs.ProcessConfigs ?? ProcessConfigs;
                     EnableDebugLog = configs.EnableDebugLog;
                     LogToFile = configs.LogToFile;
+                    Language = configs.Language;
                 }
                 _log.Information("Config loaded.");
                 return true;
@@ -209,6 +220,32 @@ namespace SteamAutoCrack.Core.Config
                 _log.Warning(e, "Error in reading config file. Restoring to default value...");
                 ResettoDefaultConfigs();
                 return false;
+            }
+        }
+
+        public static Languages GetDefaultLanguage()
+        {
+            var language = EMUConfig.Languages.english;
+            string culture = CultureInfo.InstalledUICulture.Name;
+            switch (culture.Substring(0, 2))
+            {
+                case "zh":
+                    return Languages.zh_CN;
+                default:
+                    return Languages.en_US;
+            }
+        }
+
+        public static string GetLanguage()
+        {
+            switch (Language)
+            {
+                case Languages.en_US:
+                    return "en-US";
+                case Languages.zh_CN:
+                    return "zh-CN";
+                default:
+                    return "en-US";
             }
         }
     }
@@ -223,6 +260,7 @@ namespace SteamAutoCrack.Core.Config
         public ProcessConfigs? ProcessConfigs { get; set; }
         public bool EnableDebugLog { get; set; }
         public bool LogToFile { get; set; }
+        public Config.Languages Language { get; set; }
     }
     public class EMUApplyConfigs
     {

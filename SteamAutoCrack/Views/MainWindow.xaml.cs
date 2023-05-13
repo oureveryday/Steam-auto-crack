@@ -6,9 +6,11 @@ using SteamAutoCrack.Core.Utils;
 using SteamAutoCrack.Utils;
 using SteamAutoCrack.ViewModels;
 using SteamAutoCrack.Views;
+using SteamAutoCrack.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,11 +32,12 @@ namespace SteamAutoCrack
         
         public MainWindow()
         {
-            InitializeComponent();
-            if (Config.SaveCrackConfig) 
+            if (Config.SaveCrackConfig)
             {
                 Config.LoadConfig();
             }
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(Config.GetLanguage());
+            InitializeComponent();
             if (Config.LogToFile)
             {
                 Log.Logger = new LoggerConfiguration()
@@ -90,7 +93,7 @@ namespace SteamAutoCrack
             {
                 if (viewModel.GenerateEMUGameInfo && viewModel.AppID == String.Empty && viewModel.InputPath != String.Empty)
                 {
-                    _log.Information("Empty AppID. Please select one using AppID Finder.");
+                    _log.Information(Properties.Resources.EmptyAppIDPleaseSelectOneUsingAppIDFinder);
                     Dispatcher.Invoke(new Action(() => {
                         if (!bAppIDFinderOpened)
                         {
@@ -228,7 +231,7 @@ namespace SteamAutoCrack
         {
             try
             {
-                var result = CustomMessageBox.ShowYesNoCancel("Select Folder or File?", "Select Folder or File?", "Folder", "File", "Cancel");
+                var result = CustomMessageBox.ShowYesNoCancel(Properties.Resources.SelectFolderOrFile, Properties.Resources.SelectFolderOrFile, Properties.Resources.Folder, Properties.Resources.File, Properties.Resources.Cancel);
                 if (result == MessageBoxResult.Yes)
                 {
                     var selector = new VistaFolderBrowserDialog();
@@ -252,7 +255,7 @@ namespace SteamAutoCrack
             }
             catch(Exception ex)
             {
-                _log.Error(ex,"Error when selecting file:");
+                _log.Error(ex,Properties.Resources.ErrorWhenSelectingFile);
             }
         }
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -331,7 +334,7 @@ namespace SteamAutoCrack
             }
             catch 
             {
-                _log.Information("Cannot get app name from input path.");
+                _log.Information(Properties.Resources.CannotGetAppNameFromInputPath);
                 return string.Empty;
             }
         }
@@ -372,7 +375,7 @@ namespace SteamAutoCrack
             {
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    var result = CustomMessageBox.ShowYesNo("Goldberg emulator file is missing.\nDownload Goldberg emulator?", "Download Goldberg emulator?", "Download", "Cancel");
+                    var result = CustomMessageBox.ShowYesNo(Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator1 + "\n" + Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator2, "Download Goldberg emulator?", "Download", "Cancel");
                     if (result == MessageBoxResult.Yes)
                     {
                         Task.Run(async () =>
@@ -391,7 +394,7 @@ namespace SteamAutoCrack
         {
             try
             {
-                _log.Debug("Checking all goldberg emulator file exists or not...");
+                _log.Debug(Properties.Resources.CheckingAllGoldbergEmulatorFileExistsOrNot);
                 if (!Directory.Exists(Config.GoldbergPath))
                 {
                     return false;
@@ -414,7 +417,7 @@ namespace SteamAutoCrack
             }
             catch (Exception e)
             {
-                _log.Error(e, "Failed to Check goldberg emulator.");
+                _log.Error(e, Properties.Resources.FailedToCheckGoldbergEmulator);
                 return false;
             }
         }

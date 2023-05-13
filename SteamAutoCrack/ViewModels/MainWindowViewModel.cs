@@ -1,14 +1,11 @@
 ﻿using SteamAutoCrack.Core.Config;
 using SteamAutoCrack.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System;
 using System.Linq;
-using System.Collections.Generic;
-using SteamAutoCrack.Views;
-using System.Windows.Input;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace SteamAutoCrack.ViewModels
 {

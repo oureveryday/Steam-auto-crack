@@ -4,34 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels" 
-        xmlns:local="clr-namespace:SteamAutoCrack.Views"
+        xmlns:utils="clr-namespace:SteamAutoCrack.Utils"
+        xmlns:properties="clr-namespace:SteamAutoCrack.Properties"
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="500"
         ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:SettingsViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <utils:EnumDescriptionConverter x:Key="enumConverter" />
+    </Window.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Settings" VerticalAlignment="Top" FontSize="20"/>
         <Grid Margin="0,40,0,170">
             <Border BorderBrush="Black" BorderThickness="1"/>
-            <CheckBox x:Name="SaveConfig" Content="Save Config File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="{Binding SaveCrackConfig}"/>
-            <CheckBox x:Name="DebugLog" Content="Enable Debug Log" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" IsChecked="{Binding EnableDebugLog}"/>
-            <CheckBox x:Name="LogToFile" Content="Output Log to File" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" IsChecked="{Binding LogToFile}"/>
-            <Button x:Name="RestoreConfig" Content="Restore to Default Config" HorizontalAlignment="Left" Margin="250,30,0,0" VerticalAlignment="Top" Width="155" Click="RestoreConfig_Click"/>
+            <CheckBox x:Name="SaveConfig" Content="{x:Static properties:Resources.SaveConfigFile}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="{Binding SaveCrackConfig}"/>
+            <CheckBox x:Name="DebugLog" Content="{x:Static properties:Resources.EnableDebugLog}" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" IsChecked="{Binding EnableDebugLog}"/>
+            <CheckBox x:Name="LogToFile" Content="{x:Static properties:Resources.OutputLogToFile}" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" IsChecked="{Binding LogToFile}"/>
+            <Button x:Name="RestoreConfig" Content="{x:Static properties:Resources.RestoreToDefaultConfig}" HorizontalAlignment="Left" Margin="250,30,0,0" VerticalAlignment="Top" Width="155" Click="RestoreConfig_Click"/>
         </Grid>
         <Grid Margin="0,100,0,110">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <Button x:Name="Download" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Click="Download_Click" Content="{Binding UpdateBtnString}" Width="120"/>
             <TextBlock x:Name="GoldbergVersion" HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="{Binding GoldbergVer}" VerticalAlignment="Top"/>
-            <CheckBox x:Name="ForceUpdate" Content="Force Download" HorizontalAlignment="Left" Margin="135,25,0,0" VerticalAlignment="Top" IsChecked="{Binding ForceUpdate}"/>
-
+            <CheckBox x:Name="ForceUpdate" Content="{x:Static properties:Resources.ForceDownload}" HorizontalAlignment="Left" Margin="135,25,0,0" VerticalAlignment="Top" IsChecked="{Binding ForceUpdate}"/>
+            <Button x:Name="UpdateAppList" Content="{x:Static properties:Resources.ForceUpdateSteamAppList}" HorizontalAlignment="Left" Margin="305,25,0,0" VerticalAlignment="Top" Click="UpdateAppList_Click"/>
         </Grid>
-        
-        
+
+
         <Grid Margin="0,158,0,72">
             <Border BorderBrush="Black" BorderThickness="1"/>
-            <Button x:Name="UpdateAppList" Content="Force Update Steam App List" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Click="UpdateAppList_Click"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{x:Static properties:Resources.LanguageRestartToTakeEffect}" VerticalAlignment="Top"/>
+            <ComboBox x:Name="Language" HorizontalAlignment="Left" Margin="210,8,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource enumConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
 
         </Grid>
         <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,230,0,0" VerticalAlignment="Top" Width="77" Click="Close_Click" IsDefault="True"/>

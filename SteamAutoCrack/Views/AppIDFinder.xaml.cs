@@ -34,7 +34,7 @@ namespace SteamAutoCrack.Views
             InitializeComponent();
             DataContext = viewModel;
             viewModel.AppName = appname;
-            viewModel.SearchBtnString = "Loading...";
+            viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Loading;
             Search.IsEnabled = false;
             _log = Log.ForContext<AppIDFinder>();
             Task.Run(async () =>
@@ -44,7 +44,7 @@ namespace SteamAutoCrack.Views
                     await SteamAppList.WaitForReady().ConfigureAwait(false);
                     Dispatcher.Invoke(new Action(() => {
                         Search.IsEnabled = true;
-                        viewModel.SearchBtnString = "Search";
+                        viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Search;
                         if (viewModel.AppName != string.Empty)
                         {
                             Search_Click(new Object(), new RoutedEventArgs());
@@ -54,9 +54,9 @@ namespace SteamAutoCrack.Views
                 }
                 catch(Exception ex)
                 {
-                    _log.Error(ex, "Failed to load App List. Please restart SteamAutoCrack to try again.");
+                    _log.Error(ex, SteamAutoCrack.Properties.Resources.FailedToLoadAppListPleaseRestartSteamAutoCrackToTryAgain);
                     Dispatcher.Invoke(new Action(() => {
-                        viewModel.SearchBtnString = "Failed";
+                        viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Failed;
                     }));
                     
                 }
@@ -106,7 +106,7 @@ namespace SteamAutoCrack.Views
 
         private async void Search_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.SearchBtnString = "Searching...";
+            viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Searching;
             Search.IsEnabled = false;
             if ((bool)Fuzzy.IsChecked)
             {
@@ -119,7 +119,7 @@ namespace SteamAutoCrack.Views
             Dispatcher.Invoke(new Action(() => {
                 Search.IsEnabled = true;
             }));
-            viewModel.SearchBtnString = "Search";
+            viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Search;
             
             return;
         }

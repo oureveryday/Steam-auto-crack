@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path: </value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="ClearLog" xml:space="preserve">
+    <value>Clear Log</value>
+  </data>
+  <data name="_1GenerateGoldbergSteamEmulatorGameInfo" xml:space="preserve">
+    <value>1. Generate Goldberg Steam Emulator Game Info</value>
+  </data>
+  <data name="AppIDFinder" xml:space="preserve">
+    <value>AppID Finder</value>
+  </data>
+  <data name="UseXan105API" xml:space="preserve">
+    <value>Use Xan105 API</value>
+  </data>
+  <data name="UseSteamWebAppList" xml:space="preserve">
+    <value>Use Steam Web App List</value>
+  </data>
+  <data name="GenerateAchievementImages" xml:space="preserve">
+    <value>Generate Achievement Images</value>
+  </data>
+  <data name="_2GenerateGoldbergSteamEmulatorConfiguration" xml:space="preserve">
+    <value>2. Generate Goldberg Steam Emulator Configuration</value>
+  </data>
+  <data name="Force" xml:space="preserve">
+    <value>Force</value>
+  </data>
+  <data name="UseCustomBroadcastIP" xml:space="preserve">
+    <value>Use Custom Broadcast IP:</value>
+  </data>
+  <data name="DisableNetworking" xml:space="preserve">
+    <value>Disable Networking</value>
+  </data>
+  <data name="OfflineMode" xml:space="preserve">
+    <value>Offline Mode</value>
+  </data>
+  <data name="DisableOverlay" xml:space="preserve">
+    <value>Disable Overlay</value>
+  </data>
+  <data name="OpenExampleConfig" xml:space="preserve">
+    <value>Open Example Config</value>
+  </data>
+  <data name="OpenConfigFolder" xml:space="preserve">
+    <value>Open Config Folder</value>
+  </data>
+  <data name="_3UnpackSteamStub" xml:space="preserve">
+    <value>3. Unpack SteamStub</value>
+  </data>
+  <data name="KeepBindSection" xml:space="preserve">
+    <value>Keep .bind Section</value>
+  </data>
+  <data name="KeepDOSStubData" xml:space="preserve">
+    <value>Keep DOS Stub Data</value>
+  </data>
+  <data name="RealignSections" xml:space="preserve">
+    <value>Realign Sections</value>
+  </data>
+  <data name="RecalculateFileChecksum" xml:space="preserve">
+    <value>Recalculate File Checksum</value>
+  </data>
+  <data name="UseExperimentalFeatures" xml:space="preserve">
+    <value>Use Experimental Features</value>
+  </data>
+  <data name="_4ApplyGoldbergSteamEmulator" xml:space="preserve">
+    <value>4. Apply Goldberg Steam Emulator</value>
+  </data>
+  <data name="UseCustomSaveLocation" xml:space="preserve">
+    <value>Use Custom Save Location:</value>
+  </data>
+  <data name="UseExperimentalVersionGoldbergEmulator" xml:space="preserve">
+    <value>Use Experimental version Goldberg Emulator</value>
+  </data>
+  <data name="GenerateSteamInterfacesFile" xml:space="preserve">
+    <value>Generate Steam Interfaces file</value>
+  </data>
+  <data name="ForceGenerateForEachSteam__api64Dll" xml:space="preserve">
+    <value>Force Generate for each steam__api(64).dll</value>
+  </data>
+  <data name="_5GenerateCrackOnlyFiles" xml:space="preserve">
+    <value>5. Generate Crack Only Files</value>
+  </data>
+  <data name="CreateCrackReadmeFile" xml:space="preserve">
+    <value>Create Crack Readme File</value>
+  </data>
+  <data name="PackFileWithZipArchive" xml:space="preserve">
+    <value>Pack File With Zip Archive</value>
+  </data>
+  <data name="_6RestoreCrack" xml:space="preserve">
+    <value>6. Restore Crack</value>
+  </data>
+  <data name="SteamWebAPIKey" xml:space="preserve">
+    <value>Steam Web API Key:</value>
+  </data>
+  <data name="OrGetSteamAppIDOn" xml:space="preserve">
+    <value>Or get Steam AppID on</value>
+  </data>
+  <data name="SteamAppID" xml:space="preserve">
+    <value>Steam AppID:</value>
+  </data>
+  <data name="GeneratorAPI" xml:space="preserve">
+    <value>Generator API:</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="ListenPort" xml:space="preserve">
+    <value>Listen Port:</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account Name:</value>
+  </data>
+  <data name="SteamID" xml:space="preserve">
+    <value>Steam ID:</value>
+  </data>
+  <data name="ForceDownload" xml:space="preserve">
+    <value>Force Download</value>
+  </data>
+  <data name="ForceUpdateSteamAppList" xml:space="preserve">
+    <value>Force Update Steam App List</value>
+  </data>
+  <data name="RestoreToDefaultConfig" xml:space="preserve">
+    <value>Restore to Default Config</value>
+  </data>
+  <data name="OutputLogToFile" xml:space="preserve">
+    <value>Output Log to File</value>
+  </data>
+  <data name="EnableDebugLog" xml:space="preserve">
+    <value>Enable Debug Log</value>
+  </data>
+  <data name="SaveConfigFile" xml:space="preserve">
+    <value>Save Config File</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="LanguageRestartToTakeEffect" xml:space="preserve">
+    <value>Language (Restart to Take Effect):</value>
+  </data>
+  <data name="OutputPath" xml:space="preserve">
+    <value>Output Path:</value>
+  </data>
+  <data name="SteamGameAutomaticCracker" xml:space="preserve">
+    <value>Steam Game Automatic Cracker</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>App Name:</value>
+  </data>
+  <data name="FuzzySearch" xml:space="preserve">
+    <value>Fuzzy Search</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="FailedToLoadAppListPleaseRestartSteamAutoCrackToTryAgain" xml:space="preserve">
+    <value>Failed to load App List. Please restart SteamAutoCrack to try again.</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="EmptyAppIDPleaseSelectOneUsingAppIDFinder" xml:space="preserve">
+    <value>Empty AppID. Please select one using AppID Finder.</value>
+  </data>
+  <data name="SelectFolderOrFile" xml:space="preserve">
+    <value>Select Folder or File?</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ErrorWhenSelectingFile" xml:space="preserve">
+    <value>Error when selecting file:</value>
+  </data>
+  <data name="CannotGetAppNameFromInputPath" xml:space="preserve">
+    <value>Cannot get app name from input path.</value>
+  </data>
+  <data name="GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator1" xml:space="preserve">
+    <value>Goldberg emulator file is missing.</value>
+  </data>
+  <data name="CheckingAllGoldbergEmulatorFileExistsOrNot" xml:space="preserve">
+    <value>Checking all goldberg emulator file exists or not...</value>
+  </data>
+  <data name="FailedToCheckGoldbergEmulator" xml:space="preserve">
+    <value>Failed to Check goldberg emulator.</value>
+  </data>
+  <data name="GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator2" xml:space="preserve">
+    <value>Download Goldberg emulator?</value>
+  </data>
+</root>

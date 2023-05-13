@@ -1,13 +1,9 @@
 ﻿using SteamAutoCrack.Core.Config;
-using SteamAutoCrack.Core.Utils;
-using SteamKit2.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SteamAutoCrack.ViewModels
 {
@@ -49,7 +45,7 @@ namespace SteamAutoCrack.ViewModels
                 if (value != Config.SaveCrackConfig)
                 {
                     Config.SaveCrackConfig = value;
-                    NotifyPropertyChanged("SaveCrackConfig");
+                    NotifyPropertyChanged();
                 }
             }
         }
@@ -65,7 +61,7 @@ namespace SteamAutoCrack.ViewModels
                 if (value != Config.EnableDebugLog)
                 {
                     Config.EnableDebugLog = value;
-                    NotifyPropertyChanged("EnableDebugLog");
+                    NotifyPropertyChanged();
                 }
             }
         }
@@ -81,7 +77,7 @@ namespace SteamAutoCrack.ViewModels
                 if (value != Config.LogToFile)
                 {
                     Config.LogToFile = value;
-                    NotifyPropertyChanged("LogToFile");
+                    NotifyPropertyChanged();
                 }
             }
         }
@@ -101,7 +97,7 @@ namespace SteamAutoCrack.ViewModels
             set
             {
                 _UpdateBtnString = value;
-                NotifyPropertyChanged("UpdateBtnString");
+                NotifyPropertyChanged();
             }
         }
         private string _UpdateBtnString = "Update/Download";
@@ -117,10 +113,32 @@ namespace SteamAutoCrack.ViewModels
                 if (value != _ForceUpdate)
                 {
                     _ForceUpdate = value;
-                    NotifyPropertyChanged("ForceUpdate");
+                    NotifyPropertyChanged();
                 }
             }
         }
+        public Config.Languages Language
+        {
+            get
+            {
+                return Config.Language;
+            }
+
+            set
+            {
+                if (value != Config.Language)
+                {
+                    Config.Language = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public List<Config.Languages> Languages { get; set; }
         private bool _ForceUpdate = false;
+        public SettingsViewModel()
+        {
+            Languages = Enum.GetValues(typeof(Config.Languages)).Cast<Config.Languages>().ToList();
+        }
     }
+    
 }
