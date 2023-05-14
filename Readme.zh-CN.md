@@ -2,7 +2,7 @@
 
 <div align=center><center><img width = '150' height ='150' src ="SteamAutoCrack/SteamAutoCrack.ico"/></center></div>
 
-[English](README.md)
+[English](Readme.md)
 
 ![GitHub all releases](https://img.shields.io/github/downloads/oureveryday/Steam-auto-crack/total?color=brightgreen&label=总下载量)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/oureveryday/Steam-auto-crack/latest/total?color=green&label=最新版本下载量&link=https://github.com/oureveryday/Steam-auto-crack/releases)
