@@ -187,11 +187,29 @@ namespace SteamAutoCrack.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Close 的本地化字符串。
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Create Crack Readme File 的本地化字符串。
         /// </summary>
         public static string CreateCrackReadmeFile {
             get {
                 return ResourceManager.GetString("CreateCrackReadmeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current Goldberg Steam Emulator jobid:  的本地化字符串。
+        /// </summary>
+        public static string CurrentGoldbergSteamEmulatorJobid {
+            get {
+                return ResourceManager.GetString("CurrentGoldbergSteamEmulatorJobid", resourceCulture);
             }
         }
         
@@ -210,6 +228,15 @@ namespace SteamAutoCrack.Properties {
         public static string DisableOverlay {
             get {
                 return ResourceManager.GetString("DisableOverlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download 的本地化字符串。
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
             }
         }
         
@@ -412,7 +439,7 @@ namespace SteamAutoCrack.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Language (Restart to Take Effect): 的本地化字符串。
+        ///   查找类似 Language (Must Enable &quot;Save Config File&quot; ,Restart to Take Effect): 的本地化字符串。
         /// </summary>
         public static string LanguageRestartToTakeEffect {
             get {
@@ -669,6 +696,15 @@ namespace SteamAutoCrack.Properties {
         public static string SteamWebAPIKey {
             get {
                 return ResourceManager.GetString("SteamWebAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update/Download 的本地化字符串。
+        /// </summary>
+        public static string UpdateDownload {
+            get {
+                return ResourceManager.GetString("UpdateDownload", resourceCulture);
             }
         }
         

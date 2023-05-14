@@ -375,7 +375,7 @@ namespace SteamAutoCrack
             {
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    var result = CustomMessageBox.ShowYesNo(Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator1 + "\n" + Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator2, "Download Goldberg emulator?", "Download", "Cancel");
+                    var result = CustomMessageBox.ShowYesNo(Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator1 + "\n" + Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator2, Properties.Resources.GoldbergEmulatorFileIsMissingNDownloadGoldbergEmulator2, Properties.Resources.Download, Properties.Resources.Cancel);
                     if (result == MessageBoxResult.Yes)
                     {
                         Task.Run(async () =>

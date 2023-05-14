@@ -85,7 +85,7 @@ namespace SteamAutoCrack.ViewModels
         {
             get
             {
-                return "Current Goldberg Steam Emulator jobid: " + Config.GetGoldbergVersion();
+                return SteamAutoCrack.Properties.Resources.CurrentGoldbergSteamEmulatorJobid + Config.GetGoldbergVersion();
             }
         }
         public string UpdateBtnString
@@ -100,7 +100,7 @@ namespace SteamAutoCrack.ViewModels
                 NotifyPropertyChanged();
             }
         }
-        private string _UpdateBtnString = "Update/Download";
+        private string _UpdateBtnString = SteamAutoCrack.Properties.Resources.UpdateDownload;
         public bool ForceUpdate
         {
             get

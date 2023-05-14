@@ -36,7 +36,7 @@
         <Grid Margin="0,158,0,72">
             <Border BorderBrush="Black" BorderThickness="1"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{x:Static properties:Resources.LanguageRestartToTakeEffect}" VerticalAlignment="Top"/>
-            <ComboBox x:Name="Language" HorizontalAlignment="Left" Margin="210,8,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}">
+            <ComboBox x:Name="Language" HorizontalAlignment="Left" Margin="390,8,0,0" VerticalAlignment="Top" Width="80" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource enumConverter}}"/>
@@ -46,7 +46,7 @@
             
 
         </Grid>
-        <Button x:Name="Close" Content="Close" HorizontalAlignment="Center" Margin="0,230,0,0" VerticalAlignment="Top" Width="77" Click="Close_Click" IsDefault="True"/>
+        <Button x:Name="Close" Content="{x:Static properties:Resources.Close}" HorizontalAlignment="Center" Margin="0,230,0,0" VerticalAlignment="Top" Width="77" Click="Close_Click" IsDefault="True"/>
 
 
 
