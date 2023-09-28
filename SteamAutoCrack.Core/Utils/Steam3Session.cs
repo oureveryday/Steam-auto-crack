@@ -333,7 +333,7 @@ namespace SteamAutoCrack.Core.Utils
             if (diff > STEAM3_TIMEOUT && !bConnected)
             {
                 _log.Error("Timeout connecting to Steam3. Disconnecting...");
-                Abort();
+                Abort(false);
             }
         }
 
