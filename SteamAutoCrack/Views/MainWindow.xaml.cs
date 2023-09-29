@@ -6,9 +6,9 @@ using SteamAutoCrack.Core.Utils;
 using SteamAutoCrack.Utils;
 using SteamAutoCrack.ViewModels;
 using SteamAutoCrack.Views;
-using SteamAutoCrack.Properties;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -19,7 +19,7 @@ using WPFCustomMessageBox;
 
 namespace SteamAutoCrack
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly ILogger _log;
         
@@ -67,6 +67,11 @@ namespace SteamAutoCrack
             {
                 CheckGoldberg();
             });
+        }
+
+        void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            Environment.Exit(0);
         }
         #region Basic
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -325,16 +330,23 @@ namespace SteamAutoCrack
             {
                 if (viewModel.InputPath != string.Empty)
                 {
-                    return Path.GetRelativePath(Path.Combine(viewModel.InputPath, ".."),viewModel.InputPath);
+                    var path = Path.GetRelativePath(Path.Combine(viewModel.InputPath, ".."), viewModel.InputPath);
+                    if (path[path.Length - 1].ToString() == @"\")
+                    {
+                        path = path.Substring(0, path.Length - 1);
+                    }
+
+                    return path;
                 }
                 else
                 {
-                    throw new Exception();
+                    return String.Empty;
+                    ;
                 }
             }
-            catch 
+            catch(Exception ex)
             {
-                _log.Information(Properties.Resources.CannotGetAppNameFromInputPath);
+                _log.Information(ex,Properties.Resources.CannotGetAppNameFromInputPath);
                 return string.Empty;
             }
         }
@@ -415,9 +427,9 @@ namespace SteamAutoCrack
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, Properties.Resources.FailedToCheckGoldbergEmulator);
+                _log.Error(ex, Properties.Resources.FailedToCheckGoldbergEmulator);
                 return false;
             }
         }

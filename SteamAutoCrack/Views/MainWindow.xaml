@@ -8,7 +8,8 @@
         xmlns:utils="clr-namespace:SteamAutoCrack.Utils"
         mc:Ignorable="d"
         Title="SteamAutoCrack" Height="700" Width="1000"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Closing="MainWindow_Closing"  >
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>

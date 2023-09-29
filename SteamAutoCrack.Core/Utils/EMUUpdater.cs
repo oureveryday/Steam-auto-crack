@@ -134,11 +134,10 @@ namespace SteamAutoCrack.Core.Utils
                                 entry.ExtractToFile(fullPath, true);
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
                             errorOccured = true;
-                            _log.Error(e,$"Error while trying to extract {entry.FullName}");
-                            return;
+                            _log.Error(ex,$"Error while trying to extract {entry.FullName}");
                         }
                     }).ConfigureAwait(false);
                 }
@@ -156,9 +155,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 _log.Information("Clean was successful!");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e,"Failed in clean Goldberg emulator files.");
+                _log.Error(ex,"Failed in clean Goldberg emulator files.");
             }
         }
         private UInt64 GetCurrentGoldbergVersion()

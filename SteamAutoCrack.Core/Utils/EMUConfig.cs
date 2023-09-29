@@ -321,9 +321,9 @@ namespace SteamAutoCrack.Core.Utils
                 _log.Debug("Generated emulator config.");
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to generate Steam emulator config.");
+                _log.Error(ex, "Failed to generate Steam emulator config.");
                 return false;
             }
         }

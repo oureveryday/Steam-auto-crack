@@ -145,9 +145,9 @@ namespace SteamAutoCrack.Core.Utils
                 _log.Information("Crack only file generated.");
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to generate crack only file.");
+                _log.Error(ex, "Failed to generate crack only file.");
                 return false;
             }
 

@@ -118,9 +118,9 @@ namespace SteamAutoCrack.Core.Utils
                     default: throw new Exception("Invaild game info API.");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e,"Error: ");
+                _log.Error(ex,"Error: ");
                 return false;
             }
             try
@@ -129,9 +129,9 @@ namespace SteamAutoCrack.Core.Utils
                 _log.Information("Generated game info.");
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _log.Error("Failed to generate game info.");
+                _log.Error(ex,"Failed to generate game info.");
                 return false;
             }
         }
@@ -221,14 +221,14 @@ namespace SteamAutoCrack.Core.Utils
                 Directory.CreateDirectory(ConfigPath);
                 _log.Debug("Created steam_settings folder.");
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException ex)
             {
-                _log.Error(e, "Failed to access steam_settings path. (Try run SteamAutoCrack with administrative rights)");
+                _log.Error(ex, "Failed to access steam_settings path. (Try run SteamAutoCrack with administrative rights)");
                 throw new Exception("Failed to access steam_settings path.");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to access steam_settings path.");
+                _log.Error(ex, "Failed to access steam_settings path.");
                 throw new Exception("Failed to access steam_settings path.");
             }
             _log.Debug("Outputting game info to {0}", Path.GetFullPath(ConfigPath));
@@ -237,9 +237,9 @@ namespace SteamAutoCrack.Core.Utils
                 File.WriteAllText(Path.Combine(ConfigPath, "steam_appid.txt"), AppID.ToString());
                 _log.Debug("Generated steam_appid.txt");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to write steam_appid.txt.");
+                _log.Error(ex, "Failed to write steam_appid.txt.");
                 throw new Exception("Failed to write steam_appid.txt.");
             }
             _log.Debug("Generated basic infos.");
@@ -283,9 +283,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to get game schema.");
+                _log.Error(ex, "Failed to get game schema.");
                 return false;
             }
         }
@@ -306,9 +306,9 @@ namespace SteamAutoCrack.Core.Utils
                     _log.Debug("Image {targetPath} already downloaded. Skipping...", targetPath);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to download image of achievement \"{name}\", skipping...", achievement.Name);
+                _log.Error(ex, "Failed to download image of achievement \"{name}\", skipping...", achievement.Name);
             }
             try
             {
@@ -324,9 +324,9 @@ namespace SteamAutoCrack.Core.Utils
                     _log.Debug("Gray image {targetPath} already downloaded. Skipping...", targetPathGray);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to download gray image of achievement \"{name}\", skipping...", achievement.Name);
+                _log.Error(ex, "Failed to download gray image of achievement \"{name}\", skipping...", achievement.Name);
             }
         }
         protected async Task GenerateAchievements()
@@ -395,9 +395,9 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Information("No achievements, skipping...");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to generate achievements. Skipping...");
+                _log.Error(ex, "Failed to generate achievements. Skipping...");
             }
             _log.Debug("Generated achievements.");
         }
@@ -453,9 +453,9 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Information("No stats, skipping...");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to generate stats. Skipping...");
+                _log.Error(ex, "Failed to generate stats. Skipping...");
             }
             _log.Debug("Generated stats.");
         }
@@ -495,9 +495,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 );   
             }
-            catch (Exception e) 
+            catch (Exception ex) 
             { 
-                _log.Error(e,"Failed to start Steam3 Session.");
+                _log.Error(ex,"Failed to start Steam3 Session.");
                 throw new Exception("Failed to start Steam3 Session.");
             }
             _log.Debug("Started Steam3 Session...");
@@ -542,9 +542,9 @@ namespace SteamAutoCrack.Core.Utils
                 var section_kv = appinfo.Children.Where(c => c.Name == section_key).FirstOrDefault();
                 return section_kv;
             }
-            catch(Exception e) 
+            catch(Exception ex) 
             {
-                _log.Error(e, "Failed to get Steam3 App Section.");
+                _log.Error(ex, "Failed to get Steam3 App Section.");
                 throw new Exception("Failed to get Steam3 App Section.");
             }
         }
@@ -578,9 +578,9 @@ namespace SteamAutoCrack.Core.Utils
                     
                 }
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                _log.Information(e, "Failed to generate supported_languages.txt. Skipping...");
+                _log.Information(ex, "Failed to generate supported_languages.txt. Skipping...");
             }
             _log.Debug("Generated supported_languages.txt.");
         }
@@ -622,9 +622,9 @@ namespace SteamAutoCrack.Core.Utils
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Information(e, "Failed to generate depot infos. Skipping...");
+                _log.Information(ex, "Failed to generate depot infos. Skipping...");
             }
             _log.Debug("Generated depot infos.");
         }
@@ -721,9 +721,9 @@ namespace SteamAutoCrack.Core.Utils
                     swdlcs.Close();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Information(e, "Failed to generate DLCs. Skipping...");
+                _log.Information(ex, "Failed to generate DLCs. Skipping...");
             }
             _log.Debug("Generated DLCs.");
         }
@@ -796,9 +796,9 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Information("No inventory, skipping...");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Information(e, "Failed to generate inventory info. Skipping...");
+                _log.Information(ex, "Failed to generate inventory info. Skipping...");
             }
         }
 
@@ -924,9 +924,9 @@ namespace SteamAutoCrack.Core.Utils
                }
                swdlcs.Close();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Information(e, "Failed to generate DLCs. Skipping...");
+                _log.Information(ex, "Failed to generate DLCs. Skipping...");
             }
             _log.Debug("Generated DLCs.");
         }
@@ -1036,9 +1036,9 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Information("No inventory, skipping...");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to generate inventory info. Skipping...");
+                _log.Error(ex, "Failed to generate inventory info. Skipping...");
             }
         }
 

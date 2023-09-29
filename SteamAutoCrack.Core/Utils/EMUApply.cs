@@ -162,9 +162,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to apply Steam emulator.");
+                _log.Error(ex, "Failed to apply Steam emulator.");
                 return false;
             }
         }
@@ -194,9 +194,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to Check goldberg emulator.");
+                _log.Error(ex, "Failed to Check goldberg emulator.");
                 return false;
             }
         }
@@ -241,9 +241,9 @@ namespace SteamAutoCrack.Core.Utils
                 CopyDirectory(new DirectoryInfo(emuApplyConfig.ConfigPath), new DirectoryInfo((Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))));
                 return;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", filePath);
+                _log.Error(ex, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", filePath);
                 return;
             }
         }
@@ -288,9 +288,9 @@ namespace SteamAutoCrack.Core.Utils
                 CopyDirectory(new DirectoryInfo(emuApplyConfig.ConfigPath), new DirectoryInfo((Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))));
                 return;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", filePath);
+                _log.Error(ex, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", filePath);
                 return;
             }
         }
@@ -311,9 +311,9 @@ namespace SteamAutoCrack.Core.Utils
                 _log.Information("Applyed Steam emulator to \"{filePath}\"...", emuApplyConfig.ApplyPath);
                 return;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Error(e, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", emuApplyConfig.ApplyPath);
+                _log.Error(ex, "Failed to Apply Steam emulator \"{filePath}\". Skipping...", emuApplyConfig.ApplyPath);
                 return;
             }
         }
@@ -381,9 +381,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 destination.Close();
             }
-            catch(Exception e) 
+            catch(Exception ex) 
             {
-                _log.Error(e, "Failed to generate Interfaces File.");
+                _log.Error(ex, "Failed to generate Interfaces File.");
             }
         }
 

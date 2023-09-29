@@ -135,9 +135,9 @@ namespace SteamAutoCrack.Core.Config
                 }
                 return ver;
             }
-            catch
+            catch(Exception ex)
             {
-                _log.Error("Failed to get Goldberg Steam emulator version.");
+                _log.Error(ex,"Failed to get Goldberg Steam emulator version.");
                 return "N/A";
             }
         }
@@ -188,9 +188,9 @@ namespace SteamAutoCrack.Core.Config
                 File.WriteAllText(ConfigPath, jsonString);
                 return;
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                _log.Error(e,"Error in saving config file.");
+                _log.Error(ex,"Error in saving config file.");
                 return;
             }
         }
@@ -215,9 +215,9 @@ namespace SteamAutoCrack.Core.Config
                 _log.Information("Config loaded.");
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _log.Warning(e, "Error in reading config file. Restoring to default value...");
+                _log.Warning(ex, "Error in reading config file. Restoring to default value...");
                 ResettoDefaultConfigs();
                 return false;
             }

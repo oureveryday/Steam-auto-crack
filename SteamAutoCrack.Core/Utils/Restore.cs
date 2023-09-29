@@ -67,9 +67,9 @@ namespace SteamAutoCrack.Core.Utils
                             _log.Debug("Deleting \"{path}\"...", pathtodelete);
                             File.Delete(pathtodelete);
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            _log.Debug(e,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
+                            _log.Debug(ex,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
                         }
                     }
                     foreach (string pathtorestore in Directory.EnumerateFiles(path, "*.bak", SearchOption.AllDirectories))
@@ -80,9 +80,9 @@ namespace SteamAutoCrack.Core.Utils
                             File.Delete(Path.Combine(Path.GetDirectoryName(pathtorestore), Path.GetFileNameWithoutExtension(pathtorestore)));
                             File.Move(pathtorestore, Path.Combine(Path.GetDirectoryName(pathtorestore), Path.GetFileNameWithoutExtension(pathtorestore)));
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            _log.Debug(e,"Failed to restore \"{pathtodelete}\". Skipping...", pathtorestore);
+                            _log.Debug(ex,"Failed to restore \"{pathtodelete}\". Skipping...", pathtorestore);
                         }
                     }
                     foreach (string pathtodelete in Directory.EnumerateDirectories(path, "steam_settings", SearchOption.AllDirectories))
@@ -92,17 +92,17 @@ namespace SteamAutoCrack.Core.Utils
                             _log.Debug("Deleting \"{path}\"...", pathtodelete);
                             Directory.Delete(pathtodelete,true);
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            _log.Debug(e,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
+                            _log.Debug(ex,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
                         }
                     }
                     _log.Information("All cracked file restored.");
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    _log.Error(e, "Failed to restore cracked file.");
+                    _log.Error(ex, "Failed to restore cracked file.");
                     return false;
                 }
             }

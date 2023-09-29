@@ -148,9 +148,9 @@
                     }
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    _log.Error(e, "Failed to unpack.");
+                    _log.Error(ex, "Failed to unpack.");
                     return false;
                 }
             }
@@ -166,9 +166,9 @@
                     }
                     _log.Information("All file in folder \"{path}\" processed.", path);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    _log.Error(e, "Failed to unpack folder \"{path}\".", path);
+                    _log.Error(ex, "Failed to unpack folder \"{path}\".", path);
                 }
             }
 
@@ -211,9 +211,9 @@
                         _log.Warning("Cannot to unpack file \"{path}\".(File not Packed/Other Protector)", path);
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    _log.Error(e, "Failed to unpack or backup File \"{path}\".", path);
+                    _log.Error(ex, "Failed to unpack or backup File \"{path}\".", path);
                     throw new Exception($"Failed to unpack or backup File \"{path}\".");
                 }
             }
