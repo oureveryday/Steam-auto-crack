@@ -205,11 +205,11 @@ namespace SteamAutoCrack.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Current Goldberg Steam Emulator jobid:  的本地化字符串。
+        ///   查找类似 Current Goldberg Steam Emulator commitid:  的本地化字符串。
         /// </summary>
-        public static string CurrentGoldbergSteamEmulatorJobid {
+        public static string CurrentGoldbergSteamEmulatorCommitid {
             get {
-                return ResourceManager.GetString("CurrentGoldbergSteamEmulatorJobid", resourceCulture);
+                return ResourceManager.GetString("CurrentGoldbergSteamEmulatorCommitid", resourceCulture);
             }
         }
         

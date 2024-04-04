@@ -85,7 +85,7 @@ namespace SteamAutoCrack.ViewModels
         {
             get
             {
-                return SteamAutoCrack.Properties.Resources.CurrentGoldbergSteamEmulatorJobid + Config.GetGoldbergVersion();
+                return SteamAutoCrack.Properties.Resources.CurrentGoldbergSteamEmulatorCommitid + Config.GetGoldbergVersion();
             }
         }
         public string UpdateBtnString

@@ -1,5 +1,5 @@
 ﻿/**
- * Steamless - Copyright (c) 2015 - 2023 atom0s [atom0s@live.com]
+ * Steamless - Copyright (c) 2015 - 2024 atom0s [atom0s@live.com]
  *
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to
@@ -45,7 +45,7 @@ namespace Steamless.API.Crypto
         /// <summary>
         /// Internal AES crypto provider.
         /// </summary>
-        private AesCryptoServiceProvider m_AesCryptoProvider;
+        private Aes m_AesCryptoProvider = Aes.Create();
 
         /// <summary>
         /// Default Constructor
@@ -61,13 +61,11 @@ namespace Steamless.API.Crypto
             this.m_OriginalIv = iv;
 
             // Create the AES crypto provider..
-            this.m_AesCryptoProvider = new AesCryptoServiceProvider
-            {
-                Key = key,
-                IV = iv,
-                Mode = mode,
-                Padding = padding
-            };
+            this.m_AesCryptoProvider = Aes.Create();
+            this.m_AesCryptoProvider.Key = key;
+            this.m_AesCryptoProvider.IV = iv;
+            this.m_AesCryptoProvider.Mode = mode;
+            this.m_AesCryptoProvider.Padding = padding;
         }
 
         /// <summary>
@@ -151,8 +149,8 @@ namespace Steamless.API.Crypto
 
                 // Decrypt the data..
                 var totalBuffer = new List<byte>();
-                var buffer = new byte[2048];
-                while ((cStream.Read(buffer, 0, 2048)) > 0)
+                var buffer = new byte[16];
+                while ((cStream.Read(buffer, 0, 16)) > 0)
                     totalBuffer.AddRange(buffer);
 
                 return totalBuffer.ToArray();

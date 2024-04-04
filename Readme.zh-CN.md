@@ -9,7 +9,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/oureveryday/Steam-auto-crack?color=yellow&label=星星)
 
 使用 SteamStub 和 Steam API 自动破解游戏。  
-最新版本3.0使用 .Net 6.0。  
+最新版本3.0使用 .Net 8.0。  
 [最新发布](https://github.com/oureveryday/Steam-auto-crack/releases)  
 [维基](https://github.com/oureveryday/Steam-auto-crack/wiki)
 
@@ -30,7 +30,7 @@
 ## 依赖
 
 * <https://github.com/atom0s/Steamless>
-* <https://gitlab.com/Mr_Goldberg/goldberg_emulator>
+* <https://github.com/otavepto/gbe_fork>
 
 ## 编译
 

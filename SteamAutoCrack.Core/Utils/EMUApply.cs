@@ -1,18 +1,6 @@
-﻿using Serilog;
-using SteamKit2;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-using static SteamKit2.Internal.CChatUsability_ClientUsabilityMetrics_Notification;
-using System.IO;
+﻿using AuthenticodeExaminer;
+using Serilog;
 using System.Text.RegularExpressions;
-using AuthenticodeExaminer;
-using static SteamKit2.Internal.CMsgClientUGSGetGlobalStatsResponse;
-using static SteamKit2.DepotManifest;
 
 namespace SteamAutoCrack.Core.Utils
 {
@@ -180,10 +168,10 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 List<string> filelist = new List<string>()
                 {
-                    Path.Combine(emuApplyConfig.GoldbergPath,"steam_api64.dll"),
-                    Path.Combine(emuApplyConfig.GoldbergPath,"steam_api.dll"),
-                    Path.Combine(emuApplyConfig.GoldbergPath, "experimental","steam_api64.dll"),
-                    Path.Combine(emuApplyConfig.GoldbergPath, "experimental","steam_api.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath,"x64","steam_api64.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath,"x32","steam_api.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath, "experimental","x64","steam_api64.dll"),
+                    Path.Combine(emuApplyConfig.GoldbergPath, "experimental","x32","steam_api.dll"),
                 };
                 foreach (string file in filelist)
                 {
@@ -214,11 +202,11 @@ namespace SteamAutoCrack.Core.Utils
                 File.Move(filePath, Path.ChangeExtension(filePath, ".dll.bak"));
                 if (emuApplyConfig.UseGoldbergExperimental)
                 {
-                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "experimental", "steam_api64.dll"),filePath);
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "experimental", "x64", "steam_api64.dll"),filePath);
                 }
                 else
                 {
-                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "steam_api64.dll"), filePath);
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "x64", "steam_api64.dll"), filePath);
                 }
                 if (emuApplyConfig.UseLocalSave)
                 {
@@ -261,11 +249,11 @@ namespace SteamAutoCrack.Core.Utils
                 File.Move(filePath, Path.ChangeExtension(filePath, ".dll.bak"));
                 if (emuApplyConfig.UseGoldbergExperimental)
                 {
-                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "experimental", "steam_api.dll"), filePath);
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "experimental", "x32", "steam_api.dll"), filePath);
                 }
                 else
                 {
-                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "steam_api.dll"), filePath);
+                    File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "x32", "steam_api.dll"), filePath);
                 }
                 if (emuApplyConfig.GenerateInterfacesFile)
                 {

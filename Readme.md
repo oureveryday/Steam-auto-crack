@@ -9,7 +9,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/oureveryday/Steam-auto-crack?color=yellow&label=Stars)
 
 Automatic Crack Games With SteamStub and Steam API.  
-Latest Version 3.0 Using .Net 6.0.  
+Latest Version 3.0 Using .Net 8.0.  
 [Latest Release](https://github.com/oureveryday/Steam-auto-crack/releases)  
 [Wiki](https://github.com/oureveryday/Steam-auto-crack/wiki)
 
@@ -30,7 +30,7 @@ Latest Version 3.0 Using .Net 6.0.
 ## Dependencies
 
 * <https://github.com/atom0s/Steamless>
-* <https://gitlab.com/Mr_Goldberg/goldberg_emulator>
+* <https://github.com/otavepto/gbe_fork>
 
 ## Build
 

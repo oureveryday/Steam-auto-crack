@@ -1,26 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SteamAutoCrack.Core.Utils
+﻿namespace SteamAutoCrack.Core.Utils
 {
     using Serilog;
-    using SteamKit2;
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System;
-    using static SteamKit2.Internal.CChatUsability_ClientUsabilityMetrics_Notification;
     using System.IO;
-    using System.Text.RegularExpressions;
-    using AuthenticodeExaminer;
-    using static SteamKit2.Internal.CMsgClientUGSGetGlobalStatsResponse;
-    using static SteamKit2.DepotManifest;
+    using System.Threading.Tasks;
 
     namespace SteamAutoCrack.Core.Utils
     {

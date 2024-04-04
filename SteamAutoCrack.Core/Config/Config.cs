@@ -4,11 +4,9 @@ using Serilog.Events;
 using SteamAutoCrack.Core.Utils;
 using SteamAutoCrack.Core.Utils.SteamAutoCrack.Core.Utils;
 using System.ComponentModel;
-using System.DirectoryServices.ActiveDirectory;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 
 namespace SteamAutoCrack.Core.Config
 {
@@ -128,11 +126,8 @@ namespace SteamAutoCrack.Core.Config
         {
             try
             {
-                var ver = File.ReadLines(Path.Combine(GoldbergPath, "job_id")).First();
-                if (!UInt64.TryParse(ver, out _))
-                {
-                    throw new Exception();
-                }
+                var ver = File.ReadLines(Path.Combine(GoldbergPath, "commit_id")).First();
+                
                 return ver;
             }
             catch(Exception ex)

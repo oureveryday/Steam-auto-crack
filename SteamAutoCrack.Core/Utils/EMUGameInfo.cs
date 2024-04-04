@@ -2,18 +2,13 @@
 
 using Serilog;
 using SteamKit2;
-using SteamKit2.CDN;
-using System;
 using System.ComponentModel;
 using System.Data;
 using System.Net;
-using System.Speech.Recognition.SrgsGrammar;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 using static SteamAutoCrack.Core.Utils.EMUGameInfoConfig;
-using static SteamKit2.Internal.CMsgClientGetClientAppListResponse.App;
 
 namespace SteamAutoCrack.Core.Utils
 {

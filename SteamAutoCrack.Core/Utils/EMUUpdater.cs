@@ -1,30 +1,24 @@
 ﻿using Serilog;
-using SteamAutoCrack.Core.Config;
-using SteamKit2.GC.Artifact.Internal;
-using System.IO.Compression;
-using System.Linq.Expressions;
-using System.Runtime.ConstrainedExecution;
-using System.Text.RegularExpressions;
+using SevenZipExtractor;
+using System.Text.Json;
 
 namespace SteamAutoCrack.Core.Utils
 {
     public class EMUUpdater
     {
         private readonly ILogger _log;
-        private const string GoldbergUrl = "https://mr_goldberg.gitlab.io/goldberg_emulator/";
-        private UInt64 currentjobid = 0;
-        private UInt64 latestjobid = 0;
-        private bool bGotlatestjobid = false;
+        private const string GoldbergReleaseUrl = "https://api.github.com/repos/otavepto/gbe_fork/releases";
+        private const string GoldbergVersionUrl = "https://api.github.com/repos/otavepto/gbe_fork/commits";
+        private string currentcommit;
+        private string latestcommit;
+        private bool bGotlatestcommit = false;
         private bool bInited = false;
+        
         private List<string> goldberguselessFolders = new List<string>
         {
-            "debug_experimental",
-            "debug_experimental_steamclient",
             "experimental_steamclient",
-            "linux",
-            "source_code",
             "tools",
-            "lobby_connect"
+            "release"
         };
 
         public EMUUpdater()
@@ -34,10 +28,9 @@ namespace SteamAutoCrack.Core.Utils
         }
         public async Task Init()
         {
-            currentjobid = GetCurrentGoldbergVersion();
-            latestjobid = await GetLatestGoldbergVersion().ConfigureAwait(false);
+            currentcommit = GetCurrentGoldbergVersion();
+            latestcommit = await GetLatestGoldbergVersion().ConfigureAwait(false);
             bInited = true;
-            return;
         }
         public async Task<bool> Download(bool force = false)
         {
@@ -49,29 +42,27 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 _log.Information("Initializing download...");
                 if (!Directory.Exists(Config.Config.GoldbergPath)) Directory.CreateDirectory(Config.Config.GoldbergPath);
-                while (!bGotlatestjobid) { }
-                _log.Information($"Goldberg job_id: Current {currentjobid}; Latest {latestjobid}");
-                if (latestjobid == 0)
-                {
-                    throw new Exception("Failed in getting latest jobid. Skipping...");
-                }
+                while (!bGotlatestcommit) { }
+                _log.Information($"Goldberg commit: Current: {currentcommit}; Latest: {latestcommit}");
                 if (force)
                 {
-                    await StartDownload(latestjobid).ConfigureAwait(false);
-                    await Extract(Path.Combine(Config.Config.TempPath, "Goldberg.zip")).ConfigureAwait(false);
+                    await StartDownload().ConfigureAwait(false);
+                    await Extract(Path.Combine(Config.Config.TempPath, "Goldberg.7z")).ConfigureAwait(false);
                     await Clean(Config.Config.GoldbergPath);
+                    File.WriteAllText(Path.Combine(Config.Config.GoldbergPath, "commit_id"), latestcommit);
                 }
                 else
                 {
-                    if (currentjobid.Equals(latestjobid))
+                    if (currentcommit.Equals(latestcommit))
                     {
                         _log.Information("Goldberg emulator already updated to latest version.");
                     }
                     else
                     {
-                        await StartDownload(latestjobid).ConfigureAwait(false);
-                        await Extract(Path.Combine(Config.Config.TempPath, "Goldberg.zip")).ConfigureAwait(false);
+                        await StartDownload().ConfigureAwait(false);
+                        await Extract(Path.Combine(Config.Config.TempPath, "Goldberg.7z")).ConfigureAwait(false);
                         await Clean(Config.Config.GoldbergPath);
+                        File.WriteAllText(Path.Combine(Config.Config.GoldbergPath, "commit_id"),latestcommit);
                     }
                 }
                 _log.Information("Update Success.");
@@ -84,14 +75,51 @@ namespace SteamAutoCrack.Core.Utils
             }
         }
 
-        private async Task StartDownload(UInt64 jobid)
+        private async Task StartDownload()
         {
             _log.Information("Downloading...");
+            string downloadUrl = String.Empty;
             if (!Directory.Exists(Config.Config.TempPath)) Directory.CreateDirectory(Config.Config.TempPath);
+            _log.Debug("Getting Download Url...");
             var client = new HttpClient();
-            var downloadUrl = "https://gitlab.com/Mr_Goldberg/goldberg_emulator/-/jobs/" + jobid.ToString() + "/artifacts/download";
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
+            var response = await client.GetAsync(GoldbergReleaseUrl).ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                using (JsonDocument document = JsonDocument.Parse(content))
+                {
+                    JsonElement roots = document.RootElement;
+                    foreach (JsonElement root in roots.EnumerateArray())
+                    {
+                        JsonElement assets = root.GetProperty("assets");
+                        foreach (JsonElement asset in assets.EnumerateArray())
+                        {
+                            if (asset.GetProperty("name").GetString() == "emu-win-release.7z")
+                            {
+                                downloadUrl = asset.GetProperty("browser_download_url").GetString();
+                                break;
+                            }
+                        }
+
+                        if (downloadUrl != String.Empty) break;
+                    }
+                    
+                }
+            }
+            else
+            {
+                _log.Error("Failed to get latest Goldberg Steam emulator version, error: ", response.StatusCode);
+            }
+
+            if (downloadUrl == String.Empty)
+            {
+                throw new Exception("Failed to get download url.");
+            }
+
             _log.Debug("Downloading URL: {downloadUrl}", downloadUrl);
-            await using var fileStream = File.OpenWrite(Path.Combine(Config.Config.TempPath, "Goldberg.zip"));
+            await using var fileStream = File.OpenWrite(Path.Combine(Config.Config.TempPath, "Goldberg.7z"));
             //client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Head, downloadUrl);
             var headResponse = await client.SendAsync(httpRequestMessage).ConfigureAwait(false);
@@ -99,7 +127,7 @@ namespace SteamAutoCrack.Core.Utils
             await client.GetFileAsync(downloadUrl, fileStream).ContinueWith(async t =>
             {
                 await fileStream.DisposeAsync().ConfigureAwait(false);
-                var fileLength = new FileInfo(Path.Combine(Config.Config.TempPath, "Goldberg.zip")).Length;
+                var fileLength = new FileInfo(Path.Combine(Config.Config.TempPath, "Goldberg.7z")).Length;
                 if (contentLength == fileLength)
                 {
                     _log.Information("Download finished.");
@@ -116,31 +144,21 @@ namespace SteamAutoCrack.Core.Utils
             _log.Debug("Start extraction...");
             Directory.Delete(Config.Config.GoldbergPath, true);
             Directory.CreateDirectory(Config.Config.GoldbergPath);
-            using (var archive = await Task.Run(() => ZipFile.OpenRead(archivePath)).ConfigureAwait(false))
+
+            using (var archive = await Task.Run(() => new ArchiveFile(archivePath)))
             {
-                foreach (var entry in archive.Entries)
+                try
                 {
-                    await Task.Run(() =>
-                    {
-                        try
-                        {
-                            var fullPath = Path.Combine(Config.Config.GoldbergPath, entry.FullName);
-                            if (string.IsNullOrEmpty(entry.Name))
-                            {
-                                Directory.CreateDirectory(fullPath);
-                            }
-                            else
-                            {
-                                entry.ExtractToFile(fullPath, true);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            errorOccured = true;
-                            _log.Error(ex,$"Error while trying to extract {entry.FullName}");
-                        }
-                    }).ConfigureAwait(false);
+                    archive.Extract(Config.Config.GoldbergPath);
+                    CopyDirectory(new DirectoryInfo(Path.Combine(Config.Config.GoldbergPath, "release")), new DirectoryInfo(Config.Config.GoldbergPath));
                 }
+                catch (Exception ex)
+                {
+                    errorOccured = true;
+                    _log.Error(ex, $"Error while trying to extract.");
+                    
+                }
+                
             }
             _log.Information("Extraction was successful!");
         }
@@ -160,53 +178,85 @@ namespace SteamAutoCrack.Core.Utils
                 _log.Error(ex,"Failed in clean Goldberg emulator files.");
             }
         }
-        private UInt64 GetCurrentGoldbergVersion()
+        private string GetCurrentGoldbergVersion()
         {
             try
             {
-                var ver = File.ReadLines(Path.Combine(Config.Config.GoldbergPath, "job_id")).First();
-                if (!UInt64.TryParse(ver, out var veruint64))
-                {
-                    throw new Exception();
-                }
-                return veruint64;
+                var ver = File.ReadLines(Path.Combine(Config.Config.GoldbergPath, "commit_id")).First();
+                
+                return ver;
             }
             catch(Exception ex)
             {
                 _log.Error(ex,"Failed to get current Goldberg Steam emulator version.");
-                return 0;
+                return String.Empty;
             }
         }
-        private async Task<UInt64> GetLatestGoldbergVersion()
+        private async Task<string> GetLatestGoldbergVersion()
         {
             try
             {
-                _log.Information("Getting latest goldberg emulator jobid...");
+                _log.Information("Getting latest goldberg emulator version...");
+                string ver = String.Empty;
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(30);
-                var response = await client.GetAsync(GoldbergUrl).ConfigureAwait(false);
-                var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var regex = new Regex(
-                    @"https:\/\/gitlab\.com\/Mr_Goldberg\/goldberg_emulator\/-\/jobs\/(?<jobid>.*)\/artifacts\/download");
-                var match = regex.Match(body);
-                bGotlatestjobid = true;
-                if (!UInt64.TryParse(match.Groups["jobid"].Value, out var veruint64))
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
+                var response = await client.GetAsync(GoldbergVersionUrl).ConfigureAwait(false);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    throw new Exception();
+                    var content = await response.Content.ReadAsStringAsync();
+                    using (JsonDocument document = JsonDocument.Parse(content))
+                    {
+                        JsonElement root = document.RootElement;
+                        ver = root[0].GetProperty("sha").ToString();
+                    }
                 }
-                return veruint64;
+                else
+                {
+                    _log.Error("Failed to get latest Goldberg Steam emulator version, error: ",response.StatusCode );
+                    return String.Empty;
+                }
+
+
+                if (ver == String.Empty)
+                {
+                    _log.Error("Failed to get latest Goldberg Steam emulator version.");
+                }
+
+                bGotlatestcommit = true;
+                return ver;
             }
             catch (Exception ex)
             {
                 _log.Error(ex, "Failed to get latest Goldberg Steam emulator version.");
-                bGotlatestjobid = true;
-                return 0;
+                bGotlatestcommit = true;
+                return String.Empty;
             }
         }
-    
-    
+        private void CopyDirectory(DirectoryInfo source, DirectoryInfo target)
+        {
+            Directory.CreateDirectory(target.FullName);
+
+            // Copy each file into the new directory.
+            foreach (FileInfo fi in source.GetFiles())
+            {
+                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+            }
+
+            // Copy each subdirectory using recursion.
+            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
+            {
+                DirectoryInfo nextTargetSubDir =
+                    target.CreateSubdirectory(diSourceSubDir.Name);
+                CopyDirectory(diSourceSubDir, nextTargetSubDir);
+            }
+        }
+
 
     }
+
+
 }
     public static class Extensions
     {

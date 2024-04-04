@@ -1,16 +1,11 @@
-﻿using NinjaNye.SearchExtensions;
+﻿using FuzzySharp;
+using FuzzySharp.SimilarityRatio;
+using FuzzySharp.SimilarityRatio.Scorer.Composite;
+using NinjaNye.SearchExtensions;
 using Serilog;
 using SQLite;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FuzzySharp;
-using System.Security.Cryptography.X509Certificates;
-using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
-using FuzzySharp.SimilarityRatio;
-using FuzzySharp.SimilarityRatio.Scorer.Composite;
-using System.Collections.Immutable;
-using System.Collections.Generic;
-using SteamAutoCrack.Core.Config;
 
 namespace SteamAutoCrack.Core.Utils
 {

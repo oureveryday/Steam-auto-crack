@@ -1,8 +1,6 @@
 ﻿using Serilog;
 using System.IO.Compression;
 using System.Reflection;
-using System.Diagnostics;
-using static SteamKit2.DepotManifest;
 
 namespace SteamAutoCrack.Core.Utils
 {

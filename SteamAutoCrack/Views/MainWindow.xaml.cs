@@ -1,4 +1,4 @@
-﻿using Ookii.Dialogs.Wpf;
+﻿using Microsoft.Win32;
 using Serilog;
 using Serilog.Events;
 using SteamAutoCrack.Core.Config;
@@ -239,16 +239,16 @@ namespace SteamAutoCrack
                 var result = CustomMessageBox.ShowYesNoCancel(Properties.Resources.SelectFolderOrFile, Properties.Resources.SelectFolderOrFile, Properties.Resources.Folder, Properties.Resources.File, Properties.Resources.Cancel);
                 if (result == MessageBoxResult.Yes)
                 {
-                    var selector = new VistaFolderBrowserDialog();
+                    var selector = new OpenFolderDialog();
                     selector.Multiselect = false;
                     if ((bool)selector.ShowDialog())
                     {
-                        viewModel.InputPath = selector.SelectedPath;
+                        viewModel.InputPath = selector.FolderName;
                     }
                 }
                 if (result == MessageBoxResult.No)
                 {
-                    var selector = new VistaOpenFileDialog();
+                    var selector = new OpenFileDialog();
                     selector.Multiselect = false;
                     selector.Filter = "Game Files|*.exe;steam_api.dll;steam_api64.dll" +
                     "|All Files|*.*";
@@ -413,10 +413,10 @@ namespace SteamAutoCrack
                 }
                 List<string> filelist = new List<string>()
                 {
-                    Path.Combine(Config.GoldbergPath,"steam_api64.dll"),
-                    Path.Combine(Config.GoldbergPath,"steam_api.dll"),
-                    Path.Combine(Config.GoldbergPath, "experimental","steam_api64.dll"),
-                    Path.Combine(Config.GoldbergPath, "experimental","steam_api.dll"),
+                    Path.Combine(Config.GoldbergPath,"x64","steam_api64.dll"),
+                    Path.Combine(Config.GoldbergPath,"x32","steam_api.dll"),
+                    Path.Combine(Config.GoldbergPath, "experimental","x64","steam_api64.dll"),
+                    Path.Combine(Config.GoldbergPath, "experimental","x32","steam_api.dll"),
                 };
                 foreach (string file in filelist)
                 {
@@ -537,11 +537,11 @@ namespace SteamAutoCrack
         #region GenCrackOnly
         private void SelectOutpath_Click(object sender, RoutedEventArgs e)
         {
-            var selector = new VistaFolderBrowserDialog();
+            var selector = new OpenFolderDialog();
             selector.Multiselect = false;
             if ((bool)selector.ShowDialog())
             {
-                viewModel.OutputPath = selector.SelectedPath;
+                viewModel.OutputPath = selector.FolderName;
             }
             
         }

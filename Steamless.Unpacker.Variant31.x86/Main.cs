@@ -1,5 +1,5 @@
 ﻿/**
- * Steamless - Copyright (c) 2015 - 2023 atom0s [atom0s@live.com]
+ * Steamless - Copyright (c) 2015 - 2024 atom0s [atom0s@live.com]
  *
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to
@@ -404,9 +404,9 @@ namespace Steamless.Unpacker.Variant31.x86
                 this.Log($" --> {codeSection.SectionName} section is encrypted.", LogMessageType.Debug);
 
                 // Obtain the code section data..
-                var codeSectionData = new byte[codeSection.SizeOfRawData + this.StubHeader.CodeSectionStolenData.Length];
+                var codeSectionData = new byte[(long)this.StubHeader.CodeSectionRawSize + this.StubHeader.CodeSectionStolenData.Length];
                 Array.Copy(this.StubHeader.CodeSectionStolenData, 0, codeSectionData, 0, this.StubHeader.CodeSectionStolenData.Length);
-                Array.Copy(this.File.FileData, this.File.GetFileOffsetFromRva(codeSection.VirtualAddress), codeSectionData, this.StubHeader.CodeSectionStolenData.Length, codeSection.SizeOfRawData);
+                Array.Copy(this.File.FileData, this.File.GetFileOffsetFromRva(codeSection.VirtualAddress), codeSectionData, this.StubHeader.CodeSectionStolenData.Length, (long)this.StubHeader.CodeSectionRawSize);
 
                 // Create the AES decryption helper..
                 var aes = new AesHelper(this.StubHeader.AES_Key, this.StubHeader.AES_IV);
@@ -417,8 +417,11 @@ namespace Steamless.Unpacker.Variant31.x86
                 if (data == null)
                     return false;
 
-                // Set the code section override data..
-                this.CodeSectionData = data;
+                // Merge the code section data into the original..
+                var sectionData = this.File.SectionData[this.CodeSectionIndex];
+                Array.Copy(data, sectionData, (long)this.StubHeader.CodeSectionRawSize);
+
+                this.CodeSectionData = sectionData;
 
                 return true;
             }
