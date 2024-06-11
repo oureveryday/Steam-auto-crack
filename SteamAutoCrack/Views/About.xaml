@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SteamAutoCrack.Views"
         xmlns:viewmodels="clr-namespace:SteamAutoCrack.ViewModels"
-        xmlns:properties="clr-namespace:SteamAutoCrack.Properties"
+        xmlns:steamAutoCrack="clr-namespace:SteamAutoCrack"
         mc:Ignorable="d"
-        Title="About" Height="400" Width="400"
+        Title="{I18N {x:Static steamAutoCrack:LangKeys.About}}" Height="400" Width="400"
         ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:AboutViewModel/>
@@ -17,7 +16,7 @@
         <TextBlock x:Name="SteamAutoCrack" HorizontalAlignment="Left" Margin="110,10,0,0" TextWrapping="Wrap" Text="{Binding Ver}" VerticalAlignment="Top" Height="35" Width="235" FontSize="20"/>
         <Image x:Name="Logo" HorizontalAlignment="Left" Height="40" Margin="60,5,0,0" VerticalAlignment="Top" Width="40" Source="/Views/SteamAutoCrack.png"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="95,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219" Height="25" FontSize="14" Text="{x:Static properties:Resources.SteamGameAutomaticCracker}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="95,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219" Height="25" FontSize="14" Text="{I18N {x:Static steamAutoCrack:LangKeys.SteamGameAutomaticCracker}}"/>
 
         <Image x:Name="Github" HorizontalAlignment="Left" Margin="25,150,0,0" VerticalAlignment="Top" Width="40" Height="40" Source="/Views/Github.png"/>
         <TextBlock HorizontalAlignment="Left" Margin="90,160,0,0" VerticalAlignment="Top">

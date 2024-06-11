@@ -1,11 +1,12 @@
 ﻿using Serilog;
-using SevenZipExtractor;
+using SharpSevenZip;
 using System.Text.Json;
 
 namespace SteamAutoCrack.Core.Utils
 {
     public class EMUUpdater
     {
+        public static bool Downloading = false;
         private readonly ILogger _log;
         private const string GoldbergReleaseUrl = "https://api.github.com/repos/otavepto/gbe_fork/releases";
         private const string GoldbergVersionUrl = "https://api.github.com/repos/otavepto/gbe_fork/commits";
@@ -34,6 +35,12 @@ namespace SteamAutoCrack.Core.Utils
         }
         public async Task<bool> Download(bool force = false)
         {
+            if (Downloading)
+            {
+                _log.Information("Already Downloading Goldberg Emulator...");
+                return false;
+            }
+            Downloading = true;
             try
             {
                 if (!bInited)
@@ -66,11 +73,13 @@ namespace SteamAutoCrack.Core.Utils
                     }
                 }
                 _log.Information("Update Success.");
+                Downloading = false;
                 return true;
             }
             catch (Exception ex)
             {
                 _log.Error(ex, "Error in download latest version goldberg emulator.");
+                Downloading = false;
                 return false;
             }
         }
@@ -110,7 +119,7 @@ namespace SteamAutoCrack.Core.Utils
             }
             else
             {
-                _log.Error("Failed to get latest Goldberg Steam emulator version, error: ", response.StatusCode);
+                _log.Error("Failed to get latest Goldberg Steam emulator version, error: " + response.StatusCode);
             }
 
             if (downloadUrl == String.Empty)
@@ -145,11 +154,34 @@ namespace SteamAutoCrack.Core.Utils
             Directory.Delete(Config.Config.GoldbergPath, true);
             Directory.CreateDirectory(Config.Config.GoldbergPath);
 
-            using (var archive = await Task.Run(() => new ArchiveFile(archivePath)))
+            var dllPaths = AppContext.GetData("NATIVE_DLL_SEARCH_DIRECTORIES").ToString();
+
+            var pathsList = new List<string>(dllPaths.Split(';'));
+            string dllPath = "";
+
+            foreach (var path in pathsList)
+            {
+                var fullPath = Path.Combine(path, "x86", "7z.dll");
+                if (File.Exists(fullPath))
+                {
+                    dllPath = fullPath;
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(dllPath))
+            {
+                throw new FileNotFoundException("7z.dll not found in .Net temp path.");
+            }
+
+            SharpSevenZipBase.SetLibraryPath(dllPath);
+
+            using (var archive = new SharpSevenZipExtractor(File.Open(archivePath, FileMode.Open)))
             {
                 try
                 {
-                    archive.Extract(Config.Config.GoldbergPath);
+                    Directory.CreateDirectory(Config.Config.GoldbergPath);
+                    archive.ExtractArchive(Config.Config.GoldbergPath);
                     CopyDirectory(new DirectoryInfo(Path.Combine(Config.Config.GoldbergPath, "release")), new DirectoryInfo(Config.Config.GoldbergPath));
                 }
                 catch (Exception ex)
@@ -158,9 +190,8 @@ namespace SteamAutoCrack.Core.Utils
                     _log.Error(ex, $"Error while trying to extract.");
                     
                 }
-                
             }
-            _log.Information("Extraction was successful!");
+            _log.Information("Extraction was successful.");
         }
         private async Task Clean(string goldbergPath)
         {
@@ -171,7 +202,7 @@ namespace SteamAutoCrack.Core.Utils
                 {
                     Directory.Delete(Path.Combine(goldbergPath, path), true);
                 }
-                _log.Information("Clean was successful!");
+                _log.Information("Clean was successful.");
             }
             catch (Exception ex)
             {
@@ -214,7 +245,7 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 else
                 {
-                    _log.Error("Failed to get latest Goldberg Steam emulator version, error: ",response.StatusCode );
+                    _log.Error("Failed to get latest Goldberg Steam emulator version, error: " + response.StatusCode );
                     return String.Empty;
                 }
 

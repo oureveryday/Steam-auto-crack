@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Globalization;
+using System.Windows;
 
 namespace SteamAutoCrack.ViewModels
 {
@@ -85,7 +87,7 @@ namespace SteamAutoCrack.ViewModels
         {
             get
             {
-                return SteamAutoCrack.Properties.Resources.CurrentGoldbergSteamEmulatorCommitid + Config.GetGoldbergVersion();
+                return Config.GetGoldbergVersion();
             }
         }
         public string UpdateBtnString
@@ -129,6 +131,7 @@ namespace SteamAutoCrack.ViewModels
                 if (value != Config.Language)
                 {
                     Config.Language = value;
+                    I18NExtension.Culture = new CultureInfo(Config.GetLanguage());
                     NotifyPropertyChanged();
                 }
             }

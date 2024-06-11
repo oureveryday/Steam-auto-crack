@@ -50,14 +50,12 @@ namespace SteamAutoCrack.Views
 
         private async void Download_Click(object sender, RoutedEventArgs e)
         {
-            Download.IsEnabled = false;
-            viewModel.UpdateBtnString = "Downloading...";
-            var updater = new EMUUpdater();
-            await updater.Init();
-            await updater.Download(viewModel.ForceUpdate);
-            viewModel.ReloadValue();
-            viewModel.UpdateBtnString = "Update/Download";
-            Download.IsEnabled = true;
+            Task.Run(async() =>
+            {
+                var updater = new EMUUpdater();
+                await updater.Init();
+                await updater.Download(viewModel.ForceUpdate);
+            });
         }
 
         private void UpdateAppList_Click(object sender, RoutedEventArgs e)

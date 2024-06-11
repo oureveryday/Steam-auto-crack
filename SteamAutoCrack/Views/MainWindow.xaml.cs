@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Antelcat.I18N.Attributes;
+using Microsoft.Win32;
 using Serilog;
 using Serilog.Events;
 using SteamAutoCrack.Core.Config;
@@ -19,6 +20,12 @@ using WPFCustomMessageBox;
 
 namespace SteamAutoCrack
 {
+    //Auto generated class should be partial
+    [ResourceKeysOf(typeof(Properties.Resources))]
+    public partial class LangKeys
+    {
+    }
+
     public partial class MainWindow
     {
         private readonly ILogger _log;

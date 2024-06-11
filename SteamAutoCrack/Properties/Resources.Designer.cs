@@ -205,7 +205,7 @@ namespace SteamAutoCrack.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Current Goldberg Steam Emulator commitid:  的本地化字符串。
+        ///   查找类似 Current Goldberg commitid:  的本地化字符串。
         /// </summary>
         public static string CurrentGoldbergSteamEmulatorCommitid {
             get {
@@ -435,15 +435,6 @@ namespace SteamAutoCrack.Properties {
         public static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Language (Must Enable &quot;Save Config File&quot; ,Restart to Take Effect): 的本地化字符串。
-        /// </summary>
-        public static string LanguageRestartToTakeEffect {
-            get {
-                return ResourceManager.GetString("LanguageRestartToTakeEffect", resourceCulture);
             }
         }
         
