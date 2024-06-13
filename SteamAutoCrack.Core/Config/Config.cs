@@ -331,22 +331,6 @@ namespace SteamAutoCrack.Core.Config
         /// </summary>
         public bool UseCustomIP { get; set; } = EMUConfigDefault.UseCustomIP;
         /// <summary>
-        /// Generate force_language.txt
-        /// </summary>
-        public bool LanguageForce { get; set; } = EMUConfigDefault.LanguageForce;
-        /// <summary>
-        /// Generate force_steamid.txt
-        /// </summary>
-        public bool SteamIDForce { get; set; } = EMUConfigDefault.SteamIDForce;
-        /// <summary>
-        /// Generate force_account_name.txt
-        /// </summary>
-        public bool AccountNameForce { get; set; } = EMUConfigDefault.AccountNameForce;
-        /// <summary>
-        /// Generate force_listen_port.txt
-        /// </summary>
-        public bool ListenPortForce { get; set; } = EMUConfigDefault.ListenPortForce;
-        /// <summary>
         /// Disable all the networking functionality of the Steam emulator.
         /// </summary>
         public bool DisableNetworking { get; set; } = EMUConfigDefault.DisableNetworking;
@@ -355,9 +339,9 @@ namespace SteamAutoCrack.Core.Config
         /// </summary>
         public bool Offline { get; set; } = EMUConfigDefault.Offline;
         /// <summary>
-        /// Disable Steam emulator overlay.
+        /// Enable Steam emulator overlay.
         /// </summary>
-        public bool DisableOverlay { get; set; } = EMUConfigDefault.DisableOverlay;
+        public bool EnableOverlay { get; set; } = EMUConfigDefault.EnableOverlay;
 
         public void ResettoDefault()
         {
@@ -367,13 +351,9 @@ namespace SteamAutoCrack.Core.Config
             ListenPort = EMUConfigDefault.ListenPort.ToString();
             CustomIP = EMUConfigDefault.CustomIP;
             UseCustomIP = EMUConfigDefault.UseCustomIP;
-            LanguageForce = EMUConfigDefault.LanguageForce;
-            SteamIDForce = EMUConfigDefault.SteamIDForce;
-            AccountNameForce = EMUConfigDefault.AccountNameForce;
-            ListenPortForce = EMUConfigDefault.ListenPortForce;
             DisableNetworking = EMUConfigDefault.DisableNetworking;
             Offline = EMUConfigDefault.Offline;
-            DisableOverlay = EMUConfigDefault.DisableOverlay;
+            EnableOverlay = EMUConfigDefault.EnableOverlay;
         }
         public EMUConfig GetEMUConfig()
         {
@@ -381,13 +361,9 @@ namespace SteamAutoCrack.Core.Config
             {
                 AccountName = AccountName,
                 UseCustomIP = UseCustomIP,
-                LanguageForce = LanguageForce,
-                SteamIDForce = SteamIDForce,
-                AccountNameForce = AccountNameForce,
-                ListenPortForce = ListenPortForce,
                 DisableNetworking = DisableNetworking,
                 Offline = Offline,
-                DisableOverlay = DisableOverlay,
+                EnableOverlay = EnableOverlay,
                 ConfigPath = Config.EMUConfigPath,
                 Language = Language
             };

@@ -8,7 +8,10 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using IniFile;
 using static SteamAutoCrack.Core.Utils.EMUGameInfoConfig;
+using static System.Collections.Specialized.BitVector32;
+using Section = IniFile.Section;
 
 namespace SteamAutoCrack.Core.Utils
 {
@@ -145,6 +148,7 @@ namespace SteamAutoCrack.Core.Utils
         protected readonly string? TempPath;
         protected readonly bool UseXan105API = true;
         protected readonly bool UseSteamWebAppList = false;
+        public Ini config_app = new Ini();
         public abstract Task InfoGenerator();
         protected JsonDocument GameSchema;
         protected List<string> DownloadedFile = new();
@@ -152,6 +156,7 @@ namespace SteamAutoCrack.Core.Utils
         public Generator(EMUGameInfoConfig GameInfoConfig) 
         { 
             _log = Log.ForContext<EMUGameInfo>();
+            Ini.Config.AllowHashForComments(setAsDefault: true);
             SteamWebAPIKey = GameInfoConfig.SteamWebAPIKey;
             ConfigPath= GameInfoConfig.ConfigPath;
             AppID = GameInfoConfig.AppID;
@@ -612,8 +617,10 @@ namespace SteamAutoCrack.Core.Utils
                     x.Children.Exists(x => x.Name == "public" && 
                     x.Children.Exists(x => x.Name == "buildid" && uint.TryParse(x.Value,out buildID)))))
                     {
-                        _log.Debug("Writing build_id.txt...");
-                        File.WriteAllText(Path.Combine(ConfigPath, "build_id.txt"), buildID.ToString());
+                        config_app.Add(new Section("app::general")
+                        {
+                            new Property("build_id", buildID, " allow the app/game to show the correct build id"),
+                        });
                     }
                 }
             }
@@ -663,21 +670,28 @@ namespace SteamAutoCrack.Core.Utils
                     {
                         DLCInfos.Add(await SteamAppList.GetAppById(DLCId).ConfigureAwait(false));
                     }
-                    StreamWriter swdlcs = new StreamWriter(Path.Combine(ConfigPath, "DLC.txt"));
-                    var newline = "";
+
+                    var dlcsection = new Section("app::dlcs") { new Property("unlock_all", "0", " should the emu report all DLCs as unlocked, default=1")};
+
                     foreach (var DLC in DLCInfos)
                     {
                         string name;
-                        if(DLC != null)
+                        string id;
+                        name = DLC.Name;
+                        if (DLC.AppId.HasValue)
                         {
-                            name = DLC.Name;
-                            swdlcs.Write(newline + DLC?.AppId + "=" + name);
-                            newline = Environment.NewLine;
+                            id = DLC.AppId.Value.ToString();
                         }
-                        
+                        else
+                        {
+                            id = "";
+                        }
+                        dlcsection.Add(new Property(id, name));
+                    
                     }
-                    swdlcs.Close();
 
+                    dlcsection.Items.Add(new BlankLine());
+                    config_app.Add(dlcsection);
                 }
                 else
                 {
@@ -700,20 +714,23 @@ namespace SteamAutoCrack.Core.Utils
                             DLCs.Add(DLCId, await GetSteam3AppSection(DLCId, EAppInfoSection.Common).ConfigureAwait(false));
                         }
                     }
-                    StreamWriter swdlcs = new StreamWriter(Path.Combine(ConfigPath, "DLC.txt"));
-                    var newline = "";
+
+                    var dlcsection = new Section("app::dlcs") { new Property("unlock_all", "0", " should the emu report all DLCs as unlocked, default=1") };
+
                     foreach (var DLC in DLCs)
                     {
-                        var name = "";
+                        string name;
+                        string id;
                         if (DLC.Value != null)
                         {
                             name = DLC.Value.Children.Find(x => x.Name == "name")?.Value;
+                            id = DLC.Key.ToString();
+                            dlcsection.Add(new Property(id, name));
                         }
-
-                        swdlcs.Write(newline + DLC.Key + "=" + name);
-                        newline = Environment.NewLine;
                     }
-                    swdlcs.Close();
+
+                    dlcsection.Items.Add(new BlankLine());
+                    config_app.Add(dlcsection);
                 }
             }
             catch (Exception ex)
@@ -797,6 +814,19 @@ namespace SteamAutoCrack.Core.Utils
             }
         }
 
+        private void WriteIni()
+        {
+            try
+            {
+                _log.Debug("Writing configs.app.ini...");
+                config_app.SaveTo(Path.Combine(ConfigPath, "configs.app.ini"));
+            }
+            catch (Exception ex)
+            {
+                _log.Information(ex, "Failed to Write configs.app.ini");
+            }
+        }
+
         private async Task GetAppInfo(uint appID)
         {
             await Task.Run(() =>
@@ -846,7 +876,7 @@ namespace SteamAutoCrack.Core.Utils
                     }
                 }
                 Task.WaitAll(TaskA);
-
+                WriteIni();
                 steam3?.Disconnect();
             }
             catch (Exception e)
@@ -904,20 +934,29 @@ namespace SteamAutoCrack.Core.Utils
                 {
                     DLCInfos.Add(await SteamAppList.GetAppById(DLCId).ConfigureAwait(false));
                 }
-               StreamWriter swdlcs = new StreamWriter(Path.Combine(ConfigPath, "DLC.txt"));
-               var newline = "";
-               foreach (var DLC in DLCInfos)
-               {
-                   string name;
-                   if (DLC != null)
-                   {
-                       name = DLC.Name;
-                       swdlcs.Write(newline + DLC?.AppId + "=" + name);
-                       newline = Environment.NewLine;
-                   }
 
-               }
-               swdlcs.Close();
+                var dlcsection = new Section("app::dlcs") { new Property("unlock_all", "0", " should the emu report all DLCs as unlocked, default=1") };
+
+
+                foreach (var DLC in DLCInfos)
+                {
+                    string name;
+                    string id;
+                    name = DLC.Name;
+                    if (DLC.AppId.HasValue)
+                    {
+                        id = DLC.AppId.Value.ToString();
+                    }
+                    else
+                    {
+                        id = "";
+                    }
+                    dlcsection.Add(new Property(id, name));
+                    
+                }
+
+                dlcsection.Items.Add(new BlankLine());
+                config_app.Add(dlcsection);
             }
             catch (Exception ex)
             {

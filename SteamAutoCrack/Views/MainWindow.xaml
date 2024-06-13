@@ -67,11 +67,15 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+
+            <!--
             <CheckBox x:Name="UseXan105API" Content="{I18N {x:Static steamAutoCrack:LangKeys.UseXan105API}}" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" IsChecked="{Binding UseXan105API}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="128,58,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.SteamWebAPIKey}}" VerticalAlignment="Top"/>
+            -->
+            
+            <TextBlock HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.SteamWebAPIKey}}" VerticalAlignment="Top"/>
             <CheckBox x:Name="UseSteamWebAppList" Content="{I18N {x:Static steamAutoCrack:LangKeys.UseSteamWebAppList}}" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" IsChecked="{Binding UseSteamWebAppList}"/>
             <CheckBox x:Name="GenerateImages" Content="{I18N {x:Static steamAutoCrack:LangKeys.GenerateAchievementImages}}" HorizontalAlignment="Left" Margin="215,80,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateImages}"/>
-            <TextBox x:Name="SteamWebAPIKey" HorizontalAlignment="Left" Margin="250,58,0,0" TextWrapping="NoWrap" Text="{Binding SteamWebAPIKey}" VerticalAlignment="Top" Width="212" MaxLines="1"/>
+            <TextBox x:Name="SteamWebAPIKey" HorizontalAlignment="Left" Margin="140,58,0,0" TextWrapping="NoWrap" Text="{Binding SteamWebAPIKey}" VerticalAlignment="Top" Width="312" MaxLines="1"/>
         </Grid>
 
         <CheckBox x:Name="GenerateEMUConfig" Content="{I18N {x:Static steamAutoCrack:LangKeys._2GenerateGoldbergSteamEmulatorConfiguration}}" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" IsChecked="{Binding GenerateEMUConfig}"/>
@@ -81,26 +85,22 @@
 
             <TextBlock HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.Language}}" VerticalAlignment="Top"/>
             <ComboBox x:Name="Language" HorizontalAlignment="Left" Margin="105,5,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}"/>
-            <CheckBox x:Name="LanguageForce" Content="{I18N {x:Static steamAutoCrack:LangKeys.Force}}" HorizontalAlignment="Left" Margin="240,5,0,0" VerticalAlignment="Top" IsChecked="{Binding LanguageForce}"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.ListenPort}}" VerticalAlignment="Top"/>
             <TextBox x:Name="ListenPort" HorizontalAlignment="Left" Margin="105,30,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" MaxLength="5" PreviewTextInput="ListenPort_PreviewTextInput" DataObject.Pasting="ListenPort_Pasting" Text="{Binding ListenPort}"/>
-            <CheckBox x:Name="ListenPortForce" Content="{I18N {x:Static steamAutoCrack:LangKeys.Force}}" HorizontalAlignment="Left" Margin="240,30,0,0" VerticalAlignment="Top" IsChecked="{Binding ListenPortForce}"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="10,55,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.AccountName}}" VerticalAlignment="Top"/>
             <TextBox x:Name="AccountName" HorizontalAlignment="Left" Margin="105,55,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" Text="{Binding AccountName}"/>
-            <CheckBox x:Name="AccountNameForce" Content="{I18N {x:Static steamAutoCrack:LangKeys.Force}}" HorizontalAlignment="Left" Margin="240,55,0,0" VerticalAlignment="Top" IsChecked="{Binding AccountNameForce}"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.SteamID}}" VerticalAlignment="Top"/>
             <TextBox x:Name="SteamID" HorizontalAlignment="Left" Margin="105,80,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" MaxLength="17" PreviewTextInput="SteamID_PreviewTextInput" DataObject.Pasting="SteamID_Pasting" Text="{Binding SteamID}"/>
-            <CheckBox x:Name="SteamIDForce" Content="{I18N {x:Static steamAutoCrack:LangKeys.Force}}" HorizontalAlignment="Left" Margin="240,80,0,0" VerticalAlignment="Top" IsChecked="{Binding SteamIDForce}"/>
 
             <TextBox x:Name="CustomIP" HorizontalAlignment="Center" Margin="0,105,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="105" Text="{Binding CustomIP}"/>
             <CheckBox x:Name="UseCustomIP" Content="{I18N {x:Static steamAutoCrack:LangKeys.UseCustomBroadcastIP}}" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" IsChecked="{Binding UseCustomIP}"/>
 
             <CheckBox x:Name="DisableNetworking" Content="{I18N {x:Static steamAutoCrack:LangKeys.DisableNetworking}}" HorizontalAlignment="Left" Margin="305,5,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableNetworking}"/>
             <CheckBox x:Name="Offline" Content="{I18N {x:Static steamAutoCrack:LangKeys.OfflineMode}}" HorizontalAlignment="Left" Margin="305,30,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding Offline}"/>
-            <CheckBox x:Name="DisableOverlay" Content="{I18N {x:Static steamAutoCrack:LangKeys.DisableOverlay}}" HorizontalAlignment="Left" Margin="305,55,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableOverlay}"/>
+            <CheckBox x:Name="EnableOverlay" Content="{I18N {x:Static steamAutoCrack:LangKeys.EnableOverlay}}" HorizontalAlignment="Left" Margin="305,55,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableOverlay}"/>
             <Button x:Name="OpenExample" Content="{I18N {x:Static steamAutoCrack:LangKeys.OpenExampleConfig}}" HorizontalAlignment="Left" Margin="305,80,0,0" VerticalAlignment="Top" Width="140" Click="OpenExample_Click"/>
             <Button x:Name="OpenConfigFolder" Content="{I18N {x:Static steamAutoCrack:LangKeys.OpenConfigFolder}}" HorizontalAlignment="Left" Margin="305,105,0,0" VerticalAlignment="Top" Width="140" Click="OpenConfigFolder_Click"/>
 

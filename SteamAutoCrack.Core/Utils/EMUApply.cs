@@ -1,6 +1,8 @@
 ﻿using AuthenticodeExaminer;
 using Serilog;
 using System.Text.RegularExpressions;
+using IniFile;
+using SteamAutoCrack.Core.Config;
 
 namespace SteamAutoCrack.Core.Utils
 {
@@ -21,7 +23,7 @@ namespace SteamAutoCrack.Core.Utils
         /// <summary>
         /// Emulator save location.
         /// </summary>
-        public string? LocalSave { get; set; } = Path.Combine("steam_settings");
+        public string? LocalSave { get; set; } = Path.Combine("steam_settings", "saves");
         /// <summary>
         /// Enable change default emulator save location.
         /// </summary>
@@ -57,7 +59,7 @@ namespace SteamAutoCrack.Core.Utils
         /// <summary>
         /// Emulator save location.
         /// </summary>
-        public static readonly string? LocalSave = Path.Combine("steam_settings");
+        public static readonly string? LocalSave = Path.Combine("steam_settings", "saves");
         /// <summary>
         /// Enable change default emulator save location.
         /// </summary>
@@ -111,6 +113,7 @@ namespace SteamAutoCrack.Core.Utils
         public EMUApply()
         {
             _log = Log.ForContext<EMUApply>();
+            Ini.Config.AllowHashForComments(setAsDefault: true);
         }
         public async Task<bool> Apply(EMUApplyConfig emuApplyConfig)
         {
@@ -208,18 +211,6 @@ namespace SteamAutoCrack.Core.Utils
                 {
                     File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "x64", "steam_api64.dll"), filePath);
                 }
-                if (emuApplyConfig.UseLocalSave)
-                {
-                    if (!File.Exists(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt")))
-                    {
-                        File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt"),emuApplyConfig.LocalSave);
-                        _log.Debug("Generated local_save.txt.");
-                    }
-                }
-                if (emuApplyConfig.GenerateInterfacesFile)
-                {
-                    await GenerateInterfacesFile(Path.ChangeExtension(filePath, ".dll.bak"), emuApplyConfig.ForceGenerateInterfacesFiles).ConfigureAwait(false);
-                }
                 if (Directory.Exists(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))) 
                 {
                     _log.Debug("steam_settings folder already exists, skipping copy steam_settings folder...");
@@ -227,6 +218,26 @@ namespace SteamAutoCrack.Core.Utils
                     return;
                 }
                 CopyDirectory(new DirectoryInfo(emuApplyConfig.ConfigPath), new DirectoryInfo((Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))));
+                if (emuApplyConfig.GenerateInterfacesFile)
+                {
+                    await GenerateInterfacesFile(Path.ChangeExtension(filePath, ".dll.bak"), emuApplyConfig.ForceGenerateInterfacesFiles).ConfigureAwait(false);
+                }
+                if (emuApplyConfig.UseLocalSave)
+                {
+                    var configsuser = new Ini(Path.Combine(Path.GetDirectoryName(filePath), "configs.user.ini"));
+
+                    configsuser.Add(new Section("user::saves", null)
+                    {
+                        new Property("local_save_path",emuApplyConfig.LocalSave," when this is set, it will force the emu to use the specified location instead of the default global location",
+                            " path could be absolute, or relative to the location of the .dll/.so",
+                            " leading and trailing whitespaces are trimmed",
+                            " when this option is used, the global settings folder is completely ignored, allowing a full portable behavior")
+                    });
+
+                    configsuser.SaveTo(Path.Combine(Path.GetDirectoryName(filePath), "configs.user.ini"));
+
+                    _log.Debug("Saved local_save config to configs.user.ini");
+                }
                 return;
             }
             catch (Exception ex)
@@ -255,18 +266,6 @@ namespace SteamAutoCrack.Core.Utils
                 {
                     File.Copy(Path.Combine(emuApplyConfig.GoldbergPath, "x32", "steam_api.dll"), filePath);
                 }
-                if (emuApplyConfig.GenerateInterfacesFile)
-                {
-                    await GenerateInterfacesFile(Path.ChangeExtension(filePath, ".dll.bak"), emuApplyConfig.ForceGenerateInterfacesFiles).ConfigureAwait(false);
-                }
-                if (emuApplyConfig.UseLocalSave)
-                {
-                    if (!File.Exists(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt")))
-                    {
-                        File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), "local_save.txt"), emuApplyConfig.LocalSave);
-                        _log.Debug("Generated local_save.txt.");
-                    }
-                }
                 if (Directory.Exists(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings")))
                 {
                     _log.Debug("steam_settings folder already exists, skipping copy steam_settings folder...");
@@ -274,6 +273,26 @@ namespace SteamAutoCrack.Core.Utils
                     return;
                 }
                 CopyDirectory(new DirectoryInfo(emuApplyConfig.ConfigPath), new DirectoryInfo((Path.Combine(Path.GetDirectoryName(filePath), "steam_settings"))));
+                if (emuApplyConfig.GenerateInterfacesFile)
+                {
+                    await GenerateInterfacesFile(Path.ChangeExtension(filePath, ".dll.bak"), emuApplyConfig.ForceGenerateInterfacesFiles).ConfigureAwait(false);
+                }
+                if (emuApplyConfig.UseLocalSave)
+                {
+                    var configsuser = new Ini(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings", "configs.user.ini"));
+
+                    configsuser.Add(new Section("user::saves", "")
+                    {
+                        new Property("local_save_path",emuApplyConfig.LocalSave," when this is set, it will force the emu to use the specified location instead of the default global location",
+                            " path could be absolute, or relative to the location of the .dll/.so",
+                            " leading and trailing whitespaces are trimmed",
+                            " when this option is used, the global settings folder is completely ignored, allowing a full portable behavior")
+                    });
+
+                    configsuser.SaveTo(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings", "configs.user.ini"));
+
+                    _log.Debug("Saved local_save config to configs.user.ini");
+                }
                 return;
             }
             catch (Exception ex)
@@ -329,7 +348,7 @@ namespace SteamAutoCrack.Core.Utils
         {
             try
             {
-                if (File.Exists(Path.Combine(Path.GetDirectoryName(filePath), "steam_interfaces.txt")))
+                if (File.Exists(Path.Combine(Path.GetDirectoryName(filePath),"steam_settings", "steam_interfaces.txt")))
                 {
                     _log.Debug("steam_interfaces.txt already exists, skipping generate interfaces.");
                 }
@@ -362,7 +381,7 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 var dirPath = Path.GetDirectoryName(filePath);
                 if (dirPath == null) return;
-                await using var destination = File.CreateText(Path.Combine(dirPath, "steam_interfaces.txt"));
+                await using var destination = File.CreateText(Path.Combine(dirPath,"steam_settings", "steam_interfaces.txt"));
                 foreach (var s in result)
                 {
                     await destination.WriteLineAsync(s).ConfigureAwait(false);

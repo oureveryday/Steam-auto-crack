@@ -223,15 +223,6 @@ namespace SteamAutoCrack.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Disable Overlay 的本地化字符串。
-        /// </summary>
-        public static string DisableOverlay {
-            get {
-                return ResourceManager.GetString("DisableOverlay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Download 的本地化字符串。
         /// </summary>
         public static string Download {
@@ -255,6 +246,15 @@ namespace SteamAutoCrack.Properties {
         public static string EnableDebugLog {
             get {
                 return ResourceManager.GetString("EnableDebugLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable Overlay 的本地化字符串。
+        /// </summary>
+        public static string EnableOverlay {
+            get {
+                return ResourceManager.GetString("EnableOverlay", resourceCulture);
             }
         }
         
@@ -318,15 +318,6 @@ namespace SteamAutoCrack.Properties {
         public static string Folder {
             get {
                 return ResourceManager.GetString("Folder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Force 的本地化字符串。
-        /// </summary>
-        public static string Force {
-            get {
-                return ResourceManager.GetString("Force", resourceCulture);
             }
         }
         

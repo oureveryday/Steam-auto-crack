@@ -17,9 +17,10 @@ namespace SteamAutoCrack.Core.Utils
         
         private List<string> goldberguselessFolders = new List<string>
         {
-            "experimental_steamclient",
+            "steamclient_experimental",
             "tools",
-            "release"
+            "release",
+            "regular"
         };
 
         public EMUUpdater()
@@ -27,6 +28,8 @@ namespace SteamAutoCrack.Core.Utils
             _log = Log.ForContext<EMUUpdater>();
             
         }
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
         public async Task Init()
         {
             currentcommit = GetCurrentGoldbergVersion();
@@ -49,7 +52,24 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 _log.Information("Initializing download...");
                 if (!Directory.Exists(Config.Config.GoldbergPath)) Directory.CreateDirectory(Config.Config.GoldbergPath);
-                while (!bGotlatestcommit) { }
+
+                var delayTask = Task.Delay(30000, cancellationTokenSource.Token);
+                var waitTask = Task.Run(async () =>
+                {
+                    while (!bGotlatestcommit && !cancellationTokenSource.IsCancellationRequested)
+                    {
+                        await Task.Delay(100);
+                    }
+                    cancellationTokenSource.Cancel();
+                }, cancellationTokenSource.Token);
+
+                await Task.WhenAny(delayTask, waitTask);
+
+                if (!bGotlatestcommit)
+                {
+                    throw new Exception("Failed to get latest commit.");
+                }
+
                 _log.Information($"Goldberg commit: Current: {currentcommit}; Latest: {latestcommit}");
                 if (force)
                 {
@@ -183,6 +203,7 @@ namespace SteamAutoCrack.Core.Utils
                     Directory.CreateDirectory(Config.Config.GoldbergPath);
                     archive.ExtractArchive(Config.Config.GoldbergPath);
                     CopyDirectory(new DirectoryInfo(Path.Combine(Config.Config.GoldbergPath, "release")), new DirectoryInfo(Config.Config.GoldbergPath));
+                    CopyDirectory(new DirectoryInfo(Path.Combine(Config.Config.GoldbergPath, "regular")), new DirectoryInfo(Config.Config.GoldbergPath));
                 }
                 catch (Exception ex)
                 {
@@ -246,6 +267,7 @@ namespace SteamAutoCrack.Core.Utils
                 else
                 {
                     _log.Error("Failed to get latest Goldberg Steam emulator version, error: " + response.StatusCode );
+                    cancellationTokenSource.Cancel();
                     return String.Empty;
                 }
 

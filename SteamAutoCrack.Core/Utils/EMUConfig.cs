@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using SteamKit2;
 using System.Globalization;
+using IniFile;
 
 namespace SteamAutoCrack.Core.Utils
 {
@@ -37,22 +38,6 @@ namespace SteamAutoCrack.Core.Utils
         /// </summary>
         public bool UseCustomIP { get; set; } = false;
         /// <summary>
-        /// Generate force_language.txt
-        /// </summary>
-        public bool LanguageForce { get; set; } = true;
-        /// <summary>
-        /// Generate force_steamid.txt
-        /// </summary>
-        public bool SteamIDForce { get; set; } = true;
-        /// <summary>
-        /// Generate force_account_name.txt
-        /// </summary>
-        public bool AccountNameForce { get; set; } = true;
-        /// <summary>
-        /// Generate force_listen_port.txt
-        /// </summary>
-        public bool ListenPortForce { get; set; } = true;
-        /// <summary>
         /// Disable all the networking functionality of the Steam emulator.
         /// </summary>
         public bool DisableNetworking { get; set; } = false;
@@ -61,9 +46,9 @@ namespace SteamAutoCrack.Core.Utils
         /// </summary>
         public bool Offline { get; set; } = false;
         /// <summary>
-        /// Disable Steam emulator overlay.
+        /// Enable Steam emulator overlay.
         /// </summary>
-        public bool DisableOverlay { get; set; } = false;
+        public bool EnableOverlay { get; set; } = false;
 
         public string? ConfigPath { get; set; } = Path.Combine(Config.Config.TempPath, "steam_settings");
 
@@ -188,22 +173,6 @@ namespace SteamAutoCrack.Core.Utils
         /// </summary>
         public static readonly bool UseCustomIP = false;
         /// <summary>
-        /// Generate force_language.txt
-        /// </summary>
-        public static readonly bool LanguageForce = true;
-        /// <summary>
-        /// Generate force_steamid.txt
-        /// </summary>
-        public static readonly bool SteamIDForce = true;
-        /// <summary>
-        /// Generate force_account_name.txt
-        /// </summary>
-        public static readonly bool AccountNameForce = true;
-        /// <summary>
-        /// Generate force_listen_port.txt
-        /// </summary>
-        public static readonly bool ListenPortForce = true;
-        /// <summary>
         /// Disable all the networking functionality of the Steam emulator.
         /// </summary>
         public static readonly bool DisableNetworking = false;
@@ -212,9 +181,9 @@ namespace SteamAutoCrack.Core.Utils
         /// </summary>
         public static readonly bool Offline = false;
         /// <summary>
-        /// Disable Steam emulator overlay.
+        /// Enable Steam emulator overlay.
         /// </summary>
-        public static readonly bool DisableOverlay = false;
+        public static readonly bool EnableOverlay = false;
         public static readonly string? ConfigPath = Path.Combine(Config.Config.TempPath, "steam_settings");
     }
 
@@ -229,6 +198,7 @@ namespace SteamAutoCrack.Core.Utils
         public EMUConfigGenerator() 
         {
             _log = Log.ForContext<EMUConfigGenerator>();
+            Ini.Config.AllowHashForComments(setAsDefault: true);
         }
         public async Task<bool> Generate(EMUConfig EMUConfig)
         {
@@ -242,17 +212,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 var deletefilelist = new List<string>()
                 {
-                    Path.Combine(EMUConfig.ConfigPath, "force_language.txt"),
-                    Path.Combine(EMUConfig.ConfigPath,"settings", "language.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "force_steamid.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "settings", "user_steam_id.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "force_account_name.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "settings", "account_name.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "force_listen_port.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "settings", "listen_port.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "offline.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "disable_networking.txt"),
-                    Path.Combine(EMUConfig.ConfigPath, "disable_overlay.txt"),
+                    Path.Combine(EMUConfig.ConfigPath, "configs.user.ini"),
+                    Path.Combine(EMUConfig.ConfigPath, "configs.main.ini"),
+                    Path.Combine(EMUConfig.ConfigPath, "configs.overlay.ini"),
                     Path.Combine(EMUConfig.ConfigPath, "custom_broadcasts.txt"),
                 };
                 foreach (var file in deletefilelist)
@@ -262,62 +224,45 @@ namespace SteamAutoCrack.Core.Utils
                         File.Delete(file);
                     }
                 }
-                if (Directory.Exists(Path.Combine(EMUConfig.ConfigPath, "settings")) && !Directory.EnumerateFileSystemEntries(Path.Combine(EMUConfig.ConfigPath, "settings")).Any())
+
+                var configsmain = new Ini();
+                var configsuser = new Ini();
+                var configsoverlay = new Ini();
+
+                configsuser.Add(new Section("user::general")
                 {
-                    Directory.Delete(Path.Combine(EMUConfig.ConfigPath, "settings"));
-                }
-                if (!EMUConfig.LanguageForce || !EMUConfig.SteamIDForce || !EMUConfig.SteamIDForce || !EMUConfig.AccountNameForce)
+                    new Property("account_name", EMUConfig.AccountName == "" ? EMUConfigDefault.AccountName : EMUConfig.AccountName, " user account name"),
+                    new Property("account_steamid", EMUConfig.SteamID.ConvertToUInt64().ToString(), " Steam64 format"),
+                    new Property("language", EMUConfig.Language.ToString(), " the language reported to the app/game",
+                        " look for the column 'API language code' here: https://partner.steamgames.com/doc/store/localization/languages",
+                        " default=english"),
+                });
+
+                configsmain.Add(new Section("main::connectivity")
                 {
-                    Directory.CreateDirectory(Path.Combine(EMUConfig.ConfigPath,"settings"));
+                    new Property("disable_networking", EMUConfig.DisableNetworking, " disable all steam networking interface functionality",
+                        " this won't prevent games/apps from making external requests"
+                        ," networking related functionality like lobbies or those that launch a server in the background will not work"),
+                    new Property("listen_port", EMUConfig.ListenPort.ToString(), " change the UDP/TCP port the emulator listens on, you should probably not change this because everyone needs to use the same port or you won't find yourselves on the network"),
+                    new Property("offline", EMUConfig.Offline, " pretend steam is running in offline mode",
+                        " Some games that connect to online servers might only work if the steam emu behaves like steam is in offline mode"),
                 }
-                if (EMUConfig.LanguageForce)
+                );
+
+                configsoverlay.Add(new Section("overlay::general")
                 {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "force_language.txt"), EMUConfig.Language.ToString());
-                }
-                else
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath,"settings", "language.txt"), EMUConfig.Language.ToString());
-                }
-                if (EMUConfig.SteamIDForce)
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "force_steamid.txt"), EMUConfig.SteamID.ConvertToUInt64().ToString());
-                }
-                else
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "settings", "user_steam_id.txt"), EMUConfig.SteamID.ConvertToUInt64().ToString());
-                }
-                if (EMUConfig.AccountNameForce)
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "force_account_name.txt"), EMUConfig.AccountName == "" ? EMUConfigDefault.AccountName : EMUConfig.AccountName);
-                }
-                else
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "settings", "account_name.txt"), EMUConfig.AccountName == "" ? EMUConfigDefault.AccountName : EMUConfig.AccountName);
-                }
-                if (EMUConfig.ListenPortForce)
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "force_listen_port.txt"), EMUConfig.ListenPort.ToString());
-                }
-                else
-                {
-                    File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "settings", "listen_port.txt"), EMUConfig.ListenPort.ToString());
-                }
-                if (EMUConfig.Offline)
-                {
-                    File.Create(Path.Combine(EMUConfig.ConfigPath, "offline.txt"));
-                }
-                if (EMUConfig.DisableNetworking)
-                {
-                    File.Create(Path.Combine(EMUConfig.ConfigPath, "disable_networking.txt"));
-                }
-                if (EMUConfig.DisableOverlay)
-                {
-                    File.Create(Path.Combine(EMUConfig.ConfigPath, "disable_overlay.txt"));
-                }
+                    new Property("enable_experimental_overlay", EMUConfig.EnableOverlay, " enable the experimental overlay, might cause crashes")
+                });
+                
                 if (EMUConfig.UseCustomIP)
                 {
                     File.WriteAllText(Path.Combine(EMUConfig.ConfigPath, "custom_broadcasts.txt"), EMUConfig.CustomIP);
                 }
+
+                configsmain.SaveTo(Path.Combine(EMUConfig.ConfigPath, "configs.main.ini"));
+                configsuser.SaveTo(Path.Combine(EMUConfig.ConfigPath, "configs.user.ini"));
+                configsoverlay.SaveTo(Path.Combine(EMUConfig.ConfigPath, "configs.overlay.ini"));
+
                 _log.Debug("Generated emulator config.");
                 return true;
             }

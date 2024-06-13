@@ -369,70 +369,6 @@ namespace SteamAutoCrack.ViewModels
                 }
             }
         }
-        public bool LanguageForce
-        {
-            get
-            {
-                return Config.EMUConfigs.LanguageForce;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.LanguageForce)
-                {
-                    Config.EMUConfigs.LanguageForce = value;
-                    NotifyPropertyChanged("LanguageForce");
-                }
-            }
-        }
-        public bool SteamIDForce
-        {
-            get
-            {
-                return Config.EMUConfigs.SteamIDForce;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.SteamIDForce)
-                {
-                    Config.EMUConfigs.SteamIDForce = value;
-                    NotifyPropertyChanged("SteamIDForce");
-                }
-            }
-        }
-        public bool AccountNameForce
-        {
-            get
-            {
-                return Config.EMUConfigs.AccountNameForce;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.AccountNameForce)
-                {
-                    Config.EMUConfigs.AccountNameForce = value;
-                    NotifyPropertyChanged("AccountNameForce");
-                }
-            }
-        }
-        public bool ListenPortForce
-        {
-            get
-            {
-                return Config.EMUConfigs.ListenPortForce;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.ListenPortForce)
-                {
-                    Config.EMUConfigs.ListenPortForce = value;
-                    NotifyPropertyChanged("ListenPortForce");
-                }
-            }
-        }
         public bool DisableNetworking
         {
             get
@@ -465,19 +401,19 @@ namespace SteamAutoCrack.ViewModels
                 }
             }
         }
-        public bool DisableOverlay
+        public bool EnableOverlay
         {
             get
             {
-                return Config.EMUConfigs.DisableOverlay;
+                return Config.EMUConfigs.EnableOverlay;
             }
 
             set
             {
-                if (value != Config.EMUConfigs.DisableOverlay)
+                if (value != Config.EMUConfigs.EnableOverlay)
                 {
-                    Config.EMUConfigs.DisableOverlay = value;
-                    NotifyPropertyChanged("DisableOverlay");
+                    Config.EMUConfigs.EnableOverlay = value;
+                    NotifyPropertyChanged("EnableOverlay");
                 }
             }
         }

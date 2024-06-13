@@ -153,9 +153,6 @@
   <data name="DisableNetworking" xml:space="preserve">
     <value>Disable Networking</value>
   </data>
-  <data name="DisableOverlay" xml:space="preserve">
-    <value>Disable Overlay</value>
-  </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
@@ -164,6 +161,9 @@
   </data>
   <data name="EnableDebugLog" xml:space="preserve">
     <value>Enable Debug Log</value>
+  </data>
+  <data name="EnableOverlay" xml:space="preserve">
+    <value>Enable Overlay</value>
   </data>
   <data name="ErrorWhenSelectingFile" xml:space="preserve">
     <value>Error when selecting file:</value>
@@ -185,9 +185,6 @@
   </data>
   <data name="Folder" xml:space="preserve">
     <value>Folder</value>
-  </data>
-  <data name="Force" xml:space="preserve">
-    <value>Force</value>
   </data>
   <data name="ForceDownload" xml:space="preserve">
     <value>Force Download</value>
