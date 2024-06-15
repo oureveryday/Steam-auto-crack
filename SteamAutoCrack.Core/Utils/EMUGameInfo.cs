@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS4014
 
+using IniFile;
 using Serilog;
 using SteamKit2;
 using System.ComponentModel;
@@ -8,9 +9,8 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using IniFile;
+using SteamAutoCrack.Core.Config;
 using static SteamAutoCrack.Core.Utils.EMUGameInfoConfig;
-using static System.Collections.Specialized.BitVector32;
 using Section = IniFile.Section;
 
 namespace SteamAutoCrack.Core.Utils
@@ -257,9 +257,24 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 _log.Debug($"Getting schema for App {AppID}");
 
+                string language = String.Empty;
+
+                switch (Config.Config.Language)
+                {
+                    case Config.Config.Languages.en_US:
+                        language += "english";
+                        break;
+                    case Config.Config.Languages.zh_CN:
+                        language += "schinese";
+                        break;
+                    default:
+                        language += "english";
+                        break;
+                }
+
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
-                var apiUrl = UseXan105API ? $"{GameSchemaUrl}&appid={AppID}" : $"{GameSchemaUrl}?key={SteamWebAPIKey}&appid={AppID}";
+                var apiUrl = UseXan105API ? $"{GameSchemaUrl}&appid={AppID}" : $"{GameSchemaUrl}?l={language}&key={SteamWebAPIKey}&appid={AppID}";
 
                 client.Timeout = TimeSpan.FromSeconds(30);
                 var response = await LimitSteamWebApiGET(client,
