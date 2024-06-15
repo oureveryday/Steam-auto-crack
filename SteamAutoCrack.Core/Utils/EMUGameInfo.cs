@@ -417,7 +417,7 @@ namespace SteamAutoCrack.Core.Utils
                 for (int i = 0; i < achievementList.Count; i++)
                 {
                     achievementListSave.Add(new SaveAchievement {
-                        Description = new Dictionary<string, string>() { { "english", achievementList[i].Description } },
+                        Description = new Dictionary<string, string> { { "english", achievementList[i].Description } },
                         DisplayName = new Dictionary<string, string> { { "english", achievementList[i].DisplayName } },
                         Hidden = achievementList[i].Hidden,
                         Icon = achievementList[i].Icon,
@@ -488,7 +488,7 @@ namespace SteamAutoCrack.Core.Utils
 
                     tmpList = JsonSerializer.Deserialize<List<Achievement>>(tmpData.GetRawText());
 
-                    foreach (var item in tmpList )
+                    foreach (var item in tmpList)
                     {
                         foreach (var saveItem in achievementListSave)
                         {
