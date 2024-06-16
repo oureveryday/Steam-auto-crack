@@ -420,8 +420,8 @@ namespace SteamAutoCrack.Core.Utils
                         Description = new Dictionary<string, string> { { "english", achievementList[i].Description } },
                         DisplayName = new Dictionary<string, string> { { "english", achievementList[i].DisplayName } },
                         Hidden = achievementList[i].Hidden,
-                        Icon = achievementList[i].Icon,
-                        IconGray = achievementList[i].IconGray,
+                        Icon = $"achievement_images/{Path.GetFileName(achievementList[i].Icon)}",
+                        IconGray = $"achievement_images/{Path.GetFileName(achievementList[i].IconGray)}",
                         Name = achievementList[i].Name,
                     } );
                 }
@@ -429,9 +429,36 @@ namespace SteamAutoCrack.Core.Utils
                 String[] languages =
                 {
                     // "english", english has been written
+                    "arabic",
+                    "bulgarian",
                     "schinese",
                     "tchinese",
+                    "czech",
+                    "danish",
+                    "dutch",
+                    "finnish",
+                    "french",
+                    "german",
+                    "greek",
+                    "hungarian",
+                    "indonesian",
+                    "italian",
                     "japanese",
+                    "koreana",
+                    "norwegian",
+                    "polish",
+                    "portuguese",
+                    "brazilian",
+                    "romanian",
+                    "russian",
+                    "spanish",
+                    "latam",
+                    "swedish",
+                    "thai",
+                    "turkish",
+                    "ukrainian",
+                    "vietnamese",
+                    "token",
                 };
 
                 foreach (var language in languages)
