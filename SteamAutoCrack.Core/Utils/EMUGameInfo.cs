@@ -488,6 +488,19 @@ namespace SteamAutoCrack.Core.Utils
 
             return await http_client.SendAsync(http_request, HttpCompletionOption.ResponseContentRead, cts.Token).ConfigureAwait(false);
         }
+
+        protected void WriteIni()
+        {
+            try
+            {
+                _log.Debug("Writing configs.app.ini...");
+                config_app.SaveTo(Path.Combine(ConfigPath, "configs.app.ini"));
+            }
+            catch (Exception ex)
+            {
+                _log.Information(ex, "Failed to Write configs.app.ini");
+            }
+        }
     }
 
     internal class GeneratorSteamClient : Generator
@@ -829,19 +842,6 @@ namespace SteamAutoCrack.Core.Utils
             }
         }
 
-        private void WriteIni()
-        {
-            try
-            {
-                _log.Debug("Writing configs.app.ini...");
-                config_app.SaveTo(Path.Combine(ConfigPath, "configs.app.ini"));
-            }
-            catch (Exception ex)
-            {
-                _log.Information(ex, "Failed to Write configs.app.ini");
-            }
-        }
-
         private async Task GetAppInfo(uint appID)
         {
             await Task.Run(() =>
@@ -1105,6 +1105,8 @@ namespace SteamAutoCrack.Core.Utils
                         Tasks2.Remove(finishedTask2);
                     }
                 }
+
+                WriteIni();
             }
             catch (Exception e)
             {
