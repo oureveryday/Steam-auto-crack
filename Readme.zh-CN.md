@@ -11,7 +11,7 @@
 使用 SteamStub 和 Steam API 自动破解游戏。  
 最新版本3.0使用 .Net 8.0。  
 [最新发布](https://github.com/oureveryday/Steam-auto-crack/releases)  
-[维基](https://github.com/oureveryday/Steam-auto-crack/wiki)
+[维基](https://github.com/oureveryday/Steam-auto-crack/wiki)  
 [官方 Disrord](https://discord.gg/BZQtrBSUnd)
 
 * Github: <https://github.com/oureveryday/Steam-auto-crack>

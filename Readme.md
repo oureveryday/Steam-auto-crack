@@ -11,7 +11,7 @@
 Automatic Crack Games With SteamStub and Steam API.  
 Latest Version 3.0 Using .Net 8.0.  
 [Latest Release](https://github.com/oureveryday/Steam-auto-crack/releases)  
-[Wiki](https://github.com/oureveryday/Steam-auto-crack/wiki)
+[Wiki](https://github.com/oureveryday/Steam-auto-crack/wiki)  
 [Official Disrord](https://discord.gg/BZQtrBSUnd)
 
 * Github: <https://github.com/oureveryday/Steam-auto-crack>
