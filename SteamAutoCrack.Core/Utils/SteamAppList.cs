@@ -123,9 +123,8 @@ namespace SteamAutoCrack.Core.Utils
             {
                 var app = await GetAppById(appid).ConfigureAwait(false);
                 listOfAppsByName.Remove(listOfAppsByName.Find(d => d.AppId == appid));
-                listOfAppsByName.Insert(0, app);
+                if (app != null) listOfAppsByName.Insert(0, app);
             }
-            return listOfAppsByName;
             return listOfAppsByName;
         }
 
@@ -143,7 +142,7 @@ namespace SteamAutoCrack.Core.Utils
             {
                 var app = await GetAppById(appid).ConfigureAwait(false);
                 listOfAppsByName.Remove(listOfAppsByName.Find(d => d.AppId == appid));
-                listOfAppsByName.Insert(0, app);
+                if (app != null) listOfAppsByName.Insert(0, app);
             }
             return listOfAppsByName;
         }
