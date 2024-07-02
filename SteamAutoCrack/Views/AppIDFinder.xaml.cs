@@ -36,6 +36,7 @@ namespace SteamAutoCrack.Views
             viewModel.AppName = appname;
             viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Loading;
             Search.IsEnabled = false;
+            AppName.IsEnabled = false;
             _log = Log.ForContext<AppIDFinder>();
             Task.Run(async () =>
             {
@@ -44,6 +45,7 @@ namespace SteamAutoCrack.Views
                     await SteamAppList.WaitForReady().ConfigureAwait(false);
                     Dispatcher.Invoke(new Action(() => {
                         Search.IsEnabled = true;
+                        AppName.IsEnabled = true;
                         viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Search;
                         if (viewModel.AppName != string.Empty)
                         {
@@ -108,6 +110,7 @@ namespace SteamAutoCrack.Views
         {
             viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Searching;
             Search.IsEnabled = false;
+            AppName.IsEnabled = false;
             if ((bool)Fuzzy.IsChecked)
             {
                 viewModel.Apps = await SteamAppList.GetListOfAppsByNameFuzzy(AppName.Text).ConfigureAwait(false);
@@ -118,6 +121,7 @@ namespace SteamAutoCrack.Views
             }
             Dispatcher.Invoke(new Action(() => {
                 Search.IsEnabled = true;
+                AppName.IsEnabled = true;
             }));
             viewModel.SearchBtnString = SteamAutoCrack.Properties.Resources.Search;
             
