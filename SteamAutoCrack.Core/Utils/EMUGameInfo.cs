@@ -417,8 +417,8 @@ namespace SteamAutoCrack.Core.Utils
                 for (int i = 0; i < achievementList.Count; i++)
                 {
                     achievementListSave.Add(new SaveAchievement {
-                        Description = new Dictionary<string, string> { { "english", achievementList[i].Description } },
-                        DisplayName = new Dictionary<string, string> { { "english", achievementList[i].DisplayName } },
+                        Description = new Dictionary<string, string> { { "english", achievementList[i].Description ?? "" } },
+                        DisplayName = new Dictionary<string, string> { { "english", achievementList[i].DisplayName ?? "" } },
                         Hidden = achievementList[i].Hidden,
                         Icon = $"achievement_images/{Path.GetFileName(achievementList[i].Icon)}",
                         IconGray = $"achievement_images/{Path.GetFileName(achievementList[i].IconGray)}",
@@ -521,8 +521,10 @@ namespace SteamAutoCrack.Core.Utils
                         {
                             if( saveItem.Name == item.Name)
                             {
-                                saveItem.Description.Add(language, item.Description);
-                                saveItem.DisplayName.Add(language, item.DisplayName);
+                                if (!string.IsNullOrEmpty(item.Description))
+                                    saveItem.Description.Add(language, item.Description);
+                                if (!string.IsNullOrEmpty(item.DisplayName))
+                                    saveItem.DisplayName.Add(language, item.DisplayName);
                                 break;
                             }
                         }
@@ -533,7 +535,7 @@ namespace SteamAutoCrack.Core.Utils
                     achievementListSave,
                     new JsonSerializerOptions
                     {
-                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                        // Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                         WriteIndented = true
                     });
                 await File.WriteAllTextAsync(Path.Combine(ConfigPath, "achievements.json"), achievementJson)
