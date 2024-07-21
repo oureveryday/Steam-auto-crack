@@ -13,6 +13,7 @@ Latest Version 3.0 Using .Net 8.0.
 [Latest Release](https://github.com/oureveryday/Steam-auto-crack/releases)  
 [Wiki](https://github.com/oureveryday/Steam-auto-crack/wiki)  
 [Official Disrord](https://discord.gg/BZQtrBSUnd)
+[Official Telegram](https://t.me/SteamAutoCrack)
 
 * Github: <https://github.com/oureveryday/Steam-auto-crack>
 * Gitlab: <https://gitlab.com/oureveryday/Steam-auto-crack>

@@ -13,6 +13,7 @@
 [最新发布](https://github.com/oureveryday/Steam-auto-crack/releases)  
 [维基](https://github.com/oureveryday/Steam-auto-crack/wiki)  
 [官方 Disrord](https://discord.gg/BZQtrBSUnd)
+[官方 Telegram](https://t.me/SteamAutoCrack)
 
 * Github: <https://github.com/oureveryday/Steam-auto-crack>
 * Gitlab: <https://gitlab.com/oureveryday/Steam-auto-crack>
