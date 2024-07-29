@@ -521,7 +521,7 @@ namespace SteamAutoCrack.Core.Utils
                     Username = null,
                     Password = null,
                 }
-                );   
+                );
             }
             catch (Exception ex) 
             { 
@@ -852,12 +852,14 @@ namespace SteamAutoCrack.Core.Utils
 
         private async Task<bool> WaitForConnected()
         {
-            steam3.WaitUntilCallback(() => { }, () => { return !steam3.bConnecting; }); 
+            steam3.WaitUntilCallback(() => { }, () => { return !steam3.bConnecting && steam3.bConnected && steam3.credentials.LoggedOn; }); 
             if (steam3.bAborted)
+
             {
                 _log.Information("Steam3 connection aborted, skipping generation...");
                 return false;
             }
+
             return true;
         }
 

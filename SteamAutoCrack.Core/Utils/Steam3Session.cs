@@ -58,9 +58,10 @@ namespace SteamAutoCrack.Core.Utils
         readonly SteamUser.LogOnDetails logonDetails;
 
         // output
-        readonly Credentials credentials;
+        public readonly Credentials credentials;
 
         static readonly TimeSpan STEAM3_TIMEOUT = TimeSpan.FromSeconds(30);
+        static readonly TimeSpan LOGIN_TIMEOUT = TimeSpan.FromSeconds(10);
 
 
         public Steam3Session(SteamUser.LogOnDetails details)
@@ -321,6 +322,15 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Error("Timeout connecting to Steam3. Disconnecting...");
                 Abort(false);
+            }
+            if (diff > LOGIN_TIMEOUT && !credentials.LoggedOn && bConnected)
+            {
+                _log.Warning("Timeout Logging in. Reconnecting...");
+                Thread.Sleep(1000 * ++connectionBackoff);
+
+                // Any connection related flags need to be reset here to match the state after Connect
+                ResetConnectionFlags();
+                steamClient.Connect();
             }
         }
 

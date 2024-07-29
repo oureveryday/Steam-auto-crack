@@ -7,7 +7,7 @@
         xmlns:properties="clr-namespace:SteamAutoCrack.Properties"
         xmlns:steamAutoCrack="clr-namespace:SteamAutoCrack"
         mc:Ignorable="d"
-        Title="{I18N {x:Static steamAutoCrack:LangKeys.AppIDFinder}}" Height="540" Width="420"
+        Title="{I18N {x:Static steamAutoCrack:LangKeys.AppIDFinder}}" Height="540" Width="577"
         ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:AppIDFinderViewModel/>
@@ -16,16 +16,16 @@
         <DataGrid x:Name="Apps" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding Apps}" SelectedItem="{Binding Selected}" Margin="10,55,10,60" MouseDoubleClick="Apps_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="AppID" Binding="{Binding AppId}" Width="70" />
-                <DataGridTextColumn Header="Game Name" Binding="{Binding Name}" Width="305" />
+                <DataGridTextColumn Header="Game Name" Binding="{Binding Name}" Width="445" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="Search" Content="{Binding SearchBtnString}" HorizontalAlignment="Left" Margin="300,10,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="Search_Click" IsDefault="True"/>
-        <CheckBox x:Name="Fuzzy" Content="{I18N {x:Static steamAutoCrack:LangKeys.FuzzySearch}}" HorizontalAlignment="Left" Margin="300,35,0,0" VerticalAlignment="Top" IsChecked="{Binding Fuzzy}"/>
-        <TextBox x:Name="AppName" HorizontalAlignment="Left" Margin="85,18,0,0" TextWrapping="NoWrap" Text="{Binding AppName}" VerticalAlignment="Top" Width="190"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.AppName}}" VerticalAlignment="Top" Width="70"/>
+        <Button x:Name="Search" Content="{Binding SearchBtnString}" HorizontalAlignment="Left" Margin="446,10,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="Search_Click" IsDefault="True"/>
+        <CheckBox x:Name="Fuzzy" Content="{I18N {x:Static steamAutoCrack:LangKeys.FuzzySearch}}" HorizontalAlignment="Left" Margin="446,35,0,0" VerticalAlignment="Top" IsChecked="{Binding Fuzzy}"/>
+        <TextBox x:Name="AppName" HorizontalAlignment="Left" Margin="85,13,0,0" TextWrapping="NoWrap" Text="{Binding AppName}" VerticalAlignment="Top" Width="330"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,14,0,0" TextWrapping="Wrap" Text="{I18N {x:Static steamAutoCrack:LangKeys.AppName}}" VerticalAlignment="Top" Width="70"/>
 
-        <Button x:Name="OK" Content="{I18N {x:Static steamAutoCrack:LangKeys.OK}}" HorizontalAlignment="Left" Margin="74,470,0,0" VerticalAlignment="Top" Width="90" Click="OK_Click"/>
-        <Button x:Name="Cancel" Content="{I18N {x:Static steamAutoCrack:LangKeys.Cancel}}" HorizontalAlignment="Left" Margin="255,470,0,0" VerticalAlignment="Top" Width="90" Click="Cancel_Click"/>
+        <Button x:Name="OK" Content="{I18N {x:Static steamAutoCrack:LangKeys.OK}}" HorizontalAlignment="Left" Margin="45,470,0,0" VerticalAlignment="Top" Width="90" Click="OK_Click" RenderTransformOrigin="1.383,0.585"/>
+        <Button x:Name="Cancel" Content="{I18N {x:Static steamAutoCrack:LangKeys.Cancel}}" HorizontalAlignment="Left" Margin="422,470,0,0" VerticalAlignment="Top" Width="90" Click="Cancel_Click"/>
 
 
 

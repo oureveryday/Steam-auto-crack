@@ -100,7 +100,7 @@
 
             <CheckBox x:Name="DisableNetworking" Content="{I18N {x:Static steamAutoCrack:LangKeys.DisableNetworking}}" HorizontalAlignment="Left" Margin="305,5,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableNetworking}"/>
             <CheckBox x:Name="Offline" Content="{I18N {x:Static steamAutoCrack:LangKeys.OfflineMode}}" HorizontalAlignment="Left" Margin="305,30,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding Offline}"/>
-            <CheckBox x:Name="EnableOverlay" Content="{I18N {x:Static steamAutoCrack:LangKeys.EnableOverlay}}" HorizontalAlignment="Left" Margin="305,55,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding DisableOverlay}"/>
+            <CheckBox x:Name="EnableOverlay" Content="{I18N {x:Static steamAutoCrack:LangKeys.EnableOverlay}}" HorizontalAlignment="Left" Margin="305,55,0,0" VerticalAlignment="Top" Width="165" IsChecked="{Binding EnableOverlay}"/>
             <Button x:Name="OpenExample" Content="{I18N {x:Static steamAutoCrack:LangKeys.OpenExampleConfig}}" HorizontalAlignment="Left" Margin="305,80,0,0" VerticalAlignment="Top" Width="140" Click="OpenExample_Click"/>
             <Button x:Name="OpenConfigFolder" Content="{I18N {x:Static steamAutoCrack:LangKeys.OpenConfigFolder}}" HorizontalAlignment="Left" Margin="305,105,0,0" VerticalAlignment="Top" Width="140" Click="OpenConfigFolder_Click"/>
 
