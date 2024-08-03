@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
-    <Version>3.4.1.4</Version>
+    <Version>3.4.1.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

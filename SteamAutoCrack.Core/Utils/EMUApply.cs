@@ -224,7 +224,7 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 if (emuApplyConfig.UseLocalSave)
                 {
-                    var configsuser = new Ini(Path.Combine(Path.GetDirectoryName(filePath), "configs.user.ini"));
+                    var configsuser = new Ini(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings", "configs.user.ini"));
 
                     configsuser.Add(new Section("user::saves", null)
                     {
@@ -234,7 +234,7 @@ namespace SteamAutoCrack.Core.Utils
                             " when this option is used, the global settings folder is completely ignored, allowing a full portable behavior")
                     });
 
-                    configsuser.SaveTo(Path.Combine(Path.GetDirectoryName(filePath), "configs.user.ini"));
+                    configsuser.SaveTo(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings", "configs.user.ini"));
 
                     _log.Debug("Saved local_save config to configs.user.ini");
                 }
