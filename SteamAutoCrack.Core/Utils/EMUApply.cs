@@ -226,7 +226,7 @@ namespace SteamAutoCrack.Core.Utils
                 {
                     var configsuser = new Ini(Path.Combine(Path.GetDirectoryName(filePath), "steam_settings", "configs.user.ini"));
 
-                    configsuser.Add(new Section("user::saves", null)
+                    configsuser.Add(new Section("user::saves", "")
                     {
                         new Property("local_save_path",emuApplyConfig.LocalSave," when this is set, it will force the emu to use the specified location instead of the default global location",
                             " path could be absolute, or relative to the location of the .dll/.so",
