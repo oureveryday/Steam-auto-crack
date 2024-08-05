@@ -208,6 +208,45 @@ namespace SteamAutoCrack.Core.Utils
             [JsonPropertyName("name")]
             public string? Name { get; set; }
         }
+        public class SaveAchievement
+        {
+            /// <summary>
+            /// Achievement description.
+            /// </summary>
+            [JsonPropertyName("description")]
+            public Dictionary<string, string>? Description { get; set; }
+
+            /// <summary>
+            /// Human readable name, as shown on webpage, game library, overlay, etc.
+            /// </summary>
+            [JsonPropertyName("displayName")]
+            public Dictionary<string, string>? DisplayName { get; set; }
+
+            /// <summary>
+            /// Is achievement hidden? 0 = false, else true.
+            /// </summary>
+            [JsonPropertyName("hidden")]
+            public int Hidden { get; set; }
+
+            /// <summary>
+            /// Path to icon when unlocked (colored).
+            /// </summary>
+            [JsonPropertyName("icon")]
+            public string? Icon { get; set; }
+
+            /// <summary>
+            /// Path to icon when locked (grayed out).
+            /// </summary>
+            // ReSharper disable once StringLiteralTypo
+            [JsonPropertyName("icongray")]
+            public string? IconGray { get; set; }
+
+            /// <summary>
+            /// Internal name.
+            /// </summary>
+            [JsonPropertyName("name")]
+            public string? Name { get; set; }
+        }
         protected async Task GenerateBasic()
         {
             try
@@ -257,24 +296,9 @@ namespace SteamAutoCrack.Core.Utils
                 }
                 _log.Debug($"Getting schema for App {AppID}");
 
-                string language = String.Empty;
-
-                switch (Config.Config.Language)
-                {
-                    case Config.Config.Languages.en_US:
-                        language += "english";
-                        break;
-                    case Config.Config.Languages.zh_CN:
-                        language += "schinese";
-                        break;
-                    default:
-                        language += "english";
-                        break;
-                }
-
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
-                var apiUrl = UseXan105API ? $"{GameSchemaUrl}&appid={AppID}" : $"{GameSchemaUrl}?l={language}&key={SteamWebAPIKey}&appid={AppID}";
+                var apiUrl = UseXan105API ? $"{GameSchemaUrl}&appid={AppID}" : $"{GameSchemaUrl}?l=english&key={SteamWebAPIKey}&appid={AppID}";
 
                 client.Timeout = TimeSpan.FromSeconds(30);
                 var response = await LimitSteamWebApiGET(client,
@@ -350,6 +374,7 @@ namespace SteamAutoCrack.Core.Utils
             {
                 _log.Debug("Generating achievements...");
                 var achievementList = new List<Achievement>();
+                var achievementListSave = new List<SaveAchievement>();
                 var achievementData = UseXan105API ? GameSchema.RootElement.GetProperty("data")
                     .GetProperty("achievement")
                     .GetProperty("list") :
@@ -389,22 +414,132 @@ namespace SteamAutoCrack.Core.Utils
                 }
 
                 _log.Debug("Saving achievements...");
-                foreach (var achievement in achievementList)
+                for (int i = 0; i < achievementList.Count; i++)
                 {
-                    // Update achievement list to point to local images instead
-                    achievement.Icon = $"achievement_images/{Path.GetFileName(achievement.Icon)}";
-                    achievement.IconGray = $"achievement_images/{Path.GetFileName(achievement.IconGray)}";
+                    achievementListSave.Add(new SaveAchievement {
+                        Description = new Dictionary<string, string> { { "english", achievementList[i].Description ?? "" } },
+                        DisplayName = new Dictionary<string, string> { { "english", achievementList[i].DisplayName ?? "" } },
+                        Hidden = achievementList[i].Hidden,
+                        Icon = $"achievement_images/{Path.GetFileName(achievementList[i].Icon)}",
+                        IconGray = $"achievement_images/{Path.GetFileName(achievementList[i].IconGray)}",
+                        Name = achievementList[i].Name,
+                    } );
                 }
+
+                String[] languages =
+                {
+                    // "english", english has been written
+                    "arabic",
+                    "bulgarian",
+                    "schinese",
+                    "tchinese",
+                    "czech",
+                    "danish",
+                    "dutch",
+                    "finnish",
+                    "french",
+                    "german",
+                    "greek",
+                    "hungarian",
+                    "indonesian",
+                    "italian",
+                    "japanese",
+                    "koreana",
+                    "norwegian",
+                    "polish",
+                    "portuguese",
+                    "brazilian",
+                    "romanian",
+                    "russian",
+                    "spanish",
+                    "latam",
+                    "swedish",
+                    "thai",
+                    "turkish",
+                    "ukrainian",
+                    "vietnamese",
+                    "token",
+                };
+
+                foreach (var language in languages)
+                {
+                    try
+                    {
+                        _log.Information("Getting game schema...");
+                        string GameSchemaUrl = UseXan105API ? "https://api.xan105.com/steam/ach/" : "https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/";
+                        if (!UseXan105API && (SteamWebAPIKey == String.Empty || SteamWebAPIKey == null))
+                        {
+                            _log.Warning("Empty Steam Web API Key, skipping getting game schema...");
+                            continue;
+                        }
+                        _log.Debug($"Getting schema for App {AppID}");
+
+                        var client = new HttpClient();
+                        client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+                        var apiUrl = UseXan105API ? $"{GameSchemaUrl}&appid={AppID}" : $"{GameSchemaUrl}?l={language}&key={SteamWebAPIKey}&appid={AppID}";
+
+                        client.Timeout = TimeSpan.FromSeconds(30);
+                        var response = await LimitSteamWebApiGET(client,
+                        new HttpRequestMessage(HttpMethod.Get, apiUrl));
+                        var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var responseCode = response.StatusCode;
+                        if (responseCode == HttpStatusCode.OK)
+                        {
+                            _log.Debug("Got game schema.");
+                            GameSchema = JsonDocument.Parse(responseBody);
+                        }
+                        else if (responseCode == HttpStatusCode.Forbidden && !UseXan105API)
+                        {
+                            _log.Error("Error 403 in getting game schema, please check your Steam Web API key. Skipping...");
+                            throw new Exception("Error 403 in getting game schema.");
+                        }
+                        else
+                        {
+                            _log.Error("Error {Code} in getting game schema. Skipping...", responseCode);
+                            throw new Exception($"Error {responseCode} in getting game schema. Skipping...");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error(ex, "Failed to get game schema.");
+                        continue;
+                    }
+
+                    var tmpList = new List<Achievement>();
+                    var tmpData = UseXan105API ? GameSchema.RootElement.GetProperty("data")
+                        .GetProperty("achievement")
+                        .GetProperty("list") :
+                         GameSchema.RootElement.GetProperty("game")
+                        .GetProperty("availableGameStats")
+                        .GetProperty("achievements");
+
+                    tmpList = JsonSerializer.Deserialize<List<Achievement>>(tmpData.GetRawText());
+
+                    foreach (var item in tmpList)
+                    {
+                        foreach (var saveItem in achievementListSave)
+                        {
+                            if( saveItem.Name == item.Name)
+                            {
+                                if (!string.IsNullOrEmpty(item.Description))
+                                    saveItem.Description.Add(language, item.Description);
+                                if (!string.IsNullOrEmpty(item.DisplayName))
+                                    saveItem.DisplayName.Add(language, item.DisplayName);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 var achievementJson = JsonSerializer.Serialize(
-                    achievementList,
+                    achievementListSave,
                     new JsonSerializerOptions
                     {
-                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                        // Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                         WriteIndented = true
                     });
                 await File.WriteAllTextAsync(Path.Combine(ConfigPath, "achievements.json"), achievementJson)
                     .ConfigureAwait(false);
-
             }
             catch (KeyNotFoundException)
             {
