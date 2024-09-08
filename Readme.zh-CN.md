@@ -40,7 +40,7 @@
 
 ## 使用
 
-* 下载所有文件并运行bin\Release\SteamAutoCrack.zip"或从[Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases)下载。
+* 从[Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases)下载。
 
 ## 错误
 

@@ -40,7 +40,7 @@ Latest Version 3.0 Using .Net 8.0.
 
 ## Usage
 
-* Download all files and run bin\Release\SteamAutoCrack.zip" or download from [Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases).
+* Download from [Github Releases](https://github.com/oureveryday/Steam-auto-crack/releases).
 
 ## Bugs
 
