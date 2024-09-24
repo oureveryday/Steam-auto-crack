@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
-    <Version>3.4.1.5</Version>
+    <Version>3.4.1.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,9 +16,9 @@
     <PackageReference Include="NinjaNye.SearchExtensions" Version="4.0.1" />
     <PackageReference Include="Serilog" Version="4.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-    <PackageReference Include="SharpSevenZip" Version="2.0.11" />
+    <PackageReference Include="SharpSevenZip" Version="2.0.12" />
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-    <PackageReference Include="SteamKit2" Version="3.0.0-Alpha.2" />
+    <PackageReference Include="SteamKit2" Version="3.0.0-Beta.3" />
   </ItemGroup>
 
   <ItemGroup>

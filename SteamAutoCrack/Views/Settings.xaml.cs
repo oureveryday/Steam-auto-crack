@@ -1,69 +1,71 @@
-﻿using SteamAutoCrack.Core.Config;
-using SteamAutoCrack.Core.Utils;
-using SteamAutoCrack.ViewModels;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using SteamAutoCrack.Core.Config;
+using SteamAutoCrack.Core.Utils;
+using SteamAutoCrack.ViewModels;
 
-namespace SteamAutoCrack.Views
+namespace SteamAutoCrack.Views;
+
+/// <summary>
+///     Settings.xaml 的交互逻辑
+/// </summary>
+public delegate void SettingsClosingHandler();
+
+public delegate void ReloadValueHandler();
+
+public partial class Settings : Window
 {
-    /// <summary>
-    /// Settings.xaml 的交互逻辑
-    /// </summary>
-    public delegate void SettingsClosingHandler();
-    public delegate void ReloadValueHandler();
-    
-    public partial class Settings : Window
+    private readonly SettingsViewModel viewModel = new();
+
+    public Settings()
     {
-        private readonly SettingsViewModel viewModel = new SettingsViewModel();
-        public event SettingsClosingHandler ClosingEvent;
-        public event ReloadValueHandler ReloadValueEvent;
-        public void ReloadValue()
-        {
-            viewModel.ReloadValue();
-        }
-        public Settings()
-        {
-            InitializeComponent();
-            DataContext = viewModel;
-        }
+        InitializeComponent();
+        DataContext = viewModel;
+    }
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            StrikeEvent();
-        }
-        private void StrikeEvent()
-        {
-            ClosingEvent?.Invoke();
-        }
+    public event SettingsClosingHandler ClosingEvent;
+    public event ReloadValueHandler ReloadValueEvent;
 
-        private void RestoreConfig_Click(object sender, RoutedEventArgs e)
-        {
-            Config.ResettoDefaultAll();
-            ReloadValueEvent?.Invoke();
-        }
+    public void ReloadValue()
+    {
+        viewModel.ReloadValue();
+    }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            ClosingEvent?.Invoke();
-            Close();
-        }
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        StrikeEvent();
+    }
 
-        private async void Download_Click(object sender, RoutedEventArgs e)
-        {
-            Task.Run(async() =>
-            {
-                var updater = new EMUUpdater();
-                await updater.Init();
-                await updater.Download(viewModel.ForceUpdate);
-            });
-        }
+    private void StrikeEvent()
+    {
+        ClosingEvent?.Invoke();
+    }
 
-        private void UpdateAppList_Click(object sender, RoutedEventArgs e)
+    private void RestoreConfig_Click(object sender, RoutedEventArgs e)
+    {
+        Config.ResettoDefaultAll();
+        ReloadValueEvent?.Invoke();
+    }
+
+    private void Close_Click(object sender, RoutedEventArgs e)
+    {
+        ClosingEvent?.Invoke();
+        Close();
+    }
+
+    private async void Download_Click(object sender, RoutedEventArgs e)
+    {
+        Task.Run(async () =>
         {
-            Task.Run(async () =>
-            {
-                await SteamAppList.Initialize(true).ConfigureAwait(false);
-            });
-        }
+            var updater = new EMUUpdater();
+            await updater.Init();
+            await updater.Download(viewModel.ForceUpdate);
+        });
+    }
+
+    private void UpdateAppList_Click(object sender, RoutedEventArgs e)
+    {
+        Task.Run(async () => { await SteamAppList.Initialize(true).ConfigureAwait(false); });
     }
 }

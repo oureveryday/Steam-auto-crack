@@ -1,26 +1,21 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace SteamAutoCrack.ViewModels
+namespace SteamAutoCrack.ViewModels;
+
+public class AboutViewModel : INotifyPropertyChanged
 {
-    public class AboutViewModel : INotifyPropertyChanged
+    public string Ver => "SteamAutoCrack " + Assembly.GetExecutingAssembly().GetName().Version;
+
+    #region INPC
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
     {
-        #region INPC
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
-        public string Ver
-        {
-            get
-            {
-                return "SteamAutoCrack " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
+        if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    #endregion
 }

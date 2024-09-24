@@ -1,10 +1,7 @@
-﻿namespace SteamAutoCrack.Core.Utils
-{
-    using Serilog;
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
+﻿using Serilog;
 
+namespace SteamAutoCrack.Core.Utils
+{
     namespace SteamAutoCrack.Core.Utils
     {
         public interface IRestore
@@ -14,12 +11,13 @@
 
         public class Restore : IRestore
         {
-            
             private readonly ILogger _log;
+
             public Restore()
             {
-                _log = Log.ForContext<Restore> ();
+                _log = Log.ForContext<Restore>();
             }
+
             public async Task<bool> RestoreFile(string path)
             {
                 try
@@ -29,10 +27,11 @@
                         _log.Error("Invaild input path.");
                         return false;
                     }
+
                     _log.Debug("Restoring cracked file...");
 
-                    foreach (string pathtodelete in Directory.EnumerateFiles(path, "steam_interfaces.txt", SearchOption.AllDirectories))
-                    {
+                    foreach (var pathtodelete in Directory.EnumerateFiles(path, "steam_interfaces.txt",
+                                 SearchOption.AllDirectories))
                         try
                         {
                             _log.Debug("Deleting \"{path}\"...", pathtodelete);
@@ -40,11 +39,11 @@
                         }
                         catch (Exception e)
                         {
-                            _log.Debug(e,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
+                            _log.Debug(e, "Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
                         }
-                    }
-                    foreach (string pathtodelete in Directory.EnumerateFiles(path, "local_save.txt", SearchOption.AllDirectories))
-                    {
+
+                    foreach (var pathtodelete in Directory.EnumerateFiles(path, "local_save.txt",
+                                 SearchOption.AllDirectories))
                         try
                         {
                             _log.Debug("Deleting \"{path}\"...", pathtodelete);
@@ -52,34 +51,36 @@
                         }
                         catch (Exception ex)
                         {
-                            _log.Debug(ex,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
+                            _log.Debug(ex, "Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
                         }
-                    }
-                    foreach (string pathtorestore in Directory.EnumerateFiles(path, "*.bak", SearchOption.AllDirectories))
-                    {
+
+                    foreach (var pathtorestore in Directory.EnumerateFiles(path, "*.bak", SearchOption.AllDirectories))
                         try
                         {
                             _log.Debug("Restoring \"{path}\"...", pathtorestore);
-                            File.Delete(Path.Combine(Path.GetDirectoryName(pathtorestore), Path.GetFileNameWithoutExtension(pathtorestore)));
-                            File.Move(pathtorestore, Path.Combine(Path.GetDirectoryName(pathtorestore), Path.GetFileNameWithoutExtension(pathtorestore)));
+                            File.Delete(Path.Combine(Path.GetDirectoryName(pathtorestore),
+                                Path.GetFileNameWithoutExtension(pathtorestore)));
+                            File.Move(pathtorestore,
+                                Path.Combine(Path.GetDirectoryName(pathtorestore),
+                                    Path.GetFileNameWithoutExtension(pathtorestore)));
                         }
                         catch (Exception ex)
                         {
-                            _log.Debug(ex,"Failed to restore \"{pathtodelete}\". Skipping...", pathtorestore);
+                            _log.Debug(ex, "Failed to restore \"{pathtodelete}\". Skipping...", pathtorestore);
                         }
-                    }
-                    foreach (string pathtodelete in Directory.EnumerateDirectories(path, "steam_settings", SearchOption.AllDirectories))
-                    {
+
+                    foreach (var pathtodelete in Directory.EnumerateDirectories(path, "steam_settings",
+                                 SearchOption.AllDirectories))
                         try
                         {
                             _log.Debug("Deleting \"{path}\"...", pathtodelete);
-                            Directory.Delete(pathtodelete,true);
+                            Directory.Delete(pathtodelete, true);
                         }
                         catch (Exception ex)
                         {
-                            _log.Debug(ex,"Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
+                            _log.Debug(ex, "Failed to delete \"{pathtodelete}\". Skipping...", pathtodelete);
                         }
-                    }
+
                     _log.Information("All cracked file restored.");
                     return true;
                 }
@@ -91,5 +92,4 @@
             }
         }
     }
-
 }

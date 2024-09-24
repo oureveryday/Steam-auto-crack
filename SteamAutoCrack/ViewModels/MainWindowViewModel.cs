@@ -1,642 +1,572 @@
-﻿using SteamAutoCrack.Core.Config;
-using SteamAutoCrack.Core.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using SteamAutoCrack.Core.Config;
+using SteamAutoCrack.Core.Utils;
 
-namespace SteamAutoCrack.ViewModels
+namespace SteamAutoCrack.ViewModels;
+
+internal class MainWindowViewModel : INotifyPropertyChanged
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    public MainWindowViewModel()
     {
-        #region INPC
+        GameInfoAPIs = Enum.GetValues(typeof(EMUGameInfoConfig.GeneratorGameInfoAPI))
+            .Cast<EMUGameInfoConfig.GeneratorGameInfoAPI>().ToList();
+        Languages = Enum.GetValues(typeof(EMUConfig.Languages)).Cast<EMUConfig.Languages>().ToList();
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    #region INPC
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    {
+        if (Config.SaveCrackConfig) Config.SaveConfig();
+
+        if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public void ReloadValue()
+    {
+        var type = GetType();
+
+        foreach (var property in type.GetProperties(
+                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
         {
-            if (Config.SaveCrackConfig)
-            {
-                Config.SaveConfig();
-            }
+            var propertyName = property.Name;
 
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+            if (propertyName.StartsWith("_")) propertyName = propertyName.Substring(1);
 
-        public void ReloadValue()
-        {
-            Type type = GetType();
-
-            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                
-                    string propertyName = property.Name;
-
-                    if (propertyName.StartsWith("_"))
-                    {
-                        propertyName = propertyName.Substring(1);
-                    }
-
-                    NotifyPropertyChanged(propertyName);
-                
-            }
-        }
-
-        #endregion
-        #region BasicConfigs
-        public string InputPath
-        {
-            get
-            {
-                return Config.InputPath;
-            }
-
-            set
-            {
-                if (value != Config.InputPath)
-                {
-                    Config.InputPath = value;
-                    NotifyPropertyChanged("InputPath");
-                }
-            }
-        }
-        public string Ver
-        {
-            get
-            {
-                return "SteamAutoCrack " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
-        #endregion
-        #region ProcessConfigs
-        public bool GenerateEMUGameInfo
-        {
-            get
-            {
-                return Config.ProcessConfigs.GenerateEMUGameInfo;
-            }
-
-            set
-            {
-                if (value != Config.ProcessConfigs.GenerateEMUGameInfo)
-                {
-                    Config.ProcessConfigs.GenerateEMUGameInfo = value;
-                    NotifyPropertyChanged("GenerateEMUGameInfo");
-                }
-            }
-        }
-        public bool GenerateEMUConfig
-        {
-            get
-            {
-                return Config.ProcessConfigs.GenerateEMUConfig;
-            }
-
-            set
-            {
-                if (value != Config.ProcessConfigs.GenerateEMUConfig)
-                {
-                    Config.ProcessConfigs.GenerateEMUConfig = value;
-                    NotifyPropertyChanged("GenerateEMUConfig");
-                }
-            }
-        }
-        public bool Unpack
-        {
-            get
-            {
-                return Config.ProcessConfigs.Unpack;
-            }
-
-            set
-            {
-                if (value != Config.ProcessConfigs.Unpack)
-                {
-                    Config.ProcessConfigs.Unpack = value;
-                    NotifyPropertyChanged("Unpack");
-                }
-            }
-        }
-        public bool ApplyEMU
-        {
-            get
-            {
-                return Config.ProcessConfigs.ApplyEMU;
-            }
-
-            set
-            {
-                if (value != Config.ProcessConfigs.ApplyEMU)
-                {
-                    Config.ProcessConfigs.ApplyEMU = value;
-                    NotifyPropertyChanged("ApplyEMU");
-                }
-            }
-        }
-        public bool GenerateCrackOnly
-        {
-            get
-            {
-                return Config.ProcessConfigs.GenerateCrackOnly;
-            }
-
-            set
-            {
-                if (value != Config.ProcessConfigs.GenerateCrackOnly)
-                {
-                    Config.ProcessConfigs.GenerateCrackOnly = value;
-                    NotifyPropertyChanged("GenerateCrackOnly");
-                }
-            }
-        }
-        public bool Restore
-        {
-            get
-            {
-                return Config.ProcessConfigs.Restore;
-            }
-
-            set
-            {
-                if (value != Config.ProcessConfigs.Restore)
-                {
-                    Config.ProcessConfigs.Restore = value;
-                    NotifyPropertyChanged("Restore");
-                }
-            }
-        }
-        #endregion
-        #region EMUGameInfoConfigs
-        public string AppID
-        {
-            get
-            {
-                return Config.EMUGameInfoConfigs.AppID;
-            }
-
-            set
-            {
-                if (value != Config.EMUGameInfoConfigs.AppID)
-                {
-                    Config.EMUGameInfoConfigs.AppID = value;
-                    NotifyPropertyChanged("AppID");
-                }
-            }
-        }
-        public string SteamWebAPIKey
-        {
-            get
-            {
-                return Config.EMUGameInfoConfigs.SteamWebAPIKey;
-            }
-
-            set
-            {
-                if (value != Config.EMUGameInfoConfigs.SteamWebAPIKey)
-                {
-                    Config.EMUGameInfoConfigs.SteamWebAPIKey = value;
-                    NotifyPropertyChanged("SteamWebAPIKey");
-                }
-            }
-        }
-        public bool UseXan105API
-        {
-            get
-            {
-                return Config.EMUGameInfoConfigs.UseXan105API;
-            }
-
-            set
-            {
-                if (value != Config.EMUGameInfoConfigs.UseXan105API)
-                {
-                    Config.EMUGameInfoConfigs.UseXan105API = value;
-                    NotifyPropertyChanged("UseXan105API");
-                }
-            }
-        }
-        public bool UseSteamWebAppList
-        {
-            get
-            {
-                return Config.EMUGameInfoConfigs.UseSteamWebAppList;
-            }
-
-            set
-            {
-                if (value != Config.EMUGameInfoConfigs.UseSteamWebAppList)
-                {
-                    Config.EMUGameInfoConfigs.UseSteamWebAppList = value;
-                    NotifyPropertyChanged("UseSteamWebAppList");
-                }
-            }
-        }
-        public bool GenerateImages
-        {
-            get
-            {
-                return Config.EMUGameInfoConfigs.GenerateImages;
-            }
-
-            set
-            {
-                if (value != Config.EMUGameInfoConfigs.GenerateImages)
-                {
-                    Config.EMUGameInfoConfigs.GenerateImages = value;
-                    NotifyPropertyChanged("GenerateImages");
-                }
-            }
-        }
-        public EMUGameInfoConfig.GeneratorGameInfoAPI GameInfoAPI
-        {
-            get
-            {
-                return Config.EMUGameInfoConfigs.GameInfoAPI;
-            }
-
-            set
-            {
-                if (value != Config.EMUGameInfoConfigs.GameInfoAPI)
-                {
-                    Config.EMUGameInfoConfigs.GameInfoAPI = value;
-                    NotifyPropertyChanged("GameInfoAPI");
-                }
-            }
-        }
-        public List<EMUGameInfoConfig.GeneratorGameInfoAPI> GameInfoAPIs {get;set;}
-
-        #endregion
-        #region EMUConfigs
-        public EMUConfig.Languages Language
-        {
-            get
-            {
-                return Config.EMUConfigs.Language;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.Language)
-                {
-                    Config.EMUConfigs.Language = value;
-                    NotifyPropertyChanged("Language");
-                }
-            }
-        }
-        public List<EMUConfig.Languages> Languages { get; set; }
-        public string SteamID
-        {
-            get
-            {
-                return Config.EMUConfigs.SteamID;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.SteamID)
-                {
-                    Config.EMUConfigs.SteamID = value;
-                    NotifyPropertyChanged("SteamID");
-                }
-            }
-        }
-        public string AccountName
-        {
-            get
-            {
-                return Config.EMUConfigs.AccountName;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.AccountName)
-                {
-                    Config.EMUConfigs.AccountName = value;
-                    NotifyPropertyChanged("AccountName");
-                }
-            }
-        }
-        public string ListenPort
-        {
-            get
-            {
-                return Config.EMUConfigs.ListenPort;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.ListenPort)
-                {
-                    Config.EMUConfigs.ListenPort = value;
-                    NotifyPropertyChanged("ListenPort");
-                }
-            }
-        }
-        public string CustomIP
-        {
-            get
-            {
-                return Config.EMUConfigs.CustomIP;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.CustomIP)
-                {
-                    Config.EMUConfigs.CustomIP = value;
-                    NotifyPropertyChanged("CustomIP");
-                }
-            }
-        }
-        public bool UseCustomIP
-        {
-            get
-            {
-                return Config.EMUConfigs.UseCustomIP;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.UseCustomIP)
-                {
-                    Config.EMUConfigs.UseCustomIP = value;
-                    NotifyPropertyChanged("UseCustomIP");
-                }
-            }
-        }
-        public bool DisableNetworking
-        {
-            get
-            {
-                return Config.EMUConfigs.DisableNetworking;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.DisableNetworking)
-                {
-                    Config.EMUConfigs.DisableNetworking = value;
-                    NotifyPropertyChanged("DisableNetworking");
-                }
-            }
-        }
-        public bool Offline
-        {
-            get
-            {
-                return Config.EMUConfigs.Offline;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.Offline)
-                {
-                    Config.EMUConfigs.Offline = value;
-                    NotifyPropertyChanged("Offline");
-                }
-            }
-        }
-        public bool EnableOverlay
-        {
-            get
-            {
-                return Config.EMUConfigs.EnableOverlay;
-            }
-
-            set
-            {
-                if (value != Config.EMUConfigs.EnableOverlay)
-                {
-                    Config.EMUConfigs.EnableOverlay = value;
-                    NotifyPropertyChanged("EnableOverlay");
-                }
-            }
-        }
-        #endregion
-        #region SteamStubUnpackerConfigs
-        public bool KeepBind
-        {
-            get
-            {
-                return Config.SteamStubUnpackerConfigs.KeepBind;
-            }
-
-            set
-            {
-                if (value != Config.SteamStubUnpackerConfigs.KeepBind)
-                {
-                    Config.SteamStubUnpackerConfigs.KeepBind = value;
-                    NotifyPropertyChanged("KeepBind");
-                }
-            }
-        }
-        public bool KeepStub
-        {
-            get
-            {
-                return Config.SteamStubUnpackerConfigs.KeepStub;
-            }
-
-            set
-            {
-                if (value != Config.SteamStubUnpackerConfigs.KeepStub)
-                {
-                    Config.SteamStubUnpackerConfigs.KeepStub = value;
-                    NotifyPropertyChanged("KeepStub");
-                }
-            }
-        }
-        public bool Realign
-        {
-            get
-            {
-                return Config.SteamStubUnpackerConfigs.Realign;
-            }
-
-            set
-            {
-                if (value != Config.SteamStubUnpackerConfigs.Realign)
-                {
-                    Config.SteamStubUnpackerConfigs.Realign = value;
-                    NotifyPropertyChanged("Realign");
-                }
-            }
-        }
-        public bool ReCalcChecksum
-        {
-            get
-            {
-                return Config.SteamStubUnpackerConfigs.ReCalcChecksum;
-            }
-
-            set
-            {
-                if (value != Config.SteamStubUnpackerConfigs.ReCalcChecksum)
-                {
-                    Config.SteamStubUnpackerConfigs.ReCalcChecksum = value;
-                    NotifyPropertyChanged("ReCalcChecksum");
-                }
-            }
-        }
-        public bool UseExperimentalFeatures
-        {
-            get
-            {
-                return Config.SteamStubUnpackerConfigs.UseExperimentalFeatures;
-            }
-
-            set
-            {
-                if (value != Config.SteamStubUnpackerConfigs.UseExperimentalFeatures)
-                {
-                    Config.SteamStubUnpackerConfigs.UseExperimentalFeatures = value;
-                    NotifyPropertyChanged("UseExperimentalFeatures");
-                }
-            }
-        }
-
-        #endregion
-        #region EMUApplyConfigs
-        public string LocalSave
-        {
-            get
-            {
-                return Config.EMUApplyConfigs.LocalSave;
-            }
-
-            set
-            {
-                if (value != Config.EMUApplyConfigs.LocalSave)
-                {
-                    Config.EMUApplyConfigs.LocalSave = value;
-                    NotifyPropertyChanged("LocalSave");
-                }
-            }
-        }
-        public bool UseLocalSave
-        {
-            get
-            {
-                return Config.EMUApplyConfigs.UseLocalSave;
-            }
-
-            set
-            {
-                if (value != Config.EMUApplyConfigs.UseLocalSave)
-                {
-                    Config.EMUApplyConfigs.UseLocalSave = value;
-                    NotifyPropertyChanged("UseLocalSave");
-                }
-            }
-        }
-        public bool UseGoldbergExperimental
-        {
-            get
-            {
-                return Config.EMUApplyConfigs.UseGoldbergExperimental;
-            }
-
-            set
-            {
-                if (value != Config.EMUApplyConfigs.UseGoldbergExperimental)
-                {
-                    Config.EMUApplyConfigs.UseGoldbergExperimental = value;
-                    NotifyPropertyChanged("UseGoldbergExperimental");
-                }
-            }
-        }
-        public bool GenerateInterfacesFile
-        {
-            get
-            {
-                return Config.EMUApplyConfigs.GenerateInterfacesFile;
-            }
-
-            set
-            {
-                if (value != Config.EMUApplyConfigs.GenerateInterfacesFile)
-                {
-                    Config.EMUApplyConfigs.GenerateInterfacesFile = value;
-                    NotifyPropertyChanged("GenerateInterfacesFile");
-                }
-            }
-        }
-        public bool ForceGenerateInterfacesFiles
-        {
-            get
-            {
-                return Config.EMUApplyConfigs.ForceGenerateInterfacesFiles;
-            }
-
-            set
-            {
-                if (value != Config.EMUApplyConfigs.ForceGenerateInterfacesFiles)
-                {
-                    Config.EMUApplyConfigs.ForceGenerateInterfacesFiles = value;
-                    NotifyPropertyChanged("ForceGenerateInterfacesFiles");
-                }
-            }
-        }
-        #endregion
-        #region GenCrackOnlyConfigs
-        public string OutputPath
-        {
-            get
-            {
-                return Config.GenCrackOnlyConfigs.OutputPath;
-            }
-
-            set
-            {
-                if (value != Config.GenCrackOnlyConfigs.OutputPath)
-                {
-                    Config.GenCrackOnlyConfigs.OutputPath = value;
-                    NotifyPropertyChanged("OutputPath");
-                }
-            }
-        }
-        public bool CreateReadme
-        {
-            get
-            {
-                return Config.GenCrackOnlyConfigs.CreateReadme;
-            }
-
-            set
-            {
-                if (value != Config.GenCrackOnlyConfigs.CreateReadme)
-                {
-                    Config.GenCrackOnlyConfigs.CreateReadme = value;
-                    NotifyPropertyChanged("CreateReadme");
-                }
-            }
-        }
-        public bool Pack
-        {
-            get
-            {
-                return Config.GenCrackOnlyConfigs.Pack;
-            }
-
-            set
-            {
-                if (value != Config.GenCrackOnlyConfigs.Pack)
-                {
-                    Config.GenCrackOnlyConfigs.Pack = value;
-                    NotifyPropertyChanged("Pack");
-                }
-            }
-        }
-        #endregion
-        public MainWindowViewModel()
-        {
-            GameInfoAPIs = Enum.GetValues(typeof(EMUGameInfoConfig.GeneratorGameInfoAPI)).Cast<EMUGameInfoConfig.GeneratorGameInfoAPI>().ToList();
-            Languages = Enum.GetValues(typeof(EMUConfig.Languages)).Cast<EMUConfig.Languages>().ToList();
+            NotifyPropertyChanged(propertyName);
         }
     }
+
+    #endregion
+
+    #region BasicConfigs
+
+    public string InputPath
+    {
+        get => Config.InputPath;
+
+        set
+        {
+            if (value != Config.InputPath)
+            {
+                Config.InputPath = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public string Ver => "SteamAutoCrack " + Assembly.GetExecutingAssembly().GetName().Version;
+
+    #endregion
+
+    #region ProcessConfigs
+
+    public bool GenerateEMUGameInfo
+    {
+        get => Config.ProcessConfigs.GenerateEMUGameInfo;
+
+        set
+        {
+            if (value != Config.ProcessConfigs.GenerateEMUGameInfo)
+            {
+                Config.ProcessConfigs.GenerateEMUGameInfo = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool GenerateEMUConfig
+    {
+        get => Config.ProcessConfigs.GenerateEMUConfig;
+
+        set
+        {
+            if (value != Config.ProcessConfigs.GenerateEMUConfig)
+            {
+                Config.ProcessConfigs.GenerateEMUConfig = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool Unpack
+    {
+        get => Config.ProcessConfigs.Unpack;
+
+        set
+        {
+            if (value != Config.ProcessConfigs.Unpack)
+            {
+                Config.ProcessConfigs.Unpack = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool ApplyEMU
+    {
+        get => Config.ProcessConfigs.ApplyEMU;
+
+        set
+        {
+            if (value != Config.ProcessConfigs.ApplyEMU)
+            {
+                Config.ProcessConfigs.ApplyEMU = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool GenerateCrackOnly
+    {
+        get => Config.ProcessConfigs.GenerateCrackOnly;
+
+        set
+        {
+            if (value != Config.ProcessConfigs.GenerateCrackOnly)
+            {
+                Config.ProcessConfigs.GenerateCrackOnly = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool Restore
+    {
+        get => Config.ProcessConfigs.Restore;
+
+        set
+        {
+            if (value != Config.ProcessConfigs.Restore)
+            {
+                Config.ProcessConfigs.Restore = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    #endregion
+
+    #region EMUGameInfoConfigs
+
+    public string AppID
+    {
+        get => Config.EMUGameInfoConfigs.AppID;
+
+        set
+        {
+            if (value != Config.EMUGameInfoConfigs.AppID)
+            {
+                Config.EMUGameInfoConfigs.AppID = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public string SteamWebAPIKey
+    {
+        get => Config.EMUGameInfoConfigs.SteamWebAPIKey;
+
+        set
+        {
+            if (value != Config.EMUGameInfoConfigs.SteamWebAPIKey)
+            {
+                Config.EMUGameInfoConfigs.SteamWebAPIKey = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool UseXan105API
+    {
+        get => Config.EMUGameInfoConfigs.UseXan105API;
+
+        set
+        {
+            if (value != Config.EMUGameInfoConfigs.UseXan105API)
+            {
+                Config.EMUGameInfoConfigs.UseXan105API = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool UseSteamWebAppList
+    {
+        get => Config.EMUGameInfoConfigs.UseSteamWebAppList;
+
+        set
+        {
+            if (value != Config.EMUGameInfoConfigs.UseSteamWebAppList)
+            {
+                Config.EMUGameInfoConfigs.UseSteamWebAppList = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool GenerateImages
+    {
+        get => Config.EMUGameInfoConfigs.GenerateImages;
+
+        set
+        {
+            if (value != Config.EMUGameInfoConfigs.GenerateImages)
+            {
+                Config.EMUGameInfoConfigs.GenerateImages = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public EMUGameInfoConfig.GeneratorGameInfoAPI GameInfoAPI
+    {
+        get => Config.EMUGameInfoConfigs.GameInfoAPI;
+
+        set
+        {
+            if (value != Config.EMUGameInfoConfigs.GameInfoAPI)
+            {
+                Config.EMUGameInfoConfigs.GameInfoAPI = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public List<EMUGameInfoConfig.GeneratorGameInfoAPI> GameInfoAPIs { get; set; }
+
+    #endregion
+
+    #region EMUConfigs
+
+    public EMUConfig.Languages Language
+    {
+        get => Config.EMUConfigs.Language;
+
+        set
+        {
+            if (value != Config.EMUConfigs.Language)
+            {
+                Config.EMUConfigs.Language = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public List<EMUConfig.Languages> Languages { get; set; }
+
+    public string SteamID
+    {
+        get => Config.EMUConfigs.SteamID;
+
+        set
+        {
+            if (value != Config.EMUConfigs.SteamID)
+            {
+                Config.EMUConfigs.SteamID = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public string AccountName
+    {
+        get => Config.EMUConfigs.AccountName;
+
+        set
+        {
+            if (value != Config.EMUConfigs.AccountName)
+            {
+                Config.EMUConfigs.AccountName = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public string ListenPort
+    {
+        get => Config.EMUConfigs.ListenPort;
+
+        set
+        {
+            if (value != Config.EMUConfigs.ListenPort)
+            {
+                Config.EMUConfigs.ListenPort = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public string CustomIP
+    {
+        get => Config.EMUConfigs.CustomIP;
+
+        set
+        {
+            if (value != Config.EMUConfigs.CustomIP)
+            {
+                Config.EMUConfigs.CustomIP = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool UseCustomIP
+    {
+        get => Config.EMUConfigs.UseCustomIP;
+
+        set
+        {
+            if (value != Config.EMUConfigs.UseCustomIP)
+            {
+                Config.EMUConfigs.UseCustomIP = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool DisableNetworking
+    {
+        get => Config.EMUConfigs.DisableNetworking;
+
+        set
+        {
+            if (value != Config.EMUConfigs.DisableNetworking)
+            {
+                Config.EMUConfigs.DisableNetworking = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool Offline
+    {
+        get => Config.EMUConfigs.Offline;
+
+        set
+        {
+            if (value != Config.EMUConfigs.Offline)
+            {
+                Config.EMUConfigs.Offline = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool EnableOverlay
+    {
+        get => Config.EMUConfigs.EnableOverlay;
+
+        set
+        {
+            if (value != Config.EMUConfigs.EnableOverlay)
+            {
+                Config.EMUConfigs.EnableOverlay = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    #endregion
+
+    #region SteamStubUnpackerConfigs
+
+    public bool KeepBind
+    {
+        get => Config.SteamStubUnpackerConfigs.KeepBind;
+
+        set
+        {
+            if (value != Config.SteamStubUnpackerConfigs.KeepBind)
+            {
+                Config.SteamStubUnpackerConfigs.KeepBind = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool KeepStub
+    {
+        get => Config.SteamStubUnpackerConfigs.KeepStub;
+
+        set
+        {
+            if (value != Config.SteamStubUnpackerConfigs.KeepStub)
+            {
+                Config.SteamStubUnpackerConfigs.KeepStub = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool Realign
+    {
+        get => Config.SteamStubUnpackerConfigs.Realign;
+
+        set
+        {
+            if (value != Config.SteamStubUnpackerConfigs.Realign)
+            {
+                Config.SteamStubUnpackerConfigs.Realign = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool ReCalcChecksum
+    {
+        get => Config.SteamStubUnpackerConfigs.ReCalcChecksum;
+
+        set
+        {
+            if (value != Config.SteamStubUnpackerConfigs.ReCalcChecksum)
+            {
+                Config.SteamStubUnpackerConfigs.ReCalcChecksum = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool UseExperimentalFeatures
+    {
+        get => Config.SteamStubUnpackerConfigs.UseExperimentalFeatures;
+
+        set
+        {
+            if (value != Config.SteamStubUnpackerConfigs.UseExperimentalFeatures)
+            {
+                Config.SteamStubUnpackerConfigs.UseExperimentalFeatures = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    #endregion
+
+    #region EMUApplyConfigs
+
+    public string LocalSave
+    {
+        get => Config.EMUApplyConfigs.LocalSave;
+
+        set
+        {
+            if (value != Config.EMUApplyConfigs.LocalSave)
+            {
+                Config.EMUApplyConfigs.LocalSave = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool UseLocalSave
+    {
+        get => Config.EMUApplyConfigs.UseLocalSave;
+
+        set
+        {
+            if (value != Config.EMUApplyConfigs.UseLocalSave)
+            {
+                Config.EMUApplyConfigs.UseLocalSave = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool UseGoldbergExperimental
+    {
+        get => Config.EMUApplyConfigs.UseGoldbergExperimental;
+
+        set
+        {
+            if (value != Config.EMUApplyConfigs.UseGoldbergExperimental)
+            {
+                Config.EMUApplyConfigs.UseGoldbergExperimental = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool GenerateInterfacesFile
+    {
+        get => Config.EMUApplyConfigs.GenerateInterfacesFile;
+
+        set
+        {
+            if (value != Config.EMUApplyConfigs.GenerateInterfacesFile)
+            {
+                Config.EMUApplyConfigs.GenerateInterfacesFile = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool ForceGenerateInterfacesFiles
+    {
+        get => Config.EMUApplyConfigs.ForceGenerateInterfacesFiles;
+
+        set
+        {
+            if (value != Config.EMUApplyConfigs.ForceGenerateInterfacesFiles)
+            {
+                Config.EMUApplyConfigs.ForceGenerateInterfacesFiles = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    #endregion
+
+    #region GenCrackOnlyConfigs
+
+    public string OutputPath
+    {
+        get => Config.GenCrackOnlyConfigs.OutputPath;
+
+        set
+        {
+            if (value != Config.GenCrackOnlyConfigs.OutputPath)
+            {
+                Config.GenCrackOnlyConfigs.OutputPath = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool CreateReadme
+    {
+        get => Config.GenCrackOnlyConfigs.CreateReadme;
+
+        set
+        {
+            if (value != Config.GenCrackOnlyConfigs.CreateReadme)
+            {
+                Config.GenCrackOnlyConfigs.CreateReadme = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public bool Pack
+    {
+        get => Config.GenCrackOnlyConfigs.Pack;
+
+        set
+        {
+            if (value != Config.GenCrackOnlyConfigs.Pack)
+            {
+                Config.GenCrackOnlyConfigs.Pack = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    #endregion
 }
