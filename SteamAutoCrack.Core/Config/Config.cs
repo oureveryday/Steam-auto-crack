@@ -22,9 +22,6 @@ public class Config
     }
 
     private static readonly ILogger _log = Log.ForContext<Config>();
-    private static bool _SaveCrackConfig = CheckConfigFile();
-    private static bool _EnableDebugLog;
-    public static LoggingLevelSwitch loggingLevelSwitch = new();
 
     /// <summary>
     ///     Temp file path.
@@ -106,6 +103,10 @@ public class Config
     public static EMUGameInfoConfigs EMUGameInfoConfigs { get; set; } = new();
     public static GenCrackOnlyConfigs GenCrackOnlyConfigs { get; set; } = new();
     public static ProcessConfigs ProcessConfigs { get; set; } = new();
+
+    private static bool _SaveCrackConfig = CheckConfigFile();
+    private static bool _EnableDebugLog;
+    public static LoggingLevelSwitch loggingLevelSwitch = new();
 
     private static bool CheckConfigFile()
     {
