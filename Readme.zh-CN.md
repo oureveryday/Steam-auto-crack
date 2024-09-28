@@ -12,7 +12,7 @@
 最新版本3.0使用 .Net 8.0。  
 [最新发布](https://github.com/oureveryday/Steam-auto-crack/releases)  
 [维基](https://github.com/oureveryday/Steam-auto-crack/wiki)  
-[官方 Disrord](https://discord.gg/BZQtrBSUnd)
+[官方 Disrord](https://discord.gg/BZQtrBSUnd)  
 [官方 Telegram](https://t.me/SteamAutoCrack)
 
 * Github: <https://github.com/oureveryday/Steam-auto-crack>
@@ -32,7 +32,7 @@
 ## 依赖
 
 * <https://github.com/atom0s/Steamless>
-* <https://github.com/otavepto/gbe_fork>
+* <https://github.com/Detanup01/gbe_fork>
 
 ## 编译
 
