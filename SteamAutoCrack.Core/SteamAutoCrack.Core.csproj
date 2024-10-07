@@ -32,4 +32,12 @@
     <ProjectReference Include="..\Steamless.Unpacker.Variant31.x86\Steamless.Unpacker.Variant31.x86.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="C:\Users\Mechrevo\.nuget\packages\sharpsevenzip\2.0.12\build\x64\7z.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\Mechrevo\.nuget\packages\sharpsevenzip\2.0.12\build\x64\7z.dll" />
+  </ItemGroup>
+
 </Project>
