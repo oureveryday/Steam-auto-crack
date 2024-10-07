@@ -125,7 +125,7 @@ public class GenCrackOnly : IGenCrackOnly
                         Path.GetRelativePath(config.SourcePath, Path.GetDirectoryName(path))));
                 File.Copy(path,
                     Path.Combine(config.OutputPath, "Crack", Path.GetRelativePath(config.SourcePath, path)));
-                File.Copy(path,
+                File.Copy(origpath,
                     Path.Combine(config.OutputPath, "Crack", Path.GetRelativePath(config.SourcePath, origpath)));
             }
 
